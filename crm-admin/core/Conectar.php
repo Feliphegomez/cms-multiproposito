@@ -22,12 +22,10 @@ class Conectar {
     }
      
     public function conexion(){
-         
         if($this->driver=="mysql" || $this->driver==null){
             $con=new mysqli($this->host, $this->user, $this->pass, $this->database);
             $con->query("SET NAMES '".$this->charset."'");
         }
-         
         return $con;
     }
      
@@ -41,6 +39,8 @@ class Conectar {
 				"{$this->user}",
 				"{$this->pass}",
 				array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES ".$this->charset));
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		}
          
         return $pdo;

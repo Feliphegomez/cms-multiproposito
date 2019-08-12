@@ -21,19 +21,5 @@ class UsuariosModel extends ModeloBase {
         $usuario = $this->ejecutarSql($query);
         return ($usuario);
     }
-	/*
-    public function getByTypeDocAndDoc($type_identification, $identification_number){
-        $query = $this->db->query("SELECT * FROM $this->table WHERE type_identification IN ('{$type_identification}') AND identification_number IN ('{$identification_number}')");
-		
-		$resultSet = array();
-		if(count($query->fetch_object()) > 0){
-			
-			while($row = $query->fetch_object()) {
-			   $resultSet[]=$row;
-			}
-		}
-			 
-        return $resultSet;
-    }*/
 }
 ?>

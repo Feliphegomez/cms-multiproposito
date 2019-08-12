@@ -75,6 +75,7 @@ class MenuLeft extends MenuBase {
 	
 	public function listMenuLeft001($showNoActives = false) {
 		$r = "";
+		#$r = "<h3>Modulos</h3>";
 		$modules = MenuLeft::getModules();
 		foreach($modules as $modulo){
 			$nombreclassModulo = ucwords($modulo)."Controller";
@@ -115,7 +116,7 @@ class MenuLeft extends MenuBase {
 $menu = new MenuLeft();
 ?>
 	<div class="navbar nav_title" style="border: 0;">
-		<a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>CMS</span></a>
+		<a href="index.html" class="site_title"><i class="<?php echo ICON_DEFAUL; ?>"></i> <span><?php echo TITLE_XS; ?></span></a>
 	</div>
 	<div class="clearfix"></div>
 	<?php if(ControladorBase::isUser() == true){ ?>
@@ -133,7 +134,7 @@ $menu = new MenuLeft();
 	<?php } ?>
 
 	<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-		<?php echo "<div class=\"menu_section\"><h3>Modulos</h3>".$menu->listMenuLeft001()."</div>"; ?>
+		<?php echo "<div class=\"menu_section\">".$menu->listMenuLeft001()."</div>"; ?>
 	</div>
 	<div class="sidebar-footer hidden-small">
 		<!-- // <button id="compose" class="btn btn-sm btn-success btn-block" type="button">COMPOSE</button> -->
@@ -158,6 +159,7 @@ $menu = new MenuLeft();
 
 
 <?php if(ControladorBase::isUser() == false){ ?>
+<!--//
 <style>
 	body {
 		overflow: hidden;
@@ -179,4 +181,5 @@ $menu = new MenuLeft();
 		left: 0;
 	}
 </style>
+-->
 <?php } ?>

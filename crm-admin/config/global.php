@@ -18,6 +18,7 @@ define("TITLE_LG", "CMS & CRM MULTI-PROPOSITO - Developer by FelipheGomez");
 define("TITLE_MD", "CMS Y CRM MULTI-PROPOSITO");
 define("TITLE_SM", "C&C MULTI");
 define("TITLE_XS", "C&CM");
+define("ICON_DEFAUL", "fa fa-leaf");
 
 
 

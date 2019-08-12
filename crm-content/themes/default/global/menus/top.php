@@ -1,8 +1,8 @@
 <div class="nav_menu">
 	<nav>
 		<div class="nav toggle">
-			<?php if(ControladorBase::isUser() == true){ ?>
 			<a id="menu_toggle"><i class="fa fa-bars"></i></a>
+			<?php if(ControladorBase::isUser() == true){ ?>
 			<?php } ?>
 		</div>
 		<ul class="nav navbar-nav navbar-right">

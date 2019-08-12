@@ -8,13 +8,6 @@
  */
 
 class Node extends EntidadBase {
-    public $id;
-    public $title;
-    public $subtitle;
-    public $description;
-    public $type;
-    public $picture;
-     
     public function __construct() {
 		$table = TBL_NODES;
         parent::__construct($table);

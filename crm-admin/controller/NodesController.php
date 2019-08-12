@@ -11,7 +11,7 @@ class NodesController extends ControladorBase {
 		if($nodo->isValid() === true){
 			// echo "El nodo es valido.\n" . json_encode($nodo);
 			$info = array(
-				'title' => $nodo->type->name,
+				'title' => $nodo->title,
 				'node' => $nodo,
 			);
 			if ($nodo->type->system == 1){
@@ -21,6 +21,7 @@ class NodesController extends ControladorBase {
 			}
 		}else{
 			echo "El nodo no es valido.\n";
+			exit();
 		}
 	}
 }

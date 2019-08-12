@@ -8,18 +8,6 @@
  */
 
 class Usuario extends EntidadBase {
-    public $id;
-    public $username;
-    public $names;
-    public $surname;
-    public $phone;
-    public $mobile;
-    public $email;
-    public $password;
-    public $permissions;
-    public $registered;
-    public $updated;
-    public $last_connection;
      
     public function __construct() {
         $table = TBL_USERS;
@@ -63,4 +51,5 @@ class Usuario extends EntidadBase {
 			}
 		}
 	}
+ 
 }

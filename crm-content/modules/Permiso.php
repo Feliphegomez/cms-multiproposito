@@ -8,11 +8,19 @@
  */
 
 class Permiso extends EntidadBase {
+    private $id;
+    private $name;
+    private $data;
+     
     public function __construct() {
         $table = TBL_PERMISSIONS;
         parent::__construct($table);
     }
-	
+     
+    public function getId() {
+        return $this->id;
+    }
+ 
     public function setId($id) {
         $this->id = $id;
     }
@@ -32,31 +40,10 @@ class Permiso extends EntidadBase {
     public function setData($data) { 
         $this->data = $data;
     }
- 
-    public function save(){
-        $query="INSERT INTO " . TBL_PERMISSIONS . " (id,nombre,apellido,email,password)
-                VALUES(NULL,
-                       '".$this->name."',
-                       '".$this->data."');";
-        $save=$this->db()->query($query);
-        //$this->db()->error;
-        return $save;
+	
+    public function getById($id){
+        $a = parent::getById($id);
+		$a[0]->data = (isset($a[0]->data)) ? json_decode($a[0]->data) : new stdClass();
+        return $a[0];
     }
-	
-	public function getById($id){
-		$id = (isset($id) && $id > 0) ? $id : 0;
-		$items = parent::getById($id);
-		if(isset($items[0])){
-			$this->setAllData($items[0]);
-		}
-	}
-	
-	public function setAllData($item){
-		parent::setAllData($item);
-		foreach($item as $k=>$v){
-			if($k === 'data'){
-				$this->data = json_decode($v);
-			}
-		}
-	}
 }
