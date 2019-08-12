@@ -31,19 +31,27 @@ class Conectar {
      
      
     public function conexionPDO(){
-         
-        if($this->driver=="mysql" || $this->driver==null){
-            # $con=new mysqli($this->host, $this->user, $this->pass, $this->database);
-			$pdo = new PDO(
-				$this->driver.":host={$this->host};dbname={$this->database}",
-				"{$this->user}",
-				"{$this->pass}",
-				array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES ".$this->charset));
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+		try {
+			if($this->driver=="mysql" || $this->driver==null){
+				# $con=new mysqli($this->host, $this->user, $this->pass, $this->database);
+				$pdo = new PDO(
+					$this->driver.":host={$this->host};dbname={$this->database}",
+					"{$this->user}",
+					"{$this->pass}",
+					array(
+						PDO:: ATTR_PERSISTENT => true,
+						PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES ".$this->charset
+					));
+				// $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				// $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+				// PDO:: ATTR_PERSISTENT
+			}
+			return $pdo;
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage() . "<br/>";
+			die();
 		}
-         
-        return $pdo;
+
     }
      
     public function startFluent(){
@@ -56,5 +64,6 @@ class Conectar {
          
         return $fpdo;
     }
+
 }
 ?>

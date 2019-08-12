@@ -115,6 +115,8 @@ class MenuLeft extends MenuBase {
 }
 $menu = new MenuLeft();
 ?>
+<?php $userInfo = new Usuario(); ?>
+<?php $userInfo->getById($this->getUserId()); ?>
 	<div class="navbar nav_title" style="border: 0;">
 		<a href="index.html" class="site_title"><i class="<?php echo ICON_DEFAUL; ?>"></i> <span><?php echo TITLE_XS; ?></span></a>
 	</div>
@@ -122,12 +124,11 @@ $menu = new MenuLeft();
 	<?php if(ControladorBase::isUser() == true){ ?>
 		<div class="profile clearfix">
 			<div class="profile_pic">
-				<img src="/crm-content/uploads/avatar001.jpg" alt="..." class="img-circle profile_img">
+				<img src="<?php echo ($userInfo->avatar->getUrl()); ?>" alt="..." class="img-circle profile_img">
 			</div>
 			<div class="profile_info">
 				<span>Bienvenid@,</span>
-				<h2><?php echo $this->getUserNames(); ?></h2>
-				<h2><?php echo $this->getUserSurname(); ?></h2>
+				<h2><?php echo $this->getUserNames(); ?> <?php echo $this->getUserSurname(); ?></h2>
 			</div>
 		</div>
 		<br />

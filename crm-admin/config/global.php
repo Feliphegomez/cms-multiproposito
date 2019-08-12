@@ -19,9 +19,7 @@ define("TITLE_MD", "CMS Y CRM MULTI-PROPOSITO");
 define("TITLE_SM", "C&C MULTI");
 define("TITLE_XS", "C&CM");
 define("ICON_DEFAUL", "fa fa-leaf");
-
-
-
+define("IMAGE_DEFAULT", "/crm-content/uploads/avatar001.jpg");
  
 // Activar errores
 ini_set('display_errors', 1);

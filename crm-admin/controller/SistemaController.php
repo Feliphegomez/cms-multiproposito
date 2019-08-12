@@ -9,7 +9,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function table_debug(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"debug", array(
 				"title" => "Modo Debug",
 			)
@@ -17,7 +17,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function database_vue(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"database_vue", array(
 				"title" => "Administrador DB",
 				// "template" => $this->template,
@@ -26,7 +26,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function api_readme(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"api_readme", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -35,7 +35,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function api_docs(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"api_docs", array(
 				"title" => "Documentacion API",
 				// "template" => $this->template,
@@ -50,7 +50,7 @@ class SistemaController extends ControladorBase {
         $allusers=$usuario->getAll();
         //Cargamos la vista index y le pasamos valores
 		
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"users_list", array(
 				"title" => "Todos los usuarios",
 				"allusers"=>$allusers,
@@ -60,7 +60,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function modules_list(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"modules_list", array(
 				"title" => "Todos los modulos",
 				// "template" => $this->template,
@@ -69,7 +69,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function users_add(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"users_add", array(
 				"title" => "Nuevo Usuario",
 				// "template" => $this->template,
@@ -78,7 +78,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function theme_list(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"theme_list", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -87,7 +87,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function settings(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"blank", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -96,7 +96,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function privacy(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"blank", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -105,7 +105,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function ads(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"blank", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -114,7 +114,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function header_and_footer_scripts(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"blank", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -123,7 +123,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function modules_editor(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"blank", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -132,7 +132,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function modules_add(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"blank", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -141,7 +141,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function gallery(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"gallery", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -150,7 +150,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function gallery_add(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"picture_create", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -159,7 +159,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function picture(){
-		$this->view(
+		$this->viewSystem(
 			"picture", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,
@@ -168,7 +168,7 @@ class SistemaController extends ControladorBase {
     }
 	
     public function picture_editor(){
-		$this->viewInTemplate(
+		$this->viewSystemInTemplate(
 			"picture_editor", array(
 				"title" => "Modo Debug",
 				// "template" => $this->template,

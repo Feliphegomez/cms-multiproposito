@@ -23,6 +23,18 @@ class UsuariosController extends ControladorBase {
 		);
     }
 	
+    public function mi_perfil_edit(){
+		$userInfo = new Usuario();
+		$userInfo->getById($this->userData->id);
+		
+		$this->viewSystemInTemplate(
+			"mi_perfil_edit", array(
+				"title" => "mi_perfil",
+				"user" => $userInfo,
+			)
+		);
+    }
+	
     public function wall(){
 		$this->viewSystemInTemplate(
 			"wall", array(

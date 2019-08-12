@@ -48,6 +48,10 @@ class Usuario extends EntidadBase {
 			if($k === 'permissions'){
 				$this->permissions = new Permiso();
 				$this->permissions->getById($v);
+			}else if($k === 'avatar'){
+				// IMAGE_DEFAULT
+				$this->avatar = new Picture();
+				$this->avatar->getById($v);
 			}
 		}
 	}

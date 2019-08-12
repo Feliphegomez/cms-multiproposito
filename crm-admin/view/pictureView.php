@@ -1,14 +1,14 @@
 <?php 
-$picture = new PicturesModel();
+$b = new Picture();
 
 if(isset($_GET['id']) && ((int) $_GET['id']) > 0){
-	$b = $picture->getById($_GET['id']);
+	$b->getById($_GET['id']);
 }else{
 	exit("KO");
 }
-
+echo json_encode($b);
 /*
-echo json_encode($b->getName());
+
 exit();
 */
 $pictureData = @explode('data:', $b->getData());

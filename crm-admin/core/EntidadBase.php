@@ -16,7 +16,6 @@ class EntidadBase {
     private $fields;
  
     public function __construct($table) {
-		require_once 'Conectar.php';
         $this->table=(string) $table;
         $this->conectar = new Conectar();
         $this->db = $this->conectar->conexionPDO();
@@ -40,7 +39,7 @@ class EntidadBase {
 				$value = ($column->data_tipo);
 			}
 			switch($column->data_tipo){
-				case "varchar":
+				case "varchar" || "mediumblob":
 					$value = (string) ($column->columna_value_default);
 				break;
 				case "text":
@@ -182,10 +181,22 @@ class EntidadBase {
 		}
 	}
 	
-	public function createFieldsForm($fields=null, $hidden_nullEnables=false, $enable_id=true){
-		$fields = (!isset($fields) || !is_array($fields) || $fields == null) ? $this->getColumns() : $fields;
+	public function getColumn($field_name=null){
+		$r = null;
+		foreach($this->getColumns() as $column){
+			if($column->columna_nombre == $field_name){
+				return $column;
+			}
+		}
+		return $r;
+	}
+	
+	public function createFieldsForm($fields=null, $hidden_nullEnables=false, $enable_id=true){		
+		//$fields = (!isset($fields) || !is_array($fields) || $fields == null) ? $this->__sleep() : $fields;
 		$r = array();
-		foreach($fields as $column){
+		foreach($fields as $field_name){
+			$column = ($this->getColumn($field_name));
+			
 			$value = $column->columna_value_default;
 			$column->visible = (isset($column->visible)) ? $column->visible : true;
 			if($column->nullValido == 'NO' && $column->columna_value_default === null){
@@ -211,9 +222,6 @@ class EntidadBase {
 					$value = date("H:i:s", time());
 				break;
 				case "json":
-					$value = json_encode($value);
-				break;
-				case "json":
 					$value = json_encode("{}");
 				break;
 				default:
@@ -222,7 +230,7 @@ class EntidadBase {
 			}
 			
 			$this->fields[] = $column->columna_nombre;
-			$value = (isset($this->{$column->columna_nombre}) && $this->{$column->columna_nombre} != null && $this->{$column->columna_nombre} != $value) ? $this->{$column->columna_nombre} : $value;
+			$value = (isset($this->{$column->columna_nombre}) && $this->{$column->columna_nombre} != null) ? $value : null;
 			
 			$input = new stdClass();
 			$input->show = $column->visible;
@@ -265,6 +273,7 @@ class EntidadBase {
 			$input->typeInput = ($input->typeInput === 'int') ? 'number' : $input->typeInput;
 			$input->typeInput = ($input->name === 'password' && $input->typeInput === 'text') ? 'password' : $input->typeInput;
 			$input->typeInput = ($input->name === 'email' && $input->typeInput === 'text') ? 'email' : $input->typeInput;
+			$input->value = (isset($this->{$input->name}) && $this->{$input->name} !== null) ? $this->{$input->name} : $input->value;
 			switch($input->typeInput){
 				case 'text':
 					$h .= "<input name=\"{$input->name}\" 

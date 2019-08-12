@@ -10,6 +10,7 @@
 require_once(folder_admin . '/config/database.php');
 require_once('api.php');
 require_once(folder_admin . '/core/ui.php');
+require_once 'Conectar.php';
 
 class ControladorBase {
 	private $thisClassName;
