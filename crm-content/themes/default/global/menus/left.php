@@ -114,7 +114,6 @@ class MenuLeft extends MenuBase {
 }
 $menu = new MenuLeft();
 
-
 ?>
 
 <?php $userInfo = new Usuario(); ?>

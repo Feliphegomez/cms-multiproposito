@@ -30,4 +30,9 @@ class MenuBase {
 		}
 		return $dirs;
 	}
+     
+    public function linkUrl($controlador=CONTROLADOR_DEFECTO, $accion=ACCION_DEFECTO, $params=null){
+		$urlParams = ControladorBase::returnParamsUrl($params);
+        return ("index.php?controller={$controlador}&action={$accion}&{$urlParams}");
+    }
 }

@@ -83,8 +83,10 @@ class ControladorBase {
 			|| (isset($_GET['core']) && $_GET['core'] == 'api')
 		){
 			global $response;
-			echo ResponseUtils::output($response, true);
-			exit(0);
+			$reponse = ResponseUtils::output($response, false);
+			if(isset($reponse->code) && $reponse->code !== 1011){
+				echo $reponse;
+			}
 		}
 		$this->status = (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] > 0) ? 'connected' : 'disconnect';
 		
@@ -98,7 +100,6 @@ class ControladorBase {
 				if(!isset($this->get['controller']) || $this->get['controller'] != 'Login'){
 					header("Location: /index.php?controller=Login&action=error&message=".base64_encode($this->api->message));
 				}
-				
 				echo "Fail Login";
 				exit();
 			}
@@ -208,11 +209,14 @@ class ControladorBase {
 			$permisoID = (int) $user['user']['permissions']->id;
 			$perm = new Permiso();
 			$perm->getById($permisoID);
-		}else{
+		} else if(isset($user['user']['permissions']) && (int) $user['user']['permissions'] > 0){
+			$permisoID = (int) $user['user']['permissions'];
+			$perm = new Permiso();
+			$perm->getById($permisoID);
+		} else {
 			$perm = new stdClass();
 		}
 		return ($perm);
-		
 	}
 	
 	public static function validatePermission($module, $action){
