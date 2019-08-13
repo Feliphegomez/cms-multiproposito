@@ -104,6 +104,12 @@ class MenuLeft extends MenuBase {
 								}
 							}
 						$r .= "</ul>";
+					$r .= "<li>";
+						$r .= "<a>".json_encode($modulo)." <span class=\"fa fa-chevron-down\"></span></a>";
+						$r .= "<ul class=\"nav child_menu\">";
+							$r .= "<li><a href=\"#\">{$moduloIcon}{$infoThisModule->name} <span class=\"label label-success pull-right\">Inactivo</span></a></li>\n";
+							$r .= "<li><a href=\"#\">".json_encode($infoThisModuleSections)." <span class=\"label label-success pull-right\">Inactivo</span></a></li>\n";
+						$r .= "</ul>";
 					$r .= "</li>";
 				$r .= "</ul>";
 			}
@@ -113,7 +119,7 @@ class MenuLeft extends MenuBase {
 	}
 }
 $menu = new MenuLeft();
-
+			
 ?>
 
 <?php $userInfo = new Usuario(); ?>
@@ -165,7 +171,8 @@ $menu = new MenuLeft();
 
 
 	<div class="sidebar-footer hidden-small">
-		<?php echo json_encode($menu); ?>
+		<?php echo $menu->toUL(); ?>
+		<?php #echo json_encode($menu); ?>
 	</div>
 
 

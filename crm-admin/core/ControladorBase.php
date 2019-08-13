@@ -84,8 +84,9 @@ class ControladorBase {
 		){
 			global $response;
 			$reponse = ResponseUtils::output($response, false);
-			if(isset($reponse->code) && $reponse->code !== 1011){
+			if(!isset($reponse->code) || $reponse->code !== 1011){
 				echo $reponse;
+				exit();
 			}
 		}
 		$this->status = (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] > 0) ? 'connected' : 'disconnect';

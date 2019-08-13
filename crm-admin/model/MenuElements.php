@@ -9,7 +9,7 @@
 
 class MenuElements extends EntidadBase {
     public function __construct() {
-		$table = TBL_NODES_ITEMS;
+		$table = TBL_MENUS_ITEMS;
         parent::__construct($table);
     }
 	
@@ -33,5 +33,4 @@ class MenuElements extends EntidadBase {
 			}*/
 		}
 	}
-	
 }

@@ -43,18 +43,6 @@ class Menu extends EntidadBase {
 			}
 			*/
 		}
-		$this->loadChilds();
-	}
- 
-    public function loadChilds(){
-		$items = new MenuElements();
-		$childs = $items->getAllBy($this->id, 'id');
-		foreach($childs as $item){
-			if(($item->public == 0 && isset($_SESSION['user'])) || ($item->public == 1)){
-				$this->childs[] = $item;
-			}
-			#else if($item->public == 1){}
-		}
 	}
  
     public function save(){

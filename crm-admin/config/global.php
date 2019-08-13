@@ -63,6 +63,7 @@ define('TBL_TYPES_NODES', 'nodes_types');
 define('TBL_OPTIONS', 'options');
 define('TBL_LOGS', 'logs');
 define('TBL_MENUS', 'menus');
+define('TBL_MENUS_ITEMS', 'menus_items');
 define('TBL_USERS_R_C', '');
 define('TBL_PICTURES', 'pictures');
 
