@@ -47,14 +47,11 @@
 					
 					<div class="separator">
 						<div>
-							<input type="hidden" name="controller" value="Usuarios">
-							<input type="hidden" name="view" value="mi_perfil_edit">
 							<input type="submit" value="Guardar Cuenta" class="btn btn-default">
+							<a href="<?php echo $this->linkUrl('Usuarios', 'mi_perfil'); ?>" class="btn btn-sm" class="btn btn-default"> Cancelar</a>
 						</div>
 					</div>
 					<div class="clearfix"></div>
-					<p><?php #echo $myInfo->fields; ?></p>
-					
 				</form>
 				</div>
 			</div>

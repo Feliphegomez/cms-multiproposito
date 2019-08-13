@@ -195,6 +195,12 @@ class ControladorBase {
 	}
 		
 	public static function validateSession(){
+		
+		#echo json_encode($_SESSION);
+		#exit();
+		return (isset($_SESSION) && isset($_SESSION['user']) && isset($_SESSION['user']['id'])) ? $_SESSION : array();
+		
+		/*
 		if (isset($_SESSION) && isset($_SESSION['user']) && is_array($_SESSION['user']) && isset($_SESSION['user']['id'])){
 			$userid = (int) $_SESSION['user']['id'];
 		} else if (isset($_SESSION) && isset($_SESSION['user']) && is_object($_SESSION['user']) && isset($_SESSION['user']['id'])) {
@@ -202,18 +208,17 @@ class ControladorBase {
 		}else{
 			$userid = 0;
 		}
-		
 		$user = new Usuario();
 		$user->getById($userid);
-		
 		if(isset($user->id) && $user->id > 0 && isset($user->username)){
 			$_SESSION['user'] = array();
 			foreach($user as $k=>$v){
 				$_SESSION['user'][$k] = $v;
 			}
 		}
-		$r = (isset($_SESSION) && isset($_SESSION['user']) && isset($_SESSION['user']['id'])) ? $_SESSION : array();	
+		$r = (isset($_SESSION) && isset($_SESSION['user']) && isset($_SESSION['user']['id'])) ? $_SESSION : array();
 		return $r;
+		*/
 	}
 	
 	public static function getClassName(){
@@ -261,12 +266,11 @@ class ControladorBase {
 		$user = ControladorBase::validateSession();
 		if(isset($user['user']['permissions']->id) && (int) $user['user']['permissions']->id > 0){
 			$permisoID = (int) $user['user']['permissions']->id;
+			$perm = new Permiso();
+			$perm->getById($permisoID);
 		}else{
-			$permisoID = 0;
+			$perm = new stdClass();
 		}
-		
-		$perm = new Permiso();
-		$perm->getById($permisoID);
 		return ($perm);
 		
 	}

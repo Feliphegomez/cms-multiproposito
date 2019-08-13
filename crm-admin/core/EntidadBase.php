@@ -162,7 +162,7 @@ class EntidadBase {
 	public function FetchObject($query){
 		try {
 			$result = $query->fetchAll(PDO::FETCH_OBJ);
-			$this->db = null;
+			#$this->db = null;
 			$query = null;
 			return $result;
 		} catch (PDOException $e) {
@@ -385,7 +385,7 @@ class EntidadBase {
 			$keysv = array();
 			$data = array();
 			foreach($this->fields as $k){
-				if(isset($this->{$k}) && !is_object($this->{$k})){
+				if(!is_object($this->{$k})){
 					if(($k) !== 'id' && ($k) !== 'created' && ($k) !== 'updated' &&	($k) !== 'password' &&	($k) !== 'registered'){
 						$keysv[] = "{$k}=:{$k}";
 						# $keysv[] = "{$k}=?";
@@ -396,12 +396,8 @@ class EntidadBase {
 			}
 			$keysValues = implode(', ', $keysv);
 			$sql = "UPDATE $this->table SET $keysValues WHERE id='{$this->id}'";
-			# $sql = "UPDATE $this->table SET $keysValues WHERE id='{$this->id}'";
-				echo json_encode($sql);
-				echo json_encode($resultado->data);
-				#exit();
 			$query = $this->db->prepare($sql);
-			$resultado->error = $query->execute($resultado->data);
+			$resultado->error = ($query->execute($resultado->data)) ? false : true;
 		}
 		catch (Exception $e){
 			$infoError = ($query->errorInfo());

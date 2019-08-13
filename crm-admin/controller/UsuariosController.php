@@ -44,10 +44,16 @@ class UsuariosController extends ControladorBase {
 				$userInfo->set($k, $v);
 			}
 			$save = $userInfo->save();
-			
-			
-			echo json_encode($save);
-			exit();
+			if(isset($save->error) && $save->error == false){
+				$infoView["description"] = "La informacion se actualizo correctamente.";
+				$this->mi_perfil();
+				exit();
+			}else{
+				$infoView["description"] = "Ocurrio un error al actualizar la informacion correctamente.";
+				$infoView['user']->getById($this->userData->id);
+				#	echo json_encode($save);
+				#exit();
+			}
 		}
 		$this->viewSystemInTemplate("mi_perfil_edit", $infoView);
 		
