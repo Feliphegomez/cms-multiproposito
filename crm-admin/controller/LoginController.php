@@ -16,23 +16,51 @@ class LoginController extends ControladorBase {
 		$this->post = (isset($_POST)) ? $_POST : null;
 		$this->user = new Usuario();
 		
-		if(isset($_SESSION['user']) && get_called_class() != 'LoginController'){
+		#if(isset($_SESSION['user']) && get_called_class() != 'LoginController'){
+		if(isset($_SESSION['user'])){
 			$this->user->getById($_SESSION['user']['id']);
-			// @header("Location: /");
-			//exit();
+			@header("Location: /");
+			exit();
 		}
     }
 	
     public function index(){
-		$this->viewSystemInTemplate(
-			"login", array(
-				"title" => "Bienvenid@",
-				"subtitle" => "",
-				"description" => "Por favor ingrese sus datos para acceder al portal.",
-				"post" => $this->post,
-				"user" => $this->user,
-			)
+		if($this->user->id > 0){
+			@header("Location: /");
+			exit();
+		}
+		$infoView = array(
+			"title" => "Bienvenido(a)",
+			"subtitle" => "",
+			"description" => "Por favor ingrese sus datos para acceder al portal.",
+			"post" => $this->post,
+			"user" => $this->user
 		);
+		
+		if(
+			isset($this->post['username'])
+			&& isset($this->post['password'])
+		){
+			$user = new Usuario();
+			$user->getByUsername($this->post['username']);
+			if($user->isValid()){
+				$this->post['password'] = password_hash($this->post['password'], PASSWORD_DEFAULT);
+				if($this->hasCorrectPassword($user->password, $this->post['password'])){
+					$infoView["description"] = "Hola, {$user->username}.";
+				}else{
+					$infoView["description"] = "Tu contraseña no es correcta.";
+				}
+			}else{
+				$infoView["description"] = "Este usuario no existe.";
+			}
+			echo json_encode($this->post);
+		}
+		$this->viewSystemInTemplate("login", $infoView);
+    }
+	
+    private function hasCorrectPassword(string $password, string $hash): bool
+    {
+		return (password_verify('rasmuslerdorf', $hash)) ? true : false;
     }
 	
     public function create(){
@@ -97,7 +125,6 @@ class LoginController extends ControladorBase {
 			$user->set('email', $this->post['email']);
 			// $user->create($this->post);
 			$create = $user->create($this->post);
-			echo json_encode($create);
 			
 			if($create->error == true){
 				$infoView["description"] = $create->errorInfo;

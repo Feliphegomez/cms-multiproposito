@@ -2,10 +2,10 @@
 	<div class="login_wrapper">
 		<div class="animate form login_form">
 			<section class="login_content">
-				<form action="/login" method="post">
+				<form action="/login?redirect=<?php echo $this->linkUrl('Login', 'index', json_decode("{ \"result\": \"login\" }")); ?>" method="post">
 					<h1><?php echo $title; ?></h1>
 					<p><?php echo $description; ?></p>
-					<div><input class="form-control" name="username" type="text" value="" placeholder="Tu usuario" required autocomplete="off" /></div>
+					<div><input class="form-control" name="username" type="text" value="<?php echo (isset($this->post['username'])) ? $this->post['username'] : ''; ?>" placeholder="Tu usuario" required autocomplete="off" /></div>
 					<div><input class="form-control" name="password" type="password" placeholder="Tu contraseña" required /></div>
 					<div>
 						<input type="hidden" name="controller" value="Login">

@@ -36,17 +36,17 @@ class EntidadBase {
 		foreach($this->getColumns() as $column){
 			$value = $column->columna_value_default;
 			if($column->nullValido == 'NO' && $column->columna_value_default === null){
-				$value = ($column->data_tipo);
+				$value = "";
 			}
 			switch($column->data_tipo){
 				case "varchar" || "mediumblob":
-					$value = (string) ($column->columna_value_default);
+					$value = "";
 				break;
 				case "text":
-					$value = (string) ($column->columna_value_default);
+					$value = "";
 				break;
 				case "int":
-					$value = (int) $column->columna_value_default;
+					$value = 0;
 				break;
 				case "json":
 					$value = (json_decode($value) == null) ? json_decode("{}") : json_decode($value);
@@ -55,7 +55,8 @@ class EntidadBase {
 					if($column->nullValido == 'YES'){
 						$value = null;
 					}else{
-						$value = $column->data_tipo;
+						# $value = $column->data_tipo;	
+						$value = "";
 					}
 				break;
 			}
@@ -159,8 +160,15 @@ class EntidadBase {
     }
 	
 	public function FetchObject($query){
-		$result = $query->fetchAll(PDO::FETCH_OBJ);
-		return $result;
+		try {
+			$result = $query->fetchAll(PDO::FETCH_OBJ);
+			$this->db = null;
+			$query = null;
+			return $result;
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage() . "<br/>";
+			die();
+		}
 	}
 	
 	public function getId(){
@@ -200,17 +208,17 @@ class EntidadBase {
 			$value = $column->columna_value_default;
 			$column->visible = (isset($column->visible)) ? $column->visible : true;
 			if($column->nullValido == 'NO' && $column->columna_value_default === null){
-				$value = ($column->data_tipo);
+				$value = "";
 			}
 			switch($column->data_tipo){
 				case "varchar":
-					$value = (string) ($column->columna_value_default);
+					$value = "";
 				break;
 				case "text":
-					$value = (string) ($column->columna_value_default);
+					$value = "";
 				break;
 				case "int":
-					$value = (int) $column->columna_value_default;
+					$value = 0;
 				break;
 				case "datetime":
 					$value = date("Y-m-d H:i:s", time());
@@ -274,28 +282,28 @@ class EntidadBase {
 			$input->typeInput = ($input->name === 'password' && $input->typeInput === 'text') ? 'password' : $input->typeInput;
 			$input->typeInput = ($input->name === 'email' && $input->typeInput === 'text') ? 'email' : $input->typeInput;
 			$input->value = (isset($this->{$input->name}) && $this->{$input->name} !== null) ? $this->{$input->name} : $input->value;
+			
+			$input->required = ($input->required === true) ? " required=\"{$input->required}\"" : "";
 			switch($input->typeInput){
 				case 'text':
 					$h .= "<input name=\"{$input->name}\" 
 						placeholder=\"{$input->label}\" 
 						value=\"{$input->value}\" 
 						type=\"{$input->typeInput}\" 
-						class=\"{$input->className}\" 
-						required=\"{$input->required}\" />";
+						class=\"{$input->className}\" {$input->required} />";
 				break;
 				case 'textarea':
 					$h .= "<textarea name=\"{$input->name}\" 
 						placeholder=\"{$input->label}\" 
-						class=\"{$input->className}\" 
-						required=\"{$input->required}\">{$input->value}</textarea>";
+						class=\"{$input->className}\" {$input->required}\">{$input->value}</textarea>";
 				break;
 				default:
 					$h .= "<input name=\"{$input->name}\" 
 						placeholder=\"{$input->label}\" 
 						value=\"{$input->value}\" 
 						type=\"{$input->typeInput}\" 
-						class=\"{$input->className}\" 
-						required=\"{$input->required}\" />";
+						class=\"{$input->className}\" {$input->required}
+						 />";
 				break;
 			}
 			/*
@@ -367,12 +375,45 @@ class EntidadBase {
     }
 	
     public function save(){
-        $query="INSERT INTO " . TBL_PERMISSIONS . " (id,nombre,apellido,email,password)
-                VALUES(NULL,
-                       '".$this->name."',
-                       '".$this->data."');";
-        $save=$this->db()->query($query);
-        //$this->db()->error;
-        return $save;
+		$resultado = new stdClass();
+		$resultado->error = true;
+		$resultado->errorInfo = null;
+		$resultado->errorObject = null;
+		$resultado->data = [];
+		try {
+		
+			$keysv = array();
+			$data = array();
+			foreach($this->fields as $k){
+				if(isset($this->{$k}) && !is_object($this->{$k})){
+					if(($k) !== 'id' && ($k) !== 'created' && ($k) !== 'updated' &&	($k) !== 'password' &&	($k) !== 'registered'){
+						$keysv[] = "{$k}=:{$k}";
+						# $keysv[] = "{$k}=?";
+						$resultado->data[$k] = $this->{$k};
+						# $resultado->data[] = $this->{$k};
+					}
+				}
+			}
+			$keysValues = implode(', ', $keysv);
+			$sql = "UPDATE $this->table SET $keysValues WHERE id='{$this->id}'";
+			# $sql = "UPDATE $this->table SET $keysValues WHERE id='{$this->id}'";
+				echo json_encode($sql);
+				echo json_encode($resultado->data);
+				#exit();
+			$query = $this->db->prepare($sql);
+			$resultado->error = $query->execute($resultado->data);
+		}
+		catch (Exception $e){
+			$infoError = ($query->errorInfo());
+			$resultado->errorObject = $e;
+			exit();
+		}
+		return $resultado;
+		/*
+			OK:
+				{"error":false,"errorInfo":null,"data":{...}}
+			KO:
+				{"error":true,"errorInfo":[infor error],"data":{...}}
+		*/
     }
 }

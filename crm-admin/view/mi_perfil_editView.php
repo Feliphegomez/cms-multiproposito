@@ -14,8 +14,8 @@
 			<div class="x_panel">
 				<div class="x_title">
 					<h2>
-						aaaaaaaaaaa
-						<small>-----------------</small>
+						<?php echo $this->datos['title']; ?>
+						<small><?php echo $this->datos['subtitle']; ?></small>
 					</h2>
 					<div class="clearfix"></div>
 				</div>
@@ -43,12 +43,15 @@
 							echo $h;
 						};
 					?>
+					<div class="clearfix"></div>
+					
+					<div class="separator">
 						<div>
 							<input type="hidden" name="controller" value="Usuarios">
 							<input type="hidden" name="view" value="mi_perfil_edit">
 							<input type="submit" value="Guardar Cuenta" class="btn btn-default">
-							
 						</div>
+					</div>
 					<div class="clearfix"></div>
 					<p><?php #echo $myInfo->fields; ?></p>
 					

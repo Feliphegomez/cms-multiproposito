@@ -50,10 +50,7 @@ function lanzarAccion($controllerObj){
     }
 }
 function listar_directorios_ruta($ruta, $limit = 999999999999999){
-	
-	#$r->ruta = $ruta;
 	$r = array();
-	
 	if (is_dir($ruta)) {
 		if ($dh = opendir($ruta)) {
 			while (($file = readdir($dh)) !== false) {
@@ -63,24 +60,17 @@ function listar_directorios_ruta($ruta, $limit = 999999999999999){
 					$item->ruta = $ruta . $file;
 					$item->name = $file;
 					$item->tree = array();
-					#$item->type = filetype($ruta . $file);
-					# $item->ruta = $ruta;
-					
-					if (is_dir($ruta . $file) && $file!="." && $file!=".." && $file != ""){
-						$item->tree = listar_directorios_ruta($ruta . $file . "/", $limit);
-					}
-					
+					if (is_dir($ruta . $file) && $file!="." && $file!=".." && $file != ""){ $item->tree = listar_directorios_ruta($ruta . $file . "/", $limit); }
 					$r[] = $item;
-					
 				}
 				
 			}
-      closedir($dh); 
-      } 
-   } else {
+			closedir($dh); 
+		} 
+	} else {
 	   # echo "<br>No es ruta valida";
-   }
-   return $r;
+	}
+	return $r;
 }
 function generateRandomString($length = 10) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
