@@ -16,7 +16,7 @@ class EntidadBase {
     private $fields;
  
     public function __construct($table) {
-        $this->table=(string) $table;
+        $this->table = (string) $table;
         $this->conectar = new Conectar();
         $this->db = $this->conectar->conexionPDO();
 		$this->columnas = $this->cargarMisColumnas();
@@ -34,35 +34,46 @@ class EntidadBase {
 	public function defineThis(){
 		$this->fields = array();
 		foreach($this->getColumns() as $column){
-			$value = $column->columna_value_default;
-			if($column->nullValido == 'NO' && $column->columna_value_default === null){
-				$value = "";
+			$c1 = true;
+			if(
+				$column->columna_extra == "on update CURRENT_TIMESTAMP" 
+				|| $column->columna_value_default == "CURRENT_TIMESTAMP"
+			){
+				$c1 = false;
 			}
-			switch($column->data_tipo){
-				case "varchar" || "mediumblob":
-					$value = "";
-				break;
-				case "text":
-					$value = "";
-				break;
-				case "int":
-					$value = 0;
-				break;
-				case "json":
+			if($c1 == true){
+				if (isset($column->nullValido) && $column->nullValido == 'YES'){
+					$value = null;
+				}
+				
+				if ($column->data_tipo === 'timestamp'){
+					$value = date('Y-m-d G:i:s');
+				} 
+				else if ($column->data_tipo === 'datetime'){
+					$value = date("Y-m-d H:i:s", time());
+				} 
+				else if ($column->data_tipo === 'datetime'){
+					$value = date("Y-m-d", time());
+				} 
+				else if ($column->data_tipo === 'time'){
+					$value = date("H:i:s", time());
+				} 
+				else if ($column->data_tipo === 'json'){
 					$value = (json_decode($value) == null) ? json_decode("{}") : json_decode($value);
-				break;
-				default:
-					if($column->nullValido == 'YES'){
-						$value = null;
-					}else{
-						# $value = $column->data_tipo;	
-						$value = "";
-					}
-				break;
+				} 
+				else if ($column->data_tipo === 'varchar' || $column->data_tipo === 'mediumblob' || $column->data_tipo === 'text'){
+					$value = "";
+				} 
+				else {
+					$value = $column->columna_value_default;
+				}
+				$value = ($value == null && isset($column->nullValido) && $column->nullValido == 'NO') ? "" : $value;
+				if ($column->columna_extra == "auto_increment"){ $value = null; } 
+				
+				$this->fields[] = $column->columna_nombre;
+				$this->{$column->columna_nombre} = $value;
 			}
 			
-			$this->fields[] = $column->columna_nombre;
-			$this->{$column->columna_nombre} = $value;
 		}
 	}
 	
@@ -71,11 +82,9 @@ class EntidadBase {
 	}
 	
 	public function cargarMisColumnas(){
-		$base_de_datos = new Conectar();
-		$base_de_datos = $this->conectar->conexionPDO();
-		
-		return $base_de_datos->query(
-			"SELECT 
+		#$base_de_datos = new Conectar();
+		#$base_de_datos = $this->conectar->conexionPDO();
+		$sql = "SELECT 
 				COLUMN_NAME AS columna_nombre,
 				ORDINAL_POSITION AS posicion_original,
 				COLUMN_DEFAULT AS columna_value_default,
@@ -88,36 +97,42 @@ class EntidadBase {
 				COLUMN_COMMENT AS columna_comnetario 
 			FROM information_schema.columns 
 			WHERE table_schema = '" . DB_database . "' AND table_name = '$this->table'
-			"
-		)->fetchAll(PDO::FETCH_OBJ);
+			";
+		$query = $this->db->prepare($sql);
+		$query->execute();
+		return $query->fetchAll(PDO::FETCH_OBJ);
 	}
      
     public function getConetar(){
         return $this->conectar;
+    }
+	
+    public function getTabla(){
+        return $this->table;
     }
      
     public function db(){
         return $this->db;
     }
      
+    public function getAllBy($value, $column){
+		$sql = "SELECT * FROM {$this->table} WHERE {$column}=?";
+		$query = $this->db->prepare($sql);
+		$query->execute([$value]);
+		return $this->FetchList($query);
+    }
+     
     public function getAll(){
 		try {
-			$query = $this->db->prepare("SELECT * FROM $this->table ORDER BY id DESC");
-			//Devolvemos el resultset en forma de array de objetos
-			while ($row = $query->fetch_object()) {
-			   $resultSet[]=$row;
-			}
-			 
-			 if(isset($resultSet)){
-				 return $resultSet;
-			 }else{
-				 return array();
-			 }
-		}
-		catch(Exception $e){
-			echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-			echo json_encode($e);
-			exit();
+			$sql = "SELECT * FROM {$this->table} ";
+			$query = $this->db->prepare($sql);
+			$query->execute();
+			$result = $query->fetchAll(PDO::FETCH_OBJ);
+			$query = null;
+			return $result;
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage() . "<br/>";
+			die();
 		}
     }
      
@@ -125,8 +140,21 @@ class EntidadBase {
 		$sql = "SELECT * FROM {$this->table} WHERE id=?";
 		$query = $this->db->prepare($sql);
 		$query->execute([$id]);
+		
 		return $this->FetchObject($query);
     }
+	
+	public function createLog($action='None'){
+		if(isset($_SESSION['user']['id'])){
+			$log = new Logs();
+			$log->user = $_SESSION['user']['id'];
+			$log->action = $action;
+			$log->tableDB = $this->getTabla();
+			$log->data = json_encode(json_decode(@json_encode($this)));
+			$log->url = ((@intval($_SERVER['HTTP_X_FORWARDED_PORT']) ?: @intval($_SERVER["SERVER_PORT"]) ?: (($this->protocol === 'https') ? 443 : 80) === 443) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$log->create();
+		}
+	}
      
     public function getBy($column, $value){
 		$sql = "SELECT * FROM {$this->table} WHERE {$column}=?";
@@ -159,11 +187,25 @@ class EntidadBase {
 		#return $this->FetchObject($query);		 
     }
 	
+	public function FetchList($query){
+		try {
+			$result = $query->fetchAll(PDO::FETCH_OBJ);
+			#$this->db = null;
+			$query = null;
+			
+			return $result;
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage() . "<br/>";
+			die();
+		}
+	}
+	
 	public function FetchObject($query){
 		try {
 			$result = $query->fetchAll(PDO::FETCH_OBJ);
 			#$this->db = null;
 			$query = null;
+			
 			return $result;
 		} catch (PDOException $e) {
 			print "Error!: " . $e->getMessage() . "<br/>";
@@ -200,45 +242,13 @@ class EntidadBase {
 	}
 	
 	public function createFieldsForm($fields=null, $hidden_nullEnables=false, $enable_id=true){		
-		//$fields = (!isset($fields) || !is_array($fields) || $fields == null) ? $this->__sleep() : $fields;
+		##$fields = (!isset($fields) || !is_array($fields) || $fields == null) ? $this->__sleep() : $fields;
+		$fields = (!isset($fields) || !is_array($fields) || $fields == null) ? $this->__sleep() : $fields;
 		$r = array();
 		foreach($fields as $field_name){
 			$column = ($this->getColumn($field_name));
-			
-			$value = $column->columna_value_default;
+			$value = $this->{$field_name};
 			$column->visible = (isset($column->visible)) ? $column->visible : true;
-			if($column->nullValido == 'NO' && $column->columna_value_default === null){
-				$value = "";
-			}
-			switch($column->data_tipo){
-				case "varchar":
-					$value = "";
-				break;
-				case "text":
-					$value = "";
-				break;
-				case "int":
-					$value = 0;
-				break;
-				case "datetime":
-					$value = date("Y-m-d H:i:s", time());
-				break;
-				case "date":
-					$value = date("Y-m-d", time());
-				break;
-				case "time":
-					$value = date("H:i:s", time());
-				break;
-				case "json":
-					$value = json_encode("{}");
-				break;
-				default:
-					$value = "";
-				break;
-			}
-			
-			$this->fields[] = $column->columna_nombre;
-			$value = (isset($this->{$column->columna_nombre}) && $this->{$column->columna_nombre} != null) ? $value : null;
 			
 			$input = new stdClass();
 			$input->show = $column->visible;
@@ -247,27 +257,20 @@ class EntidadBase {
 			$input->value = (strpos($column->columna_extra, 'auto_incrementon') !== true) ? $value : null;
 			$input->typeInput = ($column->visible === true) ? $column->data_tipo : 'hidden';
 			$input->required = ($column->nullValido == 'YES') ? false : true;
+			$input->_required = ($column->nullValido == 'YES') ? false : true;
 			$input->innerHtml = $this->createInputForm($input);
 			
 			
-			if($column->columna_nombre == 'id' && $enable_id == true){
-				$continue = true;
-			}else if($column->columna_nombre !== 'id'){
-				$continue = true;
-			}else{
-				$continue = false;
-			}
+			if ($column->columna_nombre === 'id' && $enable_id == true){ $continue = true; } 
+			else if ($column->columna_nombre !== 'id'){ $continue = true; } 
+			else { $continue = false; }
 			
-			if($continue === true){
-				if($hidden_nullEnables === false){
-					$r[] = $input;
-				}else{
-					if($input->required === true){
-						$r[] = $input;
-					}
-				}
+			if ($continue == true){
+				if ($hidden_nullEnables === false){ $r[] = $input; } 
+				else { if ($input->_required === true){ $r[] = $input; } }
 			}
 		}
+		
 		return $r;
 	}
 	
@@ -332,22 +335,29 @@ class EntidadBase {
 		$keysv = array();
 		$data = array();
 		foreach($this->fields as $k){
-			if(isset($this->{$k}) && $this->{$k} != null){
+			if(isset($this->{$k})){
 				$keysv[] = ":{$k}";
 				$keys[] = $k;
-				$resultado->data[$k] = $this->{$k};
+					$resultado->data[$k] = $this->{$k};
 			}
 		}
 		
 		$keysText = implode(',', $keys);
 		$keysValues = implode(',', $keysv);
 		$sql = "INSERT INTO $this->table ($keysText) VALUES ($keysValues)";
+		$query = $this->db->prepare($sql);
+		
+		
+		#echo json_encode($sql)."<hr>\n";
+		#echo json_encode($keysText)."<hr>\n";
+		#echo json_encode($keysValues)."<hr>\n";
+		#exit();
 		try {
-			$query = $this->db->prepare($sql);
 			$resultado->error = $query->execute($resultado->data);
 			// $resultado->id = $query->lastInsertId(); 
 			$resultado->id = $this->db->lastInsertId();
 			$resultado->error = ($resultado->id > 0) ? false : true;
+			
 		}
 		catch (Exception $e){
 			$infoError = ($query->errorInfo());
@@ -359,11 +369,10 @@ class EntidadBase {
 					}, $infoError[2]);
 				break;
 				default:
-					$resultado->errorInfo = ($query->errorInfo());
+					$resultado->errorInfo = ($e->errorInfo());
 				break;
 			}
 			$resultado->errorObject = $e;
-
 		}
 		return $resultado;
 		/*
@@ -377,32 +386,53 @@ class EntidadBase {
     public function save(){
 		$resultado = new stdClass();
 		$resultado->error = true;
+		$resultado->id = 0;
 		$resultado->errorInfo = null;
 		$resultado->errorObject = null;
 		$resultado->data = [];
-		try {
 		
-			$keysv = array();
-			$data = array();
-			foreach($this->fields as $k){
-				if(!is_object($this->{$k})){
-					if(($k) !== 'id' && ($k) !== 'created' && ($k) !== 'updated' &&	($k) !== 'password' &&	($k) !== 'registered'){
-						$keysv[] = "{$k}=:{$k}";
-						# $keysv[] = "{$k}=?";
-						$resultado->data[$k] = $this->{$k};
-						# $resultado->data[] = $this->{$k};
-					}
+		$keys = array();
+		$keysv = array();
+		$data = array();
+		foreach($this->fields as $k){
+			if(!is_object($this->{$k})){
+				#if(($k) !== 'id' && ($k) !== 'created' && ($k) !== 'updated' &&	($k) !== 'password' &&	($k) !== 'registered'){
+				if(($k) !== 'id' && ($k) !== 'created' && ($k) !== 'updated' &&	($k) !== 'password' &&	($k) !== 'registered'){
+					$keysv[] = "{$k}=:{$k}";
+					$keys[] = $k;
+					$resultado->data[$k] = $this->{$k};
+				} 
+				else if ($k == 'id') {
+					$resultado->data[$k] = $this->{$k};
 				}
 			}
-			$keysValues = implode(', ', $keysv);
-			$sql = "UPDATE $this->table SET $keysValues WHERE id='{$this->id}'";
-			$query = $this->db->prepare($sql);
-			$resultado->error = ($query->execute($resultado->data)) ? false : true;
+		}
+		
+		$keysText = implode(',', $keys);
+		$keysValues = implode(',', $keysv);
+		$sql = "UPDATE $this->table SET $keysValues WHERE id=:id";
+		$query = $this->db->prepare($sql);
+		try {
+			$resultado->error = $query->execute($resultado->data);
+			// $resultado->id = $query->lastInsertId(); 
+			$resultado->id = $this->db->lastInsertId();
+			$resultado->error = ($resultado->id > 0) ? false : true;
+			
 		}
 		catch (Exception $e){
 			$infoError = ($query->errorInfo());
+			switch($infoError[1]){
+				case '1062':
+					#$resultado->errorInfo = "Esto, ya existe en la base de datos, intenta cambiando algunos datos.";
+					$resultado->errorInfo = preg_replace_callback("/^Duplicate entry '(.*)' for key '(.*)'$/", function ($m) {
+					   return sprintf("%s ya existe.", $m[1]);
+					}, $infoError[2]);
+				break;
+				default:
+					$resultado->errorInfo = ($e->errorInfo());
+				break;
+			}
 			$resultado->errorObject = $e;
-			exit();
 		}
 		return $resultado;
 		/*

@@ -13,11 +13,32 @@ class Node extends EntidadBase {
         parent::__construct($table);
     }
 	
+	public function current(){
+		if (isset($this->id) && $this->id > 0){
+			$this->getById($id);
+			$this->createLog('NodeView');
+		}else{
+			$urlCompleta = ((@intval($_SERVER['HTTP_X_FORWARDED_PORT']) ?: @intval($_SERVER["SERVER_PORT"]) ?: (($this->protocol === 'https') ? 443 : 80) === 443) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			$urlSimple = $_SERVER['REQUEST_URI'];
+			$items = $this->getBy('path_url', $urlSimple);
+			if(isset($items[0])){
+				$this->setAllData($items[0]);
+			}
+			
+			if(!$this->isValid()){
+				$this->principal();
+			}else{
+				$this->createLog('NodeCurrentView');
+			}
+		}
+	}
+	
 	public function principal(){
 		$option = new Option();
 		$option->getBySlug('principal_page');
 		$id = (isset($option->node) && $option->node > 0) ? $option->node : 0;
 		$this->getById($id);
+		$this->createLog('NodeHomeView');
 	}
 	
 	public function getById($id){
@@ -26,6 +47,9 @@ class Node extends EntidadBase {
 		if(isset($items[0])){
 			$this->setAllData($items[0]);
 		}
+		#if($id != 1){
+			# $this->createLog('View');
+		#}
 	}
 	
 	public function setAllData($item){
@@ -37,4 +61,5 @@ class Node extends EntidadBase {
 			}
 		}
 	}
+	
 }

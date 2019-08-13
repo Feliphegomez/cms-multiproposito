@@ -7,10 +7,6 @@
  * *******************************
  */
 
-require_once(folder_admin . '/config/database.php');
-require_once('api.php');
-require_once(folder_admin . '/core/ui.php');
-require_once 'Conectar.php';
 
 class ControladorBase {
 	private $thisClassName;
@@ -22,9 +18,9 @@ class ControladorBase {
 	public $host;
 	public $port;
 	public $path;
-	public $request;
-	public $apiCore;
-	public $response;
+	private $request;
+	private $apiCore;
+	private $response;
 	public $api;
 	private $this_file;
 	public $sections;
@@ -40,6 +36,10 @@ class ControladorBase {
 	private $thisModule;
  
     public function __construct() {
+		require_once(folder_admin . '/config/database.php');
+		require_once(folder_admin . '/core/ui.php');
+		require_once 'Conectar.php';
+		require_once('api.php');
         require_once 'EntidadBase.php';
         require_once 'ModeloBase.php';
         require_once 'MenuBase.php';
@@ -71,82 +71,22 @@ class ControladorBase {
 		$this->folders->admin = folder_admin;
 		$this->theme = TEMA_DEFECTO;
 		
-		if(
-			isset($_POST) && count($_POST) > 0
-			&& isset($_GET['controller']) && $_GET['controller'] == 'Login' && isset($_GET['action']) && $_GET['action'] == 'password'
-		){
-			$this->view(
-				strtolower($_GET['action']), array(
-					"post" => $_POST,
-					"title" => "Ingresa tu contraseña",
-				)
-			);
-			exit(0);
-		}
-		
-		$this->request = RequestFactory::fromGlobals();
-		$this->apiCore = new Api(new Config([
-			'driver' => DB_driver,
-			'address' => DB_host,
-			'port' => DB_port,
-			'username' => DB_user,
-			'password' => DB_pass,
-			'database' => DB_database,
-			'debug' => true,
-			'openApiBase' => API_openApiBase,
-			'controllers' => API_controllers,
-			'middlewares' => API_middlewares,
-			'dbAuth.mode' => API_dbAuth_mode,
-			'dbAuth.usersTable' => API_dbAuth_usersTable,
-			'dbAuth.usernameColumn' => API_dbAuth_usernameColumn,
-			'dbAuth.passwordColumn' => API_dbAuth_passwordColumn,
-			'dbAuth.returnedColumns' => API_dbAuth_returnedColumns,
-			// 'xsrf.cookieName' => API_xsrf_cookieName,
-			// 'xsrf.headerName' => API_xsrf_headerName
-		]));
-		$this->response = $this->apiCore->handle($this->request);
-		
 		$request_headers = getallheaders();
-		
-		
 		if((
 			isset($request_headers['X-CORE']) && $request_headers['X-CORE'] == 'api') 
 			|| (isset($this->sections[0]) && $this->sections[0] == 'api') 
 			|| (isset($this->sections[0]) && $this->sections[0] == 'openapi') 
+			|| (isset($this->sections[0]) && $this->sections[0] == 'login') 
 			// || (isset($this->sections[0]) && $this->sections[0] == 'login') 
 			// || (isset($this->sections[0]) && $this->sections[0] == 'logout') 
 			|| (isset($this->sections[0]) && $this->sections[0] == 'records') 
 			|| (isset($_GET['core']) && $_GET['core'] == 'api')
 		){
-			$this->api = ResponseUtils::output($this->response, true);
-			echo ($this->api);
+			global $response;
+			echo ResponseUtils::output($response, true);
 			exit(0);
-		}else{
-			$this->api = json_decode(ResponseUtils::output($this->response));
 		}
-		
-		if(
-			isset($this->api->code) 
-		){
-			if($this->api->code == 1011){
-				$this->status = 'disconnect';
-			} else if($this->api->code == 1012){
-				$this->status = 'login_fail';
-			} else {
-				// Errores API no necesarios en back y front.
-				if(
-					$this->api->code != 1000
-					&& $this->api->code != 1011
-					&& $this->api->code != 1012
-				){
-					echo "Error API.<hr>";
-					echo "{$this->api->code}: {$this->api->message}";
-					exit();
-				}
-			}
-		}else {
-			$this->status = 'connected';
-		}
+		$this->status = (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] > 0) ? 'connected' : 'disconnect';
 		
 		// Agregar el login si no esta `connected`
 		if(REDIRECT_LOGIN === true){
@@ -303,12 +243,12 @@ class ControladorBase {
 		$dataUser = ControladorBase::getProfileDefault();
 		$userid = (int) $userid;
 		$user = new Usuario();
-		$resultSearch = $user->getById($userid);
+		$user->getById($userid);
 		
-		if(isset($resultSearch[0]) && isset($resultSearch[0]->id) && isset($resultSearch[0]->username)){
-			$dataUser->userID = (int) $resultSearch[0]->id;
-			$dataUser->username = $resultSearch[0]->username;
-			$dataUser->userInfo = $resultSearch[0];
+		if(isset($user->id) && isset($user->username)){
+			$dataUser->userID = (int) $user->id;
+			$dataUser->username = $user->username;
+			$dataUser->userInfo = $user;
 			return ($dataUser);
 		}
 		return $user;

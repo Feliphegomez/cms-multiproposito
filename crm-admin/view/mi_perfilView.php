@@ -1,6 +1,6 @@
-<?php #echo json_encode($this); ?>
-<?php $myData = $this->userData; ?>
-<?php $myInfo = $this->userData; ?>
+<?php $myData = (isset($_SESSION['user']['id'])) ? $_SESSION['user'] : array(); ?>
+<?php $myInfo = new stdClass(); ?>
+<?php foreach($myData as $k => $v) { $myInfo->{$k} = $v; } ?>
 
 <?php $userInfo = new Usuario(); ?>
 <?php $userInfo->getById($myInfo->id); ?>

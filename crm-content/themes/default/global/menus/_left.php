@@ -1,8 +1,9 @@
 <?php 
 class MenuLeft extends MenuBase {
+	/*
 	public function __construct(){
-		parent::__construct('slug', 'sidebar');
-	}
+		parent::__construct();
+	}*/
 	
 	public function menuConHijos($section, $active = false){
 		$section->action = (!isset($section->action)) ? null : $section->action;
@@ -113,17 +114,11 @@ class MenuLeft extends MenuBase {
 	}
 }
 $menu = new MenuLeft();
-
-
 ?>
-
 <?php $userInfo = new Usuario(); ?>
-<?php if(ControladorBase::isUser() == true){ ?>
-	<?php $userInfo->getById($this->getUserId()); ?>
-<?php } ?>
-
+<?php $userInfo->getById($this->getUserId()); ?>
 	<div class="navbar nav_title" style="border: 0;">
-		<a href="/index.html" class="site_title"><i class="<?php echo ICON_DEFAUL; ?>"></i> <span><?php echo TITLE_XS; ?></span></a>
+		<a href="index.html" class="site_title"><i class="<?php echo ICON_DEFAUL; ?>"></i> <span><?php echo TITLE_XS; ?></span></a>
 	</div>
 	<div class="clearfix"></div>
 	<?php if(ControladorBase::isUser() == true){ ?>
@@ -137,15 +132,14 @@ $menu = new MenuLeft();
 			</div>
 		</div>
 		<br />
-		
-		<?php if(ControladorBase::validatePermission("Sistema", "index") == true){ ?>
-			<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-				<?php echo "<div class=\"menu_section\">".$menu->listMenuLeft001()."</div>"; ?>
-			</div>
-		<?php } ?>
 	<?php } ?>
 
+	<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+		<?php echo "<div class=\"menu_section\">".$menu->listMenuLeft001()."</div>"; ?>
+	</div>
 	<div class="sidebar-footer hidden-small">
+		<!-- // <button id="compose" class="btn btn-sm btn-success btn-block" type="button">COMPOSE</button> -->
+
 		<?php if(ControladorBase::isUser() == true){ ?>
 			<a data-toggle="tooltip" data-placement="top" title="Mi Cuenta" href="<?php echo $this->linkUrl('Usuarios', 'mi_perfil'); ?>">
 				<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -155,24 +149,14 @@ $menu = new MenuLeft();
 					<button style="background-color: transparent;border: 0px;" type="submit"><span class="glyphicon glyphicon-off" aria-hidden="true"></span></button>
 				</form>
 			</a>
-			<!-- //
-			<a data-toggle="tooltip" data-placement="top" title="Lock">
-				<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-			</a>
-			-->
 		<?php } ?>
+		<!-- //
+		<a data-toggle="tooltip" data-placement="top" title="Lock">
+			<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+		</a>
+		-->
 	</div>
 
-
-
-	<div class="sidebar-footer hidden-small">
-		<?php echo json_encode($menu); ?>
-	</div>
-
-
-<?php 
-/*
-?>
 
 
 <?php if(ControladorBase::isUser() == false){ ?>
@@ -200,5 +184,3 @@ $menu = new MenuLeft();
 </style>
 -->
 <?php } ?>
-
-*/

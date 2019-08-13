@@ -1,14 +1,24 @@
 <?php 
-class MenuBase extends ControladorBase {
+
+
+class MenuBase {
+	public $datos;
+	public $user;
+	
 	public $data;
 	public $allmodules;
 	
-	public function __construct(){
-		$this->allmodules = $this->getModules();
+	public function __construct($column=null, $value=null){
+		$this->user = (isset($_SESSION['user'])) ? $_SESSION['user'] : array();
+		$this->datos = array();
+		if($value != null && $column != null){
+			$this->loadMenu($column, $value);
+		}
 	}
 	
-	public function loadMenu($typeMenu){
-		echo $typeMenu;
+	public function loadMenu($column, $value){
+		$this->datos = new Menu();
+		$this->datos->getBy($column, $value);
 	}
 	
 	public static function getModules() : array {

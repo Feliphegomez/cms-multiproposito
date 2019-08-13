@@ -58,8 +58,11 @@ define('TBL_USERS', 'users');
 define('TBL_USERS_C_USERNAME', 'username');
 define('TBL_USERS_C_PASSWORD', 'password');
 define('TBL_NODES', 'nodes');
+define('TBL_NODES_ITEMS', 'nodes_items');
 define('TBL_TYPES_NODES', 'nodes_types');
 define('TBL_OPTIONS', 'options');
+define('TBL_LOGS', 'logs');
+define('TBL_MENUS', 'menus');
 define('TBL_USERS_R_C', '');
 define('TBL_PICTURES', 'pictures');
 

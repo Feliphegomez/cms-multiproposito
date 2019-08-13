@@ -29,8 +29,12 @@ class Usuario extends EntidadBase {
 	public function getById($id){
 		$id = (isset($id) && $id > 0) ? $id : 0;
 		$items = parent::getById($id);
-		if(isset($items[0])){
-			$this->setAllData($items[0]);
+		if(isset($items[0])){ $this->setAllData($items[0]); };
+		
+		if(isset($_SESSION['user']['id']) && $_SESSION['user']['id'] !== $id){
+			$this->createLog('View');
+		}else{
+			// $this->createLog('My');
 		}
 	}
 	
@@ -56,4 +60,8 @@ class Usuario extends EntidadBase {
 		}
 	}
  
+    public function save(){
+		parent::save();
+		$this->createLog('Edit');
+	}
 }

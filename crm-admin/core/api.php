@@ -7776,3 +7776,29 @@ $api = new Api($config);
 $response = $api->handle($request);
 ResponseUtils::output($response);
 */
+
+global $response;
+global $request;
+global $api;
+$config = new Config([
+	'driver' => DB_driver,
+	'address' => DB_host,
+	'port' => DB_port,
+	'username' => DB_user,
+	'password' => DB_pass,
+	'database' => DB_database,
+	'debug' => true,
+	'openApiBase' => API_openApiBase,
+	'controllers' => API_controllers,
+	'middlewares' => API_middlewares,
+	'dbAuth.mode' => API_dbAuth_mode,
+	'dbAuth.usersTable' => API_dbAuth_usersTable,
+	'dbAuth.usernameColumn' => API_dbAuth_usernameColumn,
+	'dbAuth.passwordColumn' => API_dbAuth_passwordColumn,
+	'dbAuth.returnedColumns' => API_dbAuth_returnedColumns,
+	// 'xsrf.cookieName' => API_xsrf_cookieName,
+	// 'xsrf.headerName' => API_xsrf_headerName
+]);
+$request = RequestFactory::fromGlobals();
+$api = new Api($config);
+$response = $api->handle($request);
