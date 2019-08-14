@@ -71,40 +71,115 @@
 
 <template id="micuenta-inbox-conversations-view">
 	<div>
-		<div>
+		<div class="inbox-body">
 			<div class="mail_heading row">
 				<div class="col-md-8">
 					<div class="btn-group">
-						<!-- // <button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> Responder</button> -->
-						<!-- // <button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button> -->
+						<button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> Reply</button>
+						<button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
 						<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
-						<!-- // <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button> -->
+						<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
 					</div>
 				</div>
 				<div class="col-md-4 text-right">
 					<p class="date"> Fecha de creacion: {{ conversation.created }}</p>
 				</div>
 				<div class="col-md-12">
-					<!-- // <h4> {{ conversation.replys[0].user.names }} {{ replys[0].user.surname }}</h4> -->
-					<template class="inbox-body" v-for="(item, a) in conversation.replys">
-						<div class="x_content" style="overflow:auto;">
-							<div class="sender-info">
-								<div class="row">
-									<div class="col-md-12">
-										<strong>{{ conversation.status.name }}</strong>
-										<span>Usuario: ({{ item.user.username }})</span> <strong></strong>
-										<a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a>
-									</div>
-								</div>
-							</div>
-							<div class="ln_solid"></div>
-							<div class="view-mail" v-html="item.reply.text"></div>
-						</div>
-					</template>
+					<h4> {{ conversation.status.name }}</h4>
+					<!-- // <h4> Donec vitae leo at sem lobortis porttitor eu consequat risus. Mauris sed congue orci. Donec ultrices faucibus rutrum.</h4> -->
 				</div>
 			</div>
+			
+				
+			<template>
+				<template v-for="(item, a) in conversation.replys">
+					<template v-if="item.user.id === user_id">
+						<div class="sender-info">
+							<div class="row">
+								<div class="col-md-12">
+									<strong>Tú</strong>
+									<span>(@{{ item.user.username }})</span> dices: <strong></strong>
+									<!-- <a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a> -->
+								</div>
+							</div>
+						</div>
+					</template>
+					<template v-else>
+						<div class="sender-info">
+							<div class="row">
+								<div class="col-md-12">
+									<strong>item.user.names</strong>
+									<span>(@{{ item.user.username }})</span> dice: <strong></strong>
+									<a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a>
+								</div>
+							</div>
+						</div>
+					</template>
+					<div class="view-mail" v-html="item.reply.text"></div>
+					
+					
+					<div class="x_content" style="overflow:auto;">
+						<div class="sender-info">
+							<div class="row">
+								<div class="col-md-12">
+									<strong></strong>
+									<span>Usuario: ({{ item.user.username }})</span> <strong></strong>
+									<a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a>
+								</div>
+							</div>
+						</div>
+						<div class="ln_solid"></div>
+						<div class="view-mail"></div>
+					</div>
+					
+					<!-- //
+					<div class="attachment">
+						<p>
+							<span><i class="fa fa-paperclip"></i> 1 attachments — </span>
+							<a href="#">Download all attachments</a> | <a href="#">View all images</a>
+						</p>
+						<ul>
+							<li>
+								<a href="#" class="atch-thumb">
+									<img src="images/inbox.png" alt="img" />
+								</a>
+								<div class="file-name">
+									image-name.jpg
+								</div>
+								<span>12KB</span>
+								<div class="links">
+									<a href="#">View</a> - <a href="#">Download</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+					-->
+					
+					<div class="btn-group">
+						<button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> Reply</button>
+						<button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
+						<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
+						<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
+					</div>
+				</template>
+				
 			<!-- // {{ conversation }} -->
 			<div class="ln_solid"></div>
+			
+			<div class="x_content">
+				<textarea rows="6" v-model="me.compose.text" class="form-control"></textarea>
+			</div>
+				
+			<div class="btn-group pull-right">
+				<!-- // <button v-if="conversation.status.id == 0 || conversation.status.id == 2" class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> </button> -->
+				<button @click="sendMessage" class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i> Enviar Mensaje</button>
+				<!-- // <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button> -->
+			</div>
+			</template>
+		</div>
+		
+		
+		<div>
 		</div>
 	</div>
 </template>
@@ -148,7 +223,7 @@ var InboxConversationsView = Vue.extend({
 	},
 	methods: {
 		validateResultConversation(r){
-			console.log('validateResultConversation', r)
+			// console.log('validateResultConversation', r)
 			
 			var self = this;
 			if (r.data != undefined){
@@ -182,11 +257,9 @@ var InboxConversationsView = Vue.extend({
 			
 			if(self.me.compose.text != ''){
 				console.log('enviar');
-				obj_message.reply = self.me.compose.text;
-				obj_message.conversation = self.$route.params.conversation_id;
+				obj_message.reply = JSON.stringify({ "text": self.me.compose.text });
+				obj_message.conversation = Number(self.$route.params.conversation_id);
 				obj_message.user = self.user_id;
-				
-				console.log(self.me.compose.text);
 				console.log(obj_message);
 				api.post('/records/conversations_replys/', obj_message)
 				.then(response => {
