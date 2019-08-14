@@ -39,7 +39,7 @@
 					<ul class="dropdown-menu list-unstyled msg_list" role="menu">
 						<template v-if="records.length > 0">
 							<li v-for="(inbox, i) in records">
-								<a v-bind:href="'/index.php?controller=MiCuenta&action=inbox#/conversation/' + inbox.conversation.id + '/view'" v-if="inbox.conversation.conversations_replys[0]">
+								<a v-bind:href="'/index.php?controller=Usuarios&action=inbox#/conversation/' + inbox.conversation.id + '/view'" v-if="inbox.conversation.conversations_replys[0]">
 									<span>
 										<span><b>{{ inbox.conversation.conversations_replys[0].user.names }} </b></span>
 										<span class="time">{{ inbox.conversation.conversations_replys[0].created }}</span>
@@ -62,7 +62,7 @@
 						
 						<li>
 							<div class="text-center">
-								<a href="<?php echo $this->linkUrl('MiCuenta', 'inbox'); ?>">
+								<a href="<?php echo $this->linkUrl('Usuarios', 'inbox'); ?>">
 									<strong>Bandeja de Mensajes</strong>
 									<i class="fa fa-angle-right"></i>
 								</a>
@@ -88,8 +88,6 @@
 			<span>×</span>
 		</button>
 	</div>
-	
-	
 	<template  v-if="enabled == true">
 	</template>
 	<template  v-else>
@@ -267,17 +265,16 @@
 			},
 			addReplyInConversation(){
 				var self = this;
-				send = {
+				// "text": self.escapeHtml(self.messageText)
+				api.post('/records/conversations_replys', {
 					reply: JSON.stringify(
 						{
-							"text": self.escapeHtml(self.messageText)
+							"text": (self.messageText)
 						}
 					),
 					conversation: self.conversation_id,
 					user: self.session.user.id
-				};
-					console.log(send);
-				api.post('/records/conversations_replys', send)
+				})
 				.then(r => {
 					self.validateResult(r, function(a){
 						if(a > 0){
@@ -328,7 +325,7 @@
 				records: []
 			};
 		},
-		created(){
+		mounted(){
 			var self = this;
 			self.load();
 		},

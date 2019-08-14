@@ -15,6 +15,15 @@ class UsuariosController extends ControladorBase {
 		);
 	}
 	
+	function inbox(){
+		$this->viewSystemInTemplate(
+			"inbox", array(
+				"title" => "mi_perfil",
+				// "template" => $this->template,
+			)
+		);
+	}
+	
     public function mi_perfil(){
 		$userInfo = new Usuario();
 		$userInfo->getById($this->userData->userID);
