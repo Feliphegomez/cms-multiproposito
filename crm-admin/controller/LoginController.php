@@ -58,8 +58,7 @@ class LoginController extends ControladorBase {
 		$this->viewSystemInTemplate("login", $infoView);
     }
 	
-    private function hasCorrectPassword(string $password, string $hash): bool
-    {
+    private function hasCorrectPassword(string $password, string $hash): bool {
 		return (password_verify('rasmuslerdorf', $hash)) ? true : false;
     }
 	
@@ -118,19 +117,33 @@ class LoginController extends ControladorBase {
 			&& isset($this->post['password'])
 			&& isset($this->post['email'])
 		){
-			$this->post['password'] = password_hash($this->post['password'], PASSWORD_DEFAULT);
-			$user = new Usuario();
-			$user->set('username', $this->post['username']);
-			$user->set('password', $this->post['password']);
-			$user->set('email', $this->post['email']);
-			// $user->create($this->post);
-			$create = $user->create($this->post);
+			$solvemedia_response = solvemedia_check_answer(SM_KEY_PRIVATE,
+								$_SERVER["REMOTE_ADDR"],
+								$this->post["adcopy_challenge"],
+								$this->post["adcopy_response"],
+								SM_HASH);
+			if (!$solvemedia_response->is_valid) {
+				$infoView["description"] = "Error: ".$solvemedia_response->error;
+			} 
+			else {
+				//process form here
 			
-			if($create->error == true){
-				$infoView["description"] = $create->errorInfo;
-			}else{
-				$infoView["description"] = "Tu cuenta fue creada correctamente.";
+			
+				$this->post['password'] = password_hash($this->post['password'], PASSWORD_DEFAULT);
+				$user = new Usuario();
+				$user->set('username', $this->post['username']);
+				$user->set('password', $this->post['password']);
+				$user->set('email', $this->post['email']);
+				// $user->create($this->post);
+				$create = $user->create($this->post);
+				
+				if($create->error == true){
+					$infoView["description"] = $create->errorInfo;
+				}else{
+					$infoView["description"] = "Tu cuenta fue creada correctamente.";
+				}
 			}
+			
 			
 		}
 		$this->viewSystemInTemplate("register", $infoView);

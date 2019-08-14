@@ -17,14 +17,16 @@ class Menu extends EntidadBase {
     }
 	
 	public function getBy($column, $value){
-		$items = parent::getBy($column, $value);
+		$items = parent::getSQL("SELECT m.*, (SELECT COUNT(*) FROM " . TBL_MENUS_ITEMS . " WHERE menu=m.id) AS total_childs FROM " . TBL_MENUS . " AS m WHERE {$column}=?", array($value));
 		if(isset($items[0])){ $this->setAllData($items[0]); };
 	}
 	
+	
 	public function getById($id){
 		$id = (isset($id) && $id > 0) ? $id : 0;
-		$items = parent::getById($id);
+		$items = parent::getSQL("SELECT m.*, (SELECT COUNT(*) FROM {$this->getTabla()} WHERE menu=m.id) AS total_childs FROM menus AS m WHERE id=?", array($id));
 		if(isset($items[0])){ $this->setAllData($items[0]); };
+		
 	}
 	
 	public function getBySlug($slug){
@@ -45,8 +47,4 @@ class Menu extends EntidadBase {
 		}
 	}
  
-    public function save(){
-		parent::save();
-		$this->createLog('Edit');
-	}
 }

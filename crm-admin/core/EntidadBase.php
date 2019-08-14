@@ -115,7 +115,7 @@ class EntidadBase {
         return $this->db;
     }
      
-    public function getAllBy($value, $column){
+    public function getAllBy($column, $value){
 		$sql = "SELECT * FROM {$this->table} WHERE {$column}=?";
 		$query = $this->db->prepare($sql);
 		$query->execute([$value]);
@@ -161,6 +161,23 @@ class EntidadBase {
 		$query = $this->db->prepare($sql);
 		$query->execute([$value]);
 		return $this->FetchObject($query);
+    }
+     
+    public function getSQL($sql="", $params=null){
+		#return $this->FetchObject($query);
+		try {
+			$query = $this->db->prepare($sql);
+			$query->execute($params);
+			
+			$result = $query->fetchAll(PDO::FETCH_OBJ);
+			#$this->db = null;
+			$query = null;
+			
+			return $result;
+		} catch (PDOException $e) {
+			print "Error!: " . $e->getMessage() . "<br/>" . $sql . "<br/>";
+			die();
+		}
     }
      
     public function deleteById($id){

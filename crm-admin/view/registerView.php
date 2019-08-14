@@ -20,6 +20,9 @@
 							echo $h;
 						};
 					?>
+						<div>
+							<?php echo solvemedia_get_html(SM_KEY_PUBLIC, null, true); ?>
+						</div>
 					<!--
 					  <div><input type="text" class="form-control" placeholder="Username" required="" /></div>
 					  <div><input type="email" class="form-control" placeholder="Email" required="" /></div>

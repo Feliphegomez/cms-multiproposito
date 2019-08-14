@@ -23,6 +23,25 @@ class MenuElements extends EntidadBase {
 			# $this->createLog('View');
 		#}
 	}
+     
+    public function getAllBy($column, $value){
+		$items = parent::getAllBy($column, $value);
+		$r = array();
+		$sessionActive = ControladorBase::isUser();
+		#echo json_encode($items)."<hr>";
+		#exit();
+		foreach($items as $child) {
+			if($child->public == 1 && $child->guest == 1) {
+				if($sessionActive == false){ $r[] = $child; }
+			} 
+			else if($child->public == 1 && $child->guest == 0) {
+				$r[] = $child;
+			} else if($child->public == 0 && $child->guest == 0) {
+				if (ControladorBase::validatePermission($child->permision_controller, $child->permission_action) == true) { $r[] = $child; }
+			}
+		}
+		return $r;
+    }
 	
 	public function setAllData($item){
 		parent::setAllData($item);

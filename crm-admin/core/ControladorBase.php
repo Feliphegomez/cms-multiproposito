@@ -124,6 +124,8 @@ class ControladorBase {
 		
 		$this->thisClassName = $this->getClassName();
 		$this->thisModule = $this->getThisModule();
+		
+		# incluir solvemedia
 	}
 	
 	public function index(){

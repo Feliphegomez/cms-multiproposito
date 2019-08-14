@@ -8,18 +8,18 @@ class MenuBase {
 	public $data;
 	public $allmodules;
 	
-	public function __construct($column=null, $value=null){
+	public function __construct($column=null, $value=null, $enable_tree=false){
 		$this->user = (isset($_SESSION['user'])) ? $_SESSION['user'] : array();
 		$this->datos = array();
 		if($value != null && $column != null){
 			$this->loadMenu($column, $value);
 		}
+		$this->loadChilds($enable_tree);
 	}
 	
 	public function loadMenu($column, $value){
 		$this->datos = new Menu();
 		$this->datos->getBy($column, $value);
-		$this->loadChilds();
 	}
 	
 	public static function getModules() : array {
@@ -36,65 +36,74 @@ class MenuBase {
 		$urlParams = ControladorBase::returnParamsUrl($params);
         return ("index.php?controller={$controlador}&action={$accion}&{$urlParams}");
     }
-     
-    public function getAllBy($value, $column){
-		$sql = "SELECT * FROM {$this->table} WHERE {$column}=? AND parent IN ('0')";
-		$query = $this->db->prepare($sql);
-		$query->execute([$value]);
-		return $this->FetchList($query);
-    }
  
-    public function loadChilds(){
-		$items = new MenuElements();
-		$childs = $items->getAllBy($this->datos->id, 'menu');
-		/*
-		foreach($childs as $item){
-			$continue = false;
-			if($item->public == 1){
-				$continue = true;
-				
-			} else if(($item->public == 0 && isset($_SESSION['user'])) && ControladorBase::validatePermission(ucwords($item->permision_controller), $item->permission_action)){
-				$continue = true;
-			}
-			#else if($item->public == 1){}
+    public function loadChilds($enable_tree=false){
+		if($this->datos->total_childs > 0){
+			$items = new MenuElements();
 			
-			if($continue === true){
-				items
+			if($enable_tree == true){
+				$childs = $items->getAllBy('menu', $this->datos->id);
+				foreach($childs as $child){
+					if($child->parent == 0){
+						$tree = new MenuElements();
+						$child->childs = $tree->getAllBy('parent', $child->id);
+						
+						$this->datos->childs[] = $child;
+					}
+				}
+			}else{
+				$this->datos->childs = $items->getAllBy('menu', $this->datos->id);
 			}
-		}*/
+		}
 	}
 	
 	public function toUL(){
-		$r = '';
-		if(!isset($this->childs)){
-			# echo "No items en el menu.";
-			# exit();
-		}else{
-			foreach($this->toTree($this->childs) as $item){
-				echo json_encode($item);
-			}
-		}
-		
+		$r = "<div class=\"menu_section\">";
+			$r .= "<h3>{$this->datos->name}</h3>";
+			$r .= "<ul class=\"nav side-menu\">";
+				foreach($this->datos->childs as $item_menu){
+					$r .= "<li>";
+						$r .= $this->createItemHtmlLink($item_menu);
+						$r .= (isset($item_menu->childs) && count($item_menu->childs) > 0) ? $this->createChildMenu($item_menu->childs) : '';
+					$r .= "</li>";
+				}
+			$r .= "</ul>";
+		$r .= "</div>";
 		return $r;
 	}
 	
-	public function toTree($nodes){
-		$r = new stdclass();
-		$i = 0;
-		foreach($this->childs as $item){
-			if($item->parent == $i){
-				if(!isset($r->{$item->id})){
-					$r->{$item->id} = $item;
-					$r->{$item->id}->tree = array();
-				}
-			}
-			$i++;	
-			
-			
-			if(isset($item->id)){
-				#$r->{$item->id}->tree = array();
-			}
+	public function createChildMenu($childs){
+		$r = "<ul class=\"nav child_menu\">";
+		foreach($childs as $child){
+			$r .= "<li>";
+				$r .= $this->createItemHtmlLink($child);
+				$r .= (isset($childs->childs) && count($childs->childs) > 0) ? $this->createChildMenu($childs->childs) : '';
+			$r .= "</li>";
 		}
+		# if($showNoActives === true){ $r .= "<li><a href=\"#\">{$moduloIcon}{$infoThisModule->name} <span class=\"label label-success pull-right\">Inactivo</span></a></li>\n"; }
+		$r .= "</ul>";
+		return $r;
+	}
+	
+	public function createItemHtmlLink($item_menu){
+		$item_menu->tag_id = (isset($item_menu->tag_id) && $item_menu->tag_id != null && $item_menu->tag_id != "") ? $item_menu->tag_id : generateRandomString();
+		$item_menu->tag_class = (isset($item_menu->tag_class) && $item_menu->tag_class != null && $item_menu->tag_class != "") ? " class=\"{$item_menu->tag_class}\" " : ' ';
+		$item_menu->tag_href = (isset($item_menu->tag_href) && $item_menu->tag_href != null && $item_menu->tag_href != "") ? $item_menu->tag_href : '#';
+		$item_menu->icon = (isset($item_menu->icon) && $item_menu->icon != null && $item_menu->icon != "") ? " <i class=\"{$item_menu->icon}\"></i> " : '';
+		$item_menu->title = 
+			(isset($item_menu->childs) && count($item_menu->childs) > 0) 
+				? " {$item_menu->title} <span class=\"fa fa-chevron-down\"></span> " 
+				: " {$item_menu->title} ";
+		/*
+		$item_menu->title = 
+			(isset($item_menu->childs) && count($item_menu->childs) > 0) 
+				? " {$item_menu->title} <span class=\"label label-success pull-right\">Mas</span> <span class=\"fa fa-chevron-down\"></span> " 
+				: " {$item_menu->title} <span class=\"label label-success pull-right\">Principal</span> ";
+			*/
+				
+			$r = "<a id=\"{$item_menu->tag_id}\" href=\"{$item_menu->tag_href}\">{$item_menu->icon} {$item_menu->title} </a>";
+			$r = "<a id=\"{$item_menu->tag_id}\" href=\"{$item_menu->tag_href}\">{$item_menu->icon} {$item_menu->title} </a>";
+			#$r = "<a href=\"#\"{$item_menu->tag_class}>{$item_menu->icon}{$item_menu->title}</a>";
 		return $r;
 	}
 }

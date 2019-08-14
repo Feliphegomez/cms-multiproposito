@@ -20,6 +20,11 @@ define("TITLE_SM", "C&C MULTI");
 define("TITLE_XS", "C&CM");
 define("ICON_DEFAUL", "fa fa-leaf");
 define("IMAGE_DEFAULT", "/crm-content/uploads/avatar001.jpg");
+
+// SolveMedia Capcha
+define("SM_KEY_PUBLIC", "J0Myui2rYs-6Ww2Y6dx4bn47Mn6-nX4u");
+define("SM_KEY_PRIVATE", "oU6nzE4Rx9HPdI3ut6Oaq.osFkwTTS0i");
+define("SM_HASH", "CZXAq6rL6iFTZIAzodbm.c6U6lkXBiKr");
  
 // Activar errores
 ini_set('display_errors', 1);

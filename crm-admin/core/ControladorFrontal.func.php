@@ -8,6 +8,8 @@
  */
 
 //FUNCIONES PARA EL CONTROLADOR FRONTAL
+
+require_once("libs/solvemedia/solvemedialib.php");
  
 function cargarControlador($controller){
     $controlador = ucwords($controller).'Controller';

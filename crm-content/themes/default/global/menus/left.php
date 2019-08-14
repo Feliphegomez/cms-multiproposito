@@ -1,7 +1,7 @@
 <?php 
 class MenuLeft extends MenuBase {
 	public function __construct(){
-		parent::__construct('slug', 'sidebar');
+		parent::__construct('slug', 'sidebar', true);
 	}
 	
 	public function menuConHijos($section, $active = false){
@@ -104,12 +104,6 @@ class MenuLeft extends MenuBase {
 								}
 							}
 						$r .= "</ul>";
-					$r .= "<li>";
-						$r .= "<a>".json_encode($modulo)." <span class=\"fa fa-chevron-down\"></span></a>";
-						$r .= "<ul class=\"nav child_menu\">";
-							$r .= "<li><a href=\"#\">{$moduloIcon}{$infoThisModule->name} <span class=\"label label-success pull-right\">Inactivo</span></a></li>\n";
-							$r .= "<li><a href=\"#\">".json_encode($infoThisModuleSections)." <span class=\"label label-success pull-right\">Inactivo</span></a></li>\n";
-						$r .= "</ul>";
 					$r .= "</li>";
 				$r .= "</ul>";
 			}
@@ -142,13 +136,13 @@ $menu = new MenuLeft();
 			</div>
 		</div>
 		<br />
-		
-		<?php if(ControladorBase::validatePermission("Sistema", "index") == true){ ?>
-			<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-				<?php echo "<div class=\"menu_section\">".$menu->listMenuLeft001()."</div>"; ?>
-			</div>
-		<?php } ?>
 	<?php } ?>
+	<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+		<?php echo $menu->toUL(); ?>
+		<?php if(ControladorBase::validatePermission("Sistema", "index") == true){ ?>
+				<?php #echo "<div class=\"menu_section\">".$menu->listMenuLeft001()."</div>"; ?>
+		<?php } ?>
+	</div>
 
 	<div class="sidebar-footer hidden-small">
 		<?php if(ControladorBase::isUser() == true){ ?>
@@ -171,7 +165,6 @@ $menu = new MenuLeft();
 
 
 	<div class="sidebar-footer hidden-small">
-		<?php echo $menu->toUL(); ?>
 		<?php #echo json_encode($menu); ?>
 	</div>
 
