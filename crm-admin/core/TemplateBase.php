@@ -151,7 +151,7 @@ class TemplateBase {
 	
 	public function getUserId() : int {
 		if($this->userActive() === true){
-			return ($this->session['id'] != null) ? $this->session['id'] : '';
+			return (isset($this->session['id']) && $this->session['id'] != null) ? $this->session['id'] : 0;
 		}else{
 			return 0;
 		}		
@@ -159,7 +159,7 @@ class TemplateBase {
 	
 	public function getUserUsername() : string {
 		if($this->userActive() === true){
-			return ($this->session['username'] != null) ? $this->session['username'] : '';
+			return (isset($this->session['id']) && $this->session['username'] != null) ? $this->session['username'] : '';
 		}else{
 			return "";
 		}		
@@ -167,7 +167,7 @@ class TemplateBase {
 	
 	public function getUserNames() : string {
 		if($this->userActive() === true){
-			return ($this->session['names'] != null) ? $this->session['names'] : $this->getUserUsername();
+			return (isset($this->session['id']) && $this->session['names'] != null) ? $this->session['names'] : $this->getUserUsername();
 		}else{
 			return "";
 		}		
@@ -175,7 +175,7 @@ class TemplateBase {
 	
 	public function getUserSurname() : string {
 		if($this->userActive() === true){
-			return ($this->session['surname'] != null) ? $this->session['surname'] : '';
+			return (isset($this->session['id']) && $this->session['surname'] != null) ? $this->session['surname'] : '';
 		}else{
 			return "";
 		}		

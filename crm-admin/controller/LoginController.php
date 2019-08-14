@@ -17,17 +17,17 @@ class LoginController extends ControladorBase {
 		$this->user = new Usuario();
 		
 		#if(isset($_SESSION['user']) && get_called_class() != 'LoginController'){
-		if(isset($_SESSION['user'])){
+		if(isset($_SESSION['user']) && is_array($_SESSION['user']) && isset($_SESSION['user']['id']) && $_SESSION['user']['id'] > 0){
 			$this->user->getById($_SESSION['user']['id']);
-			@header("Location: /");
-			exit();
+			#@header("Location: /");
+			#exit();
 		}
     }
 	
     public function index(){
 		if($this->user->id > 0){
-			@header("Location: /");
-			exit();
+			//@header("Location: /");
+			//exit();
 		}
 		$infoView = array(
 			"title" => "Bienvenido(a)",
@@ -41,19 +41,46 @@ class LoginController extends ControladorBase {
 			isset($this->post['username'])
 			&& isset($this->post['password'])
 		){
-			$user = new Usuario();
-			$user->getByUsername($this->post['username']);
-			if($user->isValid()){
-				$this->post['password'] = password_hash($this->post['password'], PASSWORD_DEFAULT);
-				if($this->hasCorrectPassword($user->password, $this->post['password'])){
-					$infoView["description"] = "Hola, {$user->username}.";
-				}else{
-					$infoView["description"] = "Tu contraseña no es correcta.";
+			$solvemedia_response = solvemedia_check_answer(SM_KEY_PRIVATE,
+								$_SERVER["REMOTE_ADDR"],
+								$this->post["adcopy_challenge"],
+								$this->post["adcopy_response"],
+								SM_HASH);
+			if (!$solvemedia_response->is_valid) {
+				if($solvemedia_response->error == 'incorrect-solution'){
+					$solvemedia_response->error = 'Ingrese las letras del codigo de seguridad.';
 				}
-			}else{
-				$infoView["description"] = "Este usuario no existe.";
+				else if($solvemedia_response->error == 'already checked'){
+					$solvemedia_response->error = 'Codigo de verificación incorrecto.';
+				}
+				$_POST = array();
+				$infoView["description"] = "<span class=\"alert alert-danger\">{$solvemedia_response->error}</span> ";
+			} 
+			else {
+				$login = new API_CLIENT();
+				$login->setMethod("POST");
+				$login->setURL(urlActual().'/login');
+				$login->setData(array(
+					'username' => $this->post['username'],
+					'password' => $this->post['password']
+				));
+				$login->Run();
+				$reponse = $login->Response();
+					
+				if(isset($reponse->id) && $reponse->id > 0){
+					$_SESSION['user'] = array();
+					$infoView["description"] = "<span class=\"alert alert-success\">Hola, {$reponse->username}.</span>";
+					
+					foreach($reponse as $k=>$v){
+						$_SESSION['user'][$k] = $v;
+					}
+					@header("Location: /");
+				}else{
+					$infoView["description"] = "<span class=\"alert alert-danger\">Datos incorrectos, intenta nuevamente.</span>";
+				}
 			}
-			echo json_encode($this->post);
+			
+			
 		}
 		$this->viewSystemInTemplate("login", $infoView);
     }
@@ -126,9 +153,6 @@ class LoginController extends ControladorBase {
 				$infoView["description"] = "Error: ".$solvemedia_response->error;
 			} 
 			else {
-				//process form here
-			
-			
 				$this->post['password'] = password_hash($this->post['password'], PASSWORD_DEFAULT);
 				$user = new Usuario();
 				$user->set('username', $this->post['username']);

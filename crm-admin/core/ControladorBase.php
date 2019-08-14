@@ -89,7 +89,8 @@ class ControladorBase {
 				exit();
 			}
 		}
-		$this->status = (isset($_SESSION['user']['id']) && $_SESSION['user']['id'] > 0) ? 'connected' : 'disconnect';
+		if(isset($_SESSION) && isset($_SESSION['user']) && !is_array($_SESSION['user'])){  session_destroy(); }
+		$this->status = (isset($_SESSION['user']) && is_array($_SESSION['user']) && isset($_SESSION['user']['id']) && $_SESSION['user']['id'] > 0) ? 'connected' : 'disconnect';
 		
 		// Agregar el login si no esta `connected`
 		if(REDIRECT_LOGIN === true){
@@ -142,7 +143,7 @@ class ControladorBase {
 		
 		#echo json_encode($_SESSION);
 		#exit();
-		return (isset($_SESSION) && isset($_SESSION['user']) && isset($_SESSION['user']['id'])) ? $_SESSION : array();
+		return (isset($_SESSION) && isset($_SESSION['user']) && is_array($_SESSION['user']) && isset($_SESSION['user']['id'])) ? $_SESSION : array();
 		
 		/*
 		if (isset($_SESSION) && isset($_SESSION['user']) && is_array($_SESSION['user']) && isset($_SESSION['user']['id'])){
