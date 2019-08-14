@@ -31,13 +31,19 @@ class MenuElements extends EntidadBase {
 		#echo json_encode($items)."<hr>";
 		#exit();
 		foreach($items as $child) {
-			if($child->public == 1 && $child->guest == 1) {
+			if ($sessionActive == true && ControladorBase::validatePermission($child->permision_controller, $child->permission_action) == true){
+				$r[] = $child;
+			}else if($child->public == 1 && $child->guest == 1 && $sessionActive == false) {
 				if($sessionActive == false){ $r[] = $child; }
 			} 
-			else if($child->public == 1 && $child->guest == 0) {
+			else if($child->public == 1 && $child->guest == 0 && $sessionActive == true) {
 				$r[] = $child;
 			} else if($child->public == 0 && $child->guest == 0) {
 				if (ControladorBase::validatePermission($child->permision_controller, $child->permission_action) == true) { $r[] = $child; }
+			}else{
+				if (ControladorBase::validatePermission("isAdmin", "global") == true){
+					
+				}
 			}
 		}
 		return $r;
