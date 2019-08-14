@@ -142,11 +142,14 @@
 				</div>
 			</div>
 			
-			<div id="editor" class="editor-wrapper"></div>
+			<div id="editor-compose" class="editor-wrapper"></div>
 		</div>
 		
 		<div class="compose-footer">
-			<button id="send" class="btn btn-sm btn-success" type="button">Send</button>
+			<button type="button" class="btn btn-md btn-default" @click="slideToggle">
+				Cerrar
+			</button>
+			<button id="send" class="btn btn-sm btn-success" type="button">Enviar Mensaje</button>
 		</div>
 	</template>
 	<template  v-else>
@@ -156,7 +159,7 @@
 				FORMULARIO DE SOLICITUD DE 1RA VEZ
 			</div>
 			<div class="compose-footer">
-				<button type="button" class="btn btn-md btn-default compose-close">
+				<button type="button" class="btn btn-md btn-default" @click="slideToggle">
 					Cerrar
 				</button>
 				<button class="btn btn-md btn-success" type="button">
@@ -169,7 +172,7 @@
 				<p>Mauris suscipit pharetra metus sed aliquam. Ut sem metus, vehicula vel turpis eget, tempus efficitur felis. Fusce tristique quis ex ut fringilla. Donec vitae nisi nisi. Donec in magna a dui dignissim consequat. Sed aliquam commodo nisl sit amet pharetra. Fusce eu mauris volutpat, laoreet mauris at, tincidunt nisl. Sed vitae consequat nisl. Duis eleifend orci a venenatis pulvinar. Mauris massa sapien, semper ut dui et, varius rhoncus ipsum.</p>
 			</div>
 			<div class="compose-footer">
-				<button type="button" class="btn btn-md btn-default compose-close">
+				<button type="button" class="btn btn-md btn-default" @click="slideToggle">
 					Cerrar
 				</button>
 				<button @click="compose" class="btn btn-md btn-success" type="button">
@@ -186,6 +189,7 @@
 	var ComposeInbox = new Vue({
 		data(){
 			return {
+				editor: null,
 				enabled: false,
 				conversation_id: 0,
 				session: <?php echo json_encode(ControladorBase::validateSession()); ?>,
@@ -196,8 +200,22 @@
 			console.log('enabled', self.enabled);
 			console.log('conversation_id', self.conversation_id);
 			console.log('session', self.session);
+			self.init_compose();
 		},
 		methods: {
+			init_compose(){
+				var self = this;
+				if( typeof ($.fn.slideToggle) === 'undefined'){
+					console.log('init_compose undefined');
+					return;
+				}
+				//self.slideToggle();
+				console.log('init_compose');
+			},
+			slideToggle(){
+				var self = this;
+				$('#compose-inbox, .compose-close').slideToggle();
+			},
 			compose(){
 				var self = this;
 				console.log('compose');
@@ -214,23 +232,137 @@
 			},
 			createConversation(){
 				var self = this;
-				console.log('createConversation');
-				api.post('/records/conversations')
-					.then(r => {
-						self.validateCreateConversationResult(r);
-					})
-					.catch(e => {
-						// Capturamos los errores
-						self.validateCreateConversationResult(e);
-					});
+				api.post('/records/conversations', {
+					status: 0
+				})
+				.then(r => {
+					self.validateCreateConversationResult(r);
+				})
+				.catch(e => {
+					// Capturamos los errores
+					self.validateCreateConversationResult(e.response);
+				});
 			},
 			validateCreateConversationResult(a){
+				console.log('validateCreateConversationResult');
 				var self = this;
-				console.log('createConversation');
-				console.log('a', a);
-				if(a.status != undefined && a.data != undefined){
-					
+				if(a.data > 0){
+					self.enabled = true;
+					self.conversation_id = a.data;
+					self.init_wysiwyg();
 				}
+			},
+			init_wysiwyg(){
+				var self = this;
+				console.log('init_wysiwyg');
+				if(self.enabled = true){
+					
+					if( typeof ($.fn.wysiwyg) === 'undefined'){
+						console.log('wysiwyg undefined');
+						return;
+					}
+					console.log('wysiwyg');
+					
+					
+					function init_wysiwyg() {
+						if( typeof ($.fn.wysiwyg) === 'undefined'){ return; }
+						// console.log('init_wysiwyg');	
+						function init_ToolbarBootstrapBindings() {
+						  var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
+							  'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
+							  'Times New Roman', 'Verdana'
+							],
+							fontTarget = $('[title=Font]').siblings('.dropdown-menu');
+						  $.each(fonts, function(idx, fontName) {
+							fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
+						  });
+						  $('a[title]').tooltip({
+							container: 'body'
+						  });
+						  $('.dropdown-menu input').click(function() {
+							  return false;
+							})
+							.change(function() {
+							  $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');
+							})
+							.keydown('esc', function() {
+							  this.value = '';
+							  $(this).change();
+							});
+
+						  $('[data-role=magic-overlay]').each(function() {
+							var overlay = $(this),
+							  target = $(overlay.data('target'));
+							overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
+						  });
+
+						  if ("onwebkitspeechchange" in document.createElement("input")) {
+							var editorOffset = $('#editor').offset();
+
+							$('.voiceBtn').css('position', 'absolute').offset({
+							  top: editorOffset.top,
+							  left: editorOffset.left + $('#editor').innerWidth() - 35
+							});
+						  } else {
+							$('.voiceBtn').hide();
+						  }
+						}
+
+						function showErrorAlert(reason, detail) {
+						  var msg = '';
+						  if (reason === 'unsupported-file-type') {
+							msg = "Unsupported format " + detail;
+						  } else {
+							console.log("error uploading file", reason, detail);
+						  }
+						  $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
+							'<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
+						}
+
+					   $('.editor-wrapper').each(function(){
+							var id = $(this).attr('id');	//editor-one
+							
+							$(this).wysiwyg({
+								toolbarSelector: '[data-target="#' + id + '"]',
+								fileUploadError: showErrorAlert
+							});	
+						});
+				 
+						
+						window.prettyPrint;
+						prettyPrint();
+					
+					};
+					init_wysiwyg();
+					//self.createEditor();
+				}
+
+			},
+			createEditor(){
+				var self = this;
+				console.log('createEditor');
+				$('#editor-compose').wysiwyg({
+					//toolbarSelector: '[data-target="#' + 'editor' + '"]',
+					//fileUploadError: showErrorAlert
+				});
+				console.log("Creado...");
+				/*
+					
+					self.elements = $('#editor');
+					console.log(self.elements);
+					console.log(self.elements.length);
+					
+					var i;
+					for (i = 0; i < self.elements.length; i++) {
+						console.log('elements : ' + i, self.elements[i]);
+						// text += cars[i] + "<br>";
+					}
+				var id = $(a).attr('id');	//editor-one
+				
+				$(a).wysiwyg({
+					toolbarSelector: '[data-target="#' + id + '"]',
+					fileUploadError: showErrorAlert
+				});	*/
 			}
 		},
 	}).$mount('#compose-inbox');

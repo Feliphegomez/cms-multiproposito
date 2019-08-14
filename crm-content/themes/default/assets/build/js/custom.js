@@ -5002,8 +5002,6 @@ if (typeof NProgress != 'undefined') {
 			}
 	   
 		}  
-	   
-	   
 	$(document).ready(function() {
 				
 		init_sparklines();
