@@ -86,8 +86,6 @@
 				</div>
 				<div class="col-md-12">
 					<!-- // <h4> {{ conversation.replys[0].user.names }} {{ replys[0].user.surname }}</h4> -->
-					
-			
 					<template class="inbox-body" v-for="(item, a) in conversation.replys">
 						<div class="x_content" style="overflow:auto;">
 							<div class="sender-info">
