@@ -5,8 +5,6 @@
 <!-- Custom Theme Scripts -->
 <script src="<?php echo $this->urlNav; ?>/assets/build/js/custom.js"></script>
 <script>
-<?php if(ControladorBase::validatePermission("MiCuenta", "inbox") == true && $myInfo != null){ ?>
-<?php } ?>
 
 <?php if(ControladorBase::validatePermission("PQRSF", "navbar_legal") == true){ ?>
 	var NotificationsLegalNavbarTop = new Vue({

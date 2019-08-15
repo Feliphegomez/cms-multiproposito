@@ -39,13 +39,14 @@
 					<ul class="dropdown-menu list-unstyled msg_list" role="menu">
 						<template v-if="records.length > 0">
 							<li v-for="(inbox, i) in records">
-								<a v-bind:href="'/index.php?controller=Usuarios&action=inbox#/conversation/' + inbox.conversation.id + '/view'" v-if="inbox.conversation.conversations_replys[0]">
+								<a v-bind:href="'/index.php?controller=Usuarios&action=inbox#/conversation/' + inbox.id + '/view'" v-if="inbox.conversations_replys[0]">
+									<span class="image"><img :src="getAvatar(inbox.conversations_replys[0].user)" alt="Profile Image"></span>
 									<span>
-										<span><b>{{ inbox.conversation.conversations_replys[0].user.names }} </b></span>
-										<span class="time">{{ inbox.conversation.conversations_replys[0].created }}</span>
+										<span><b>{{ inbox.conversations_replys[0].user.names }} </b></span>
+										<span class="time">{{ inbox.updated }}</span>
 									</span>
 									<span class="message">
-										{{ inbox.conversation.conversations_replys[0].reply.slice(0,150) }}...
+										{{ inbox.conversations_replys[0].reply.text.replace(/<\/?[^>]+(>|$)/g, '').slice(0,25) }}...
 										<!-- <br><b>Estado PQRS: </b> {{ inbox.status.name }} -->
 									</span>
 								</a>
@@ -242,7 +243,7 @@
 				console.log('createConversation');
 				
 				api.post('/records/conversations', {
-					status: 0
+					user: self.session.user.id
 				})
 				.then(r => {
 					console.log('then', r);
@@ -339,45 +340,85 @@
 							// 'conversations.status,eq,2'
 						],
 						join: [
-							'conversations',
-							'conversations,conversations_replys',
-							'conversations,conversations_replys,users_login',
-						]
+							// 'conversations',
+							// 'conversations,conversations_replys',
+							// 'conversations,conversations_replys,users',
+						],
+						order: 'id,desc'
 					}
 				})
-				.then(response => {
-					self.validateResult(response);
-				})
-				.catch(e => {
-					// Capturamos los errores
-					self.validateResult(e);
-				});
+				.then(response => { self.validateResult(response); })
+				.catch(e => { self.validateResult(e.response); });
 			},
-			getLink(pqrs){
+			validateResult(a){
 				var self = this;
-				action = '';
-				pqrs.id = (pqrs.id != undefined && pqrs.id > 0) ? pqrs.id : 0;
-				typeId = (pqrs.type.id != undefined && pqrs.type.id > 0) ? pqrs.type.id : ((pqrs.type != undefined && pqrs.type > 0) ? pqrs.type : 0);
-				return '/index.php?controller=Usuarios&action=inbox&type=' + typeId + '&id=' + pqrs.id;
-			},
-			validateResult(response){
-				var self = this;
-				if (response.data != undefined && response.data.records != undefined){
-					self.records = [];
-					self.count = 0;
-					if(response.data.records[0]){
-						response.data.records.forEach(item => {
-								self.records.push(item);
-							if(item.status === 2){
-								self.count++;
+				if (a.data != undefined && a.data.records != undefined){
+					if(a.data.records[0]){
+						ids = [];
+						a.data.records.forEach(item => {
+							ids.push(item.conversation);
+						});
+						// api.get('/records/conversations/' + ids.join(','), {
+						api.get('/records/conversations/', {
+							params: {
+								filter: [
+									'id,in,' + ids.join(',')
+								],
+								join: [
+									'conversations_replys',
+									'conversations_replys,users',
+								],
+								order: 'updated,desc'
 							}
+						})
+						.then(response => { self.validateMessages(response); })
+						.catch(e => { self.validateMessages(e.response); });
+					}
+				}
+			},
+			validateMessages(response){
+				var self = this;
+				self.records = [];
+				self.count = 0;
+				if (response.data != undefined){
+					if(response.data.records.length > 0){
+						response.data.records.forEach(item => {
+							item.conversations_replys.forEach(function(a){
+								a.reply = JSON.parse(a.reply);
+							});
+							const now = new Date();
+							const epochTime = new Date(item.updated);
+							isToday = (now.getDate() === epochTime.getDate() && now.getMonth() === epochTime.getMonth() && now.getFullYear() === epochTime.getFullYear()) ? true : false;
+							
+							if(isToday === true){
+								horas = now.getHours() - epochTime.getHours();	
+								if(horas >= 1){
+									// console.log('horas:', horas);.
+									item.updated = 'Hace ' + horas + ' hora(s)';
+								} else if(horas < 1){
+									minutos = now.getMinutes() - epochTime.getMinutes();
+									// console.log('minutos:', minutos);
+									item.updated = 'Hace ' + minutos + ' minuto(s)';
+								}
+							}
+							self.records.push(item);
+							if(item.status === 2){ self.count++; }
 						});
 					} else {
-						self.searchBox.errorText = "Esta queja no fue encontrada";
+						self.searchBox.errorText = "No hay mensajes";
 					}
 				} else {
 					 console.log('Error: consulta'); 
 					 console.log(response.data); 
+				}
+			},
+			getAvatar(user){
+				var self = this;
+				isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
+				if(isAvatar == true){
+					return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
+				}else{
+					return "/crm-content/uploads/avatar001.jpg";
 				}
 			},
 		},
