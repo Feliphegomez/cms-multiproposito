@@ -5,6 +5,5 @@
  *
  * ******************************/
 
-require_once "C&CM/autoload.php";
-$home = new AppBase();
-$home->runSite();
+require_once "C&CM/config/settings.php";
+require_once folder_data . '/core/AppBase.php';
