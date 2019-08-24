@@ -14,6 +14,7 @@ define('TBL_OPTIONS', 'options');
 define('TBL_MENUS', 'menus');
 define('TBL_MENUS_ITEMS', 'menus_items');
 define('TBL_MEDIA_FILES', 'media');
+define('TBL_REQUEST_TYPES', 'requests_types');
 /* TABLAS */
 
 

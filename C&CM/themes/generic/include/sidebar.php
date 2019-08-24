@@ -1,18 +1,19 @@
 <div class="col-md-3 left_col">
 	<div class="left_col scroll-view">
 		<div class="navbar nav_title" style="border: 0;">
-			<a href="/" class="site_title"><i class="<?php echo $this->page->icon_default; ?>"></i> <span><?php echo $this->page->title_sm; ?></span></a>
+			<a href="/index.html" class="site_title"><i class="<?php echo $this->page->icon_default; ?>"></i> <span><?php echo $this->page->title_sm; ?></span></a>
 		</div>
 		<div class="clearfix"></div>
 		<!-- menu profile quick info -->
 		<?php if(isUser()){ ?>
 			<div class="profile clearfix">
 				<div class="profile_pic">
-					<img src="images/img.jpg" alt="..." class="img-circle profile_img">
+					<img src="<?php echo ($this->myUser->avatar == null) ? IMAGE_DEFAULT : $this->myUser->avatar; ?>" alt="..." class="img-circle profile_img">
 				</div>
 				<div class="profile_info">
 					<span>Bienvenid@,</span>
-					<h2><?php #echo $this->getUserNames(); ?> <?php #echo $this->getUserSurname(); ?></h2>
+					<h2><?php echo "{$this->myUser->names} {$this->myUser->surname}"; ?></h2>
+					
 				</div>
 			</div>
 		<?php } ?>

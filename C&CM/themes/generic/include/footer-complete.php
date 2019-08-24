@@ -1,3 +1,5 @@
+
+
 <!-- FOOTER FROM -->
 <!-- FastClick -->
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/fastclick/lib/fastclick.js"></script>
@@ -62,11 +64,6 @@
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery-knob/dist/jquery.knob.min.js"></script>
 <!-- Cropper -->
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/cropper/dist/cropper.min.js"></script>
-<!-- validator -->
-<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/validator/validator.js"></script>
-<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery-validation/jquery.validate.js"></script>
-<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootbox/bootbox.min.js"></script>
-<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootbox/bootbox.locales.min.js"></script>
 <!-- Datatables -->
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>

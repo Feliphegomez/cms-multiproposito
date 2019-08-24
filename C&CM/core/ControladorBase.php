@@ -17,6 +17,7 @@ class ControladorBase{
 	public $files;
 	public $page;
 	public $api;
+	public $myUser;
 	
     public function __construct() {
         require_once folder_data . '/core/Conectar.php';
@@ -50,6 +51,7 @@ class ControladorBase{
 		$this->put = isset($_PUT) ? $_PUT : null;
 		$this->delete = isset($_DELETE) ? $_DELETE : null;
 		$this->files = isset($_FILES) ? $_FILES : null;
+		$this->myUser = isset($_SESSION['user']) ? json_decode(json_encode($_SESSION['user'])) : json_decode("{}");
 		
 		$this->page = new stdClass();
 		$this->page->title = TITLE_LG;

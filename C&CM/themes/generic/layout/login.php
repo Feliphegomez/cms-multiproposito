@@ -39,12 +39,12 @@ if(
 									<br />
 									<div>
 										<h1><i class="fa fa-paw"></i> <?php echo TITLE_MD; ?></h1>
-										<p><?php echo TITLE_SM; ?> | Developer by <a href="https://github.com/Feliphegomez">FelipheGomez</a></p>
+										<p><?php echo TITLE_MD  . " - " . getPowerBy(); ?></p>
 									</div>
 								</div>
 						<?php } else { ?>
 							Espere mientras lo redireccionamos...
-							<meta http-equiv="Refresh" content="3; url=/">
+							<meta http-equiv="Refresh" content="1; url=/index.html">
 						<?php } ?>
 					</form>
 			</section>

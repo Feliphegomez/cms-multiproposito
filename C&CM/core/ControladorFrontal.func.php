@@ -41,8 +41,12 @@ function lanzarAccion($controllerObj){
     }
 }
 
-function isUser(){
-	return (!isset($_SESSION) || !isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) ? false : true;
+function isUser($redirect=false){
+	if($redirect === false){
+		return (!isset($_SESSION) || !isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) ? false : true;
+	}else{
+		return (!isset($_SESSION) || !isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) ? "<meta http-equiv=\"Refresh\" content=\"0; url=/index.html\">" : "";
+	}
 }
 
 
@@ -167,6 +171,10 @@ function validatePermission($adapter, $module, $action){
 			return (isset($p->{$module}->{$action}) && $p->{$module}->{$action} == true) ? true : false;
 		}
 	}
+}
+
+function getPowerBy(){
+	return "Power by <a href=\"https://github.com/Feliphegomez\">Feliphegomez</a>";
 }
 	
 class API_CLIENT {

@@ -18,7 +18,7 @@
 				</div>
 				<footer>
 					<div class="pull-right">
-						Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+						<?php echo TITLE_MD  . " - " . getPowerBy(); ?>
 					</div>
 					<div class="clearfix"></div>
 				</footer>

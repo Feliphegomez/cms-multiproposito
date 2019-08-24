@@ -2,7 +2,7 @@
 <div class="" id="micuenta-inbox">
 	<div class="page-title">
 		<div class="title_left">
-			<h3>MiCuenta <small>Inbox</small></h3>
+			<h3>Mi Cuenta <small>Bandeja de entrada</small></h3>
 		</div>
 	</div>
 	<div class="clearfix"></div>
@@ -10,11 +10,6 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="x_panel">
-				<div class="x_title">
-					<h2>Inbox <small>Bandeja de mensajes</small></h2>
-					<div class="clearfix"></div>
-				</div>
-				
 				<div class="x_content">
 					<div class="row">
 						<div class="col-sm-3 mail_list_column">
