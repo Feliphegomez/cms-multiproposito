@@ -1,2 +1,4 @@
-crm-admin/config/database.php
-C&CM/*
+00001/*
+uploads/*
+C&CM/config/database.php
+C&CM/config/api.php
