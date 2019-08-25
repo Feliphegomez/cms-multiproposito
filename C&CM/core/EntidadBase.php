@@ -116,6 +116,11 @@ class EntidadBase{
         return $this->db;
     }
      
+    public function getAllUser($user_id=0){
+        $query=$this->db->query("SELECT * FROM users_{$this->table} WHERE user IN ({$user_id}) ORDER BY id DESC");
+        return $this->FetchObject($query);
+    }     
+     
     public function getAll(){
         $query=$this->db->query("SELECT * FROM $this->table ORDER BY id DESC");
         return $this->FetchObject($query);

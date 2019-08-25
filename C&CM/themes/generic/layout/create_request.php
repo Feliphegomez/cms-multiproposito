@@ -141,14 +141,14 @@ var Create = Vue.extend({
 				action: "create",
 				tabla: "requests",
 				fields: {
-					spanTitle001: {
-						label: "Informacion del solicitante y datos",
-						typeInput: "section",
-					},
 					type: {
 						show: false,
 						required: true,
-						value: 0
+						value: this.$route.params.request_type
+					},
+					spanTitle001: {
+						label: "Infomacion de contacto",
+						typeInput: "section",
 					},
 					identification_type: {
 						label: "Tipo de documento de identidad",
@@ -175,28 +175,6 @@ var Create = Vue.extend({
 						typeInput: "text",
 						value: "<?php echo $myInfo->surname; ?>"
 					},
-					department: {
-						label: "Departamento",
-						required: true,
-						typeInput: "select",
-						options: "geo_departments"
-					},
-					city: {
-						label: "Ciudad",
-						required: true,
-						typeInput: "select",
-						options: "geo_citys"
-					},
-					address: {
-						label: "Dirección",
-						required: true,
-						typeInput: "textarea"
-					},
-					address_ref: {
-						label: "Puntos de referencia (Dirección)",
-						required: false,
-						typeInput: "textarea"
-					},
 					email: {
 						label: "Correo electronico",
 						required: true,
@@ -215,112 +193,63 @@ var Create = Vue.extend({
 						typeInput: "text",
 						value: "<?php echo $myInfo->mobile	; ?>"
 					},
+					spanTitle003: {
+						label: "Infomacion del servicio",
+						typeInput: "section",
+					},
+					department: {
+						label: "Departamento",
+						required: true,
+						typeInput: "select",
+						options: "geo_departments"
+					},
+					city: {
+						label: "Ciudad",
+						required: true,
+						typeInput: "select",
+						options: "geo_citys"
+					},
+					address:{
+						label: "Dirección",
+						required: true,
+						typeInput: "textarea"
+					},
+					points_reference: {
+						label: "Puntos de referencia (Dirección)",
+						required: false,
+						typeInput: "textarea"
+					},
 					request: {
 						label: "Cuentanos que deseas...",
 						required: true,
 						typeInput: "textarea"
 					},
-					/*
-					spanTitle003: {
-						label: "Objeto de la reclamo",
-						typeInput: "section",
-					},
-					petition: {
-						label: "Objeto de la reclamo",
-						required: true,
-						typeInput: "textarea"
-					},
-					spanTitle002: {
-						label: "Relacion de los hechos",
-						typeInput: "section",
-					},
-					event_occurred: {
-						label: "Relacion de los Hechos",
-						required: true,
-						typeInput: "textarea",
-						valueDataDynamic: {
-							fields: {
-								"lugar": {
-									label: "Lugar de los hechos",
-									required: true,
-									typeInput: "text"
-								},
-								"direccion": {
-									label: "Dirección de los hechos",
-									required: true,
-									typeInput: "textarea"
-								},
-								"daño": {
-									label: "Daño causado",
-									required: true,
-									typeInput: "textarea"
-								},
-								"masinfo": {
-									label: "Información Adicional",
-									required: true,
-									typeInput: "textarea"
-								}
-							},
-							result: [
-								[
-									"Lugar de los hechos: ",
-									"lugar",
-									'\n'
-								],
-								[
-									"Dirección de los hechos: ",
-									"direccion",
-									'\n'
-								],
-								[
-									"Daño: ",
-									"daño",
-									'\n'
-								],
-								[
-									"Información Adicional: ",
-									"masinfo",
-								]
-							]
-						},
-					},
-					event_date: {
-						label: "Fecha y Hora de los hechos",
-						required: true,
-						typeInput: "datetime",
-						valueDataDynamic: {
-							fields: {
-								"fecha": {
-									label: "Fecha de los hechos",
-									required: true,
-									typeInput: "date"
-								},
-								"hora": {
-									label: "Hora de los hechos",
-									required: true,
-									typeInput: "time"
-								}
-							},
-							result: [ [ "fecha", " ", "hora" ] ]
-						},
-					},
-					*/
 				},
 				callEvent(resultado){
 					if(resultado.id != undefined && resultado.id > 0){
-						bootbox.alert({
-							message: "<h1>Muy Bien!</h1><br>La PQRs se a creado y enviado con éxito, el # del Radicado es <h5>" + resultado.recordId + "</h5>",
-							callback: function () {
-								// console.log('This was logged in the callback!');
-								location.reload();
-							}
-						})
+						api.post('/records/users_requests', {
+							user: '<?php echo $myInfo->id; ?>',
+							request: resultado.id
+						}).then(function (response) {
+							bootbox.alert({
+								message: "<h1>Muy Bien!</h1><br>La solicitud se a creado y enviado con éxito, el # del Radicado es <h5>" + resultado.recordId + "</h5>",
+								callback: function () {
+									location.reload();
+								}
+							})
+						}).catch(function (error) {
+							console.log(error);
+							console.log(error.response);
+						});
 					}
 				}
 			}
 		};
 	},
-	
+	created(){
+		var self = this;
+		console.log(self.$route.params.request_type);
+	}
 });
 
 var Home = Vue.extend({

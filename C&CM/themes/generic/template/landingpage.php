@@ -16,10 +16,11 @@
 		<style>
 		body {
 			background: #000;
-			overflow: hidden;
+			min-height: calc(100vh);
+			overflow-x: hidden;
 		}
 		.mid_center {
-			width: calc(50vw);
+			/* width: calc(50vw); */
 		}
 		.video-section .pattern-overlay {
 		min-height: calc(25vh);

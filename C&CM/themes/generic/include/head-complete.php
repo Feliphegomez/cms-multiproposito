@@ -729,31 +729,34 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 				if(z.status === 200){
 					if(Number(z.data) > 0 && Number(z.data) != 'NaN'){
 						radID = (z.data);
+						rrr.id = radID;
 						api.get('/records/' + self.table + '/' + radID)
 						.then(function (a) {
 							console.log('Existe a');
 							if(a.data){
-								console.log('Existe a.data');
-								radSeparate = a.data.created.split(" ");
-								if(radSeparate[0] != undefined){
-									console.log('Existe radSeparate');
-									radFecha = radSeparate[0].split("-");
-									if(radFecha.length === 3){
-										console.log('Existe Fecha');
-										rrr.recordId = radFecha[0] + radFecha[1] + radFecha[2] + self.zfill(radID, 5);
-										rrr.recordDateText = radFecha[0] + radFecha[1] + radFecha[2];
-										rrr.data = a.data;
-										rrr.id = radID;
-										self.callEvent(rrr);
+								console.log('Existe a.data', a.data);
+								if(a.data.created !== undefined){
+									radSeparate = a.data.created.split(" ");
+									if(radSeparate[0] != undefined){
+										console.log('Existe radSeparate');
+										radFecha = radSeparate[0].split("-");
+										if(radFecha.length === 3){
+											console.log('Existe Fecha');
+											rrr.recordId = radFecha[0] + radFecha[1] + radFecha[2] + self.zfill(radID, 5);
+											rrr.recordDateText = radFecha[0] + radFecha[1] + radFecha[2];
+											rrr.data = a.data;
+										}
 									}
+								}else{
+									console.log('no existe a.data.created', a.data);
 								}
+								self.callEvent(rrr);
 							}
-						})
-						
-						
+						});						
 					}
 				}else{
 					console.log("Console ERROR:");
+					self.callEvent(rrr);
 				}
 			}
 			
