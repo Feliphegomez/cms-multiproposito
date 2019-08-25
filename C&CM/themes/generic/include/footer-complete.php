@@ -95,5 +95,8 @@
 <!-- Dropzone.js -->
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/dropzone/dist/min/dropzone.min.js"></script>
 
+<!-- ECharts -->
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/echarts/dist/echarts.min.js"></script>
+
 <!-- Custom Theme Scripts -->
 <script src="<?php echo $this->getDirTheme(); ?>/assets/build/js/custom.js"></script>
