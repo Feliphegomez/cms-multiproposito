@@ -27,6 +27,11 @@ class ControladorBase{
 		require_once folder_data . '/config/database.php';
 		$this->api = new stdClass();
 		$this->api->configData = require_once folder_data . '/config/api.php';
+		if(isUser()){
+			$this->api->configData = require_once folder_data . '/config/api.php';
+		}else{
+			$this->api->configData = require_once folder_data . '/config/api-public.php';
+		}
 		$this->api->config = new FelipheGomez\PhpCrudApi\Config($this->api->configData);
 		$this->api->request = FelipheGomez\PhpCrudApi\RequestFactory::fromGlobals();
 		$this->api->api = new FelipheGomez\PhpCrudApi\Api($this->api->config);
@@ -46,6 +51,7 @@ class ControladorBase{
 	
     //Plugins y funcionalidades
 	private function runPage(){
+		if (session_status() == PHP_SESSION_NONE) { session_start(); }
 		$this->get = isset($_GET) ? $_GET : null;
 		$this->post = isset($_POST) ? $_POST : null;
 		$this->put = isset($_PUT) ? $_PUT : null;

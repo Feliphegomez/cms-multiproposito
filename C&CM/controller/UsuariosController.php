@@ -18,7 +18,7 @@ class UsuariosController extends ControladorBase{
         $allusers = $usuario->getAll();	
         
         //Cargamos la vista index y le pasamos valores
-        $this->view("users",array(
+        $this->view("my_profile",array(
             "classe"=>$usuario,
             "allusers"=>$allusers,
             "Hola"    =>"Soy Víctor Robles"

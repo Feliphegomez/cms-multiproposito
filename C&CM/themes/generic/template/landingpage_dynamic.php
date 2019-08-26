@@ -11,20 +11,20 @@
 
 	<link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,600,700&display=swap&subset=latin-ext,vietnamese" rel="stylesheet">
 	<link href='//fonts.googleapis.com/css?family=Buenard:700' rel='stylesheet' type='text/css'>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.mb.YTPlayer/3.2.10/jquery.mb.YTPlayer.js"></script>
 
 		<style>
 		body {
 			min-height: calc(100vh);
 			overflow-x: hidden;
-			background-image: url(<?php echo $this->getDirTheme(); ?>/assets/images/bg-1.jpg);
+			background-image: url(<?php echo $this->getDirTheme(); ?>/assets/images/bg-2.jpg);
 			background-size: cover;
 			background-position: center;
 			background-attachment: fixed;
 			background-repeat: no-repeat;
-			
 		}
 		.bg-dark {
-			/* width: calc(50vw); */
+			/* width: calc(85vw); */
 			background-color: rgba(0, 0, 0, 0.4);
 			border-radius: calc(3vw);
 		}
@@ -106,6 +106,9 @@
 			margin-bottom: 10px;
 			font-weight: 500;
 		}
+		span.section {
+			color: #CCC;
+		}
 		</style>
 
 		<script>
@@ -121,50 +124,21 @@
 				<section class="content-section video-section">
 					<div class="pattern-overlay">
 						<!-- // https://www.youtube.com/watch?v=MjviJBZ8Vpo -->
+						<!-- // <a id="bgndVideo" class="player" data-property="{videoURL:'https://www.youtube.com/watch?v=2IulRjQ4gOw',containment:'.video-section', quality:'large', autoPlay:true, mute:true, opacity:1}">bg</a> -->
 						<div class="container">
 							<div class="row">
-								<div class="col-xs-10 col-xs-offset-1">
-									<div class="col-middle">
-												<br>
-												<br>
-										<div class="text-center text-center bg-dark">
-												<br>
-												<br>
-											<!-- // 
-											<h1 class="error-number"><?php echo $title; ?></h1>
-											<h2><?php echo $subtitle; ?></h2>
-											-->
-											<!-- <p>Full authentication is required to access this resource. <a href="#">Report this?</a></p>  style="height:500px;overflow-y:scroll;"-->
-											<div class="">
-												<div><?php echo htmlspecialchars_decode(htmlspecialchars($description)); ?></div>
+								<br><br>
+								<div class="col-xs-10 col-xs-offset-1 bg-dark">
+									<div class="col-middle ">
+										<div class="text-center text-center">
+											<div class="col-sm-12">
+												<?php $this->getPage($vista, $dataView); ?>
 											</div>
-											<?php // $this->getPage($vista, $dataView); ?>
-											<!-- //
-											<div class="row">
-												<div class="col-xl-5 col-lg-5 col-md-12 col-sm-12 col-12">
-													<div class="feature-block-v7 feature-block">
-														<div class="feature-icon text-brand bg-brand-light mb-5">
-															<i class="fas fa-paint-roller"></i>
-														</div>
-														<div class="feature-content">
-															<h2><?php echo $title; ?></h2>
-															<p class="lead"><?php echo $subtitle; ?> </p>
-															<hr class="m-t-30 m-b-30">
-															<div style="height:500px;overflow-y:scroll;"><?php echo htmlspecialchars_decode(htmlspecialchars($description)); ?></div>
-															<a href="#" class="btn btn-rounded btn-outline-primary">Get the app</a>
-														</div>
-													</div>
-												</div>
-												<div class="offset-xl-1 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-													<div class="circle-1"></div>
-													<div class="feature-app-img">
-														<img src="https://jituchauhan.com/quanto/quanto/images/iphone-img-2.png" alt="App Landing Page Template - Quanto">
-													</div>
-												</div>
-											</div>
-											-->
-												<br>
-												<br>
+											<div class="clearfix"></div>
+										</div>
+										<div class="text-right text-right">
+											
+											<div class="clearfix"></div>
 										</div>
 									</div>
 								</div>

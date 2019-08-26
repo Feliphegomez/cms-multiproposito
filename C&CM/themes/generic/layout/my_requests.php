@@ -102,7 +102,7 @@ $myInfo = $this->myUser;
 				<div class="clearfix"></div>
 			</div>
 			<div class="x_content">
-				<div class="col-md-9 col-sm-9 col-xs-12">
+				<div class="col-md-8 col-sm-8 col-xs-12">
 					<ul class="stats-overview">
 						<li>
 							<span class="name"> Estimated budget </span>
@@ -139,7 +139,7 @@ $myInfo = $this->myUser;
 					<br />
 					<!-- // <div id="mainb" style="height:350px;"></div> -->
 					<div>
-						<h4>Recent Activity</h4>
+						<h4>Actividad Reciente</h4>
 						<ul class="messages">
 							<li>
 								<img src="images/img.jpg" class="avatar" alt="Avatar">
@@ -192,7 +192,7 @@ $myInfo = $this->myUser;
 						</ul>
 					</div>
 				</div>
-				<div class="col-md-3 col-sm-3 col-xs-12">
+				<div class="col-md-4 col-sm-4 col-xs-12">
 					<section class="panel">
 						<div class="x_title">
 							<h2>Especificaciones de la solicitud</h2>

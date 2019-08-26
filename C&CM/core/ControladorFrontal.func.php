@@ -45,15 +45,13 @@ function isUser($redirect=false){
 	if($redirect === false){
 		return (!isset($_SESSION) || !isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) ? false : true;
 	}else{
-		return (!isset($_SESSION) || !isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) ? "<meta http-equiv=\"Refresh\" content=\"0; url=/index.html\">" : "";
+		return (!isset($_SESSION) || !isset($_SESSION['user']) || !isset($_SESSION['user']['id'])) ? "<meta http-equiv=\"Refresh\" content=\"0; url=/\">" : "";
 	}
 }
-
 
 function validateSession($simple=false){
 	return (isUser() != true) ? array() : $simple == true && isset($_SESSION['user']) ? $_SESSION['user'] : $_SESSION;
 }
-
 
 function returnParamsUrl($z){
 	$a = '';
@@ -77,7 +75,6 @@ function generateRandomString($length = 10) {
     return $randomString;
 }
 
-
 function urlActual($enable_this_file=false){
 	$protocol = @$_SERVER['HTTP_X_FORWARDED_PROTO'] ?: @$_SERVER['REQUEST_SCHEME'] ?: ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") ? "https" : "http");
 	$port = @intval($_SERVER['HTTP_X_FORWARDED_PORT']) ?: @intval($_SERVER["SERVER_PORT"]) ?: (($protocol === 'https') ? 443 : 80);
@@ -96,7 +93,6 @@ function urlTema(){
 function urlPictureById($id){
 	return "/index.php?controller=Sistema&action=picture&id={$id}";
 }
-
 
 function MenuToUL($datos=null){
 	$r = "";

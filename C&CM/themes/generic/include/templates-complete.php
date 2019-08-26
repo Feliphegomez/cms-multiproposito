@@ -7,7 +7,7 @@
 </style>
 <div id="compose-inbox" class="compose col-md-8 col-xs-11">
 	<div class="compose-header">
-		Nuevo Mensaje para el Equipo Monteverde LTDA
+		<?php echo TITLE_MD; ?> | Contactar
 		<button type="button" class="close compose-close">
 			<span>×</span>
 		</button>
@@ -18,65 +18,7 @@
 		<template  v-if="!session.user || !session.user.id">
 			<h4>¿Deseas contactarnos?</h4>
 			<div class="compose-body">
-				<div class="form-horizontal form-label-left input_mask">
-
-				  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control has-feedback-left" id="inputSuccess2" placeholder="Nombres">
-					<span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-				  </div>
-
-				  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control" id="inputSuccess3" placeholder="Primer Apellido">
-					<span class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
-				  </div>
-
-				  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control has-feedback-left" id="inputSuccess4" placeholder="Segundo Apellido">
-					<span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
-				  </div>
-
-				  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control" id="inputSuccess5" placeholder="email">
-					<span class="fa fa-envelope form-control-feedback right" aria-hidden="true"></span>
-				  </div>
-
-				  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control" id="inputSuccess5" placeholder="Phone">
-					<span class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
-				  </div>
-
-				  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="text" class="form-control" id="inputSuccess5" placeholder="mobile">
-					<span class="fa fa-mobile form-control-feedback right" aria-hidden="true"></span>
-				  </div>
-
-				  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="password" class="form-control" id="inputSuccess5" placeholder="Escriba una contraseña">
-					<span class="fa fa-key form-control-feedback right" aria-hidden="true"></span>
-				  </div>
-
-				  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-					<input type="password" class="form-control" id="inputSuccess5" placeholder="Verifique su contraseña">
-					<span class="fa fa-key form-control-feedback right" aria-hidden="true"></span>
-				  </div>
-
-				  <div class="col-md-12 col-sm-12 col-xs-12 form-group">
-					<div class="checkbox">
-						<label>
-							<input type="checkbox" class="flat"> Confirmo que leí y Acepto los <a>terminos y condiciones</a> y las <a>póliticas</a> del portal.
-						</label>
-					</div>
-				  </div>
-				  <div class="ln_solid"></div>
-				</div>
-			</div>
-			<div class="compose-footer">
-				<button type="button" class="btn btn-md btn-default" @click="slideToggle">
-					Cerrar
-				</button>
-				<button class="btn btn-md btn-success" type="button">
-					Entiendo
-				</button>
+				<forms-create-dynamic :options_form="thisForm"></forms-create-dynamic>
 			</div>
 		</template>
 		<template  v-else>
@@ -147,5 +89,11 @@
 				<button @click="sendMessage" id="send" class="btn btn-sm btn-success" type="button">Enviar Mensaje</button>
 			</div>
 		</template>
+			
+		<div class="compose-footer">
+			<button type="button" class="btn btn-md btn-default" @click="slideToggle">
+				Cerrar
+			</button>
+		</div>
 	</template>
 </div>

@@ -27,13 +27,14 @@ if(
 									<input type="hidden" name="controller" value="Login">
 									<input type="hidden" name="view" value="login">
 									<input type="submit" value="Ingresar" class="btn btn-default">
-									<a class="reset_pass" href="<?php echo $helper->url('Login', 'create'); ?>">¿Nuevo en <?php echo TITLE_XS; ?>?</a>
+									<a class="reset_pass" href="/registro">¿Nuevo en <?php echo TITLE_XS; ?>?</a>
 								</div>
 								<div class="clearfix"></div>
 								
 								<div class="separator">
-									<p class="change_link">Olvidaste tu contraseña?
-										<a href="#" class="to_register"> Crear Cuenta </a>
+									<p class="change_link">
+										Olvidaste tu contraseña?
+										<a href="#" class="to_register"> Recuperar </a>
 									</p>
 									<div class="clearfix"></div>
 									<br />
