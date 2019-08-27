@@ -141,6 +141,30 @@ $myInfo = $this->myUser;
 					<div>
 						<h4>Actividad Reciente</h4>
 						<ul class="messages">
+							<li v-for="activity in record.requests_activity">
+								<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+								<div class="message_date">
+									<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
+									<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
+								</div>
+								<div class="message_wrapper">
+									<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
+									<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
+									<br />
+									<template v-if="activity.type == 'attachment'">
+										<p class="url" v-for="attachment in activity.info.attachment">
+											<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+											<!-- //
+											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
+											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
+											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
+											-->
+											<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
+										</p>
+									</template>
+								</div>
+							</li>
+							<!-- //
 							<li>
 								<img src="images/img.jpg" class="avatar" alt="Avatar">
 								<div class="message_date">
@@ -189,6 +213,7 @@ $myInfo = $this->myUser;
 									</p>
 								</div>
 							</li>
+							-->
 						</ul>
 					</div>
 				</div>
@@ -342,6 +367,10 @@ var MyRequestsView = Vue.extend({
 	},
 	methods: {
 		zfill: zfill,
+		returnMouthText(mouth){
+			array = [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ];
+			return array[mouth-1];
+		},
 		getRadicado(item){
 			var self = this;
 			radSeparate = item.created.split(" ");
@@ -365,7 +394,9 @@ var MyRequestsView = Vue.extend({
 						'requests,requests_types',
 						'requests,requests_status',
 						'requests,requests_team',
-						'requests,requests_team,users'
+						'requests,requests_team,users',
+						'requests,requests_activity',
+						'requests,requests_activity,users',
 					]
 				}
 			})
@@ -376,6 +407,9 @@ var MyRequestsView = Vue.extend({
 			var self = this;
 			if (r.data.records[0] != undefined){
 				// console.log(r.data);
+				r.data.records[0].request.requests_activity.forEach(function(x){
+					x.info = JSON.parse(x.info);
+				});
 				self.record = r.data.records[0].request;
 			} else {
 				 console.log('Error: consulta validateResult'); 

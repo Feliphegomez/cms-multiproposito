@@ -11,7 +11,10 @@
 				<forms-create-dynamic :options_form="thisForm"></forms-create-dynamic>
 			</div>
 		</div>
-		<a class="btn btn-default" href="/">Regresar</a>
+		<div class="big-button">
+			<a class="btn btn-default" href="/">Volver al inicio</a>
+			<div class="clearfix"></div>
+		</div>
 		<div class="clearfix"></div>
 	</div>
 </div>

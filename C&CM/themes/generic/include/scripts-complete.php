@@ -261,113 +261,117 @@ var ComposeInbox = new Vue({
 }).$mount('#compose-inbox');
 
 <?php if(isUser()){ ?>
-	var NotificationsInboxNavbarTop = new Vue({
-		data(){
-			return {
-				count: 0,
-				conversations: [],
-				records: []
-			};
-		},
-		mounted(){
-			var self = this;
-			self.load();
-		},
-		methods: {
-			load(){
-				var self = this;
-				api.get('/records/conversations_groups', {
-					params: {
-						filter: [
-							'user,eq,<?php echo ($myInfo['id']); ?>',
-							// 'conversations.status,eq,2'
-						],
-						join: [
-							// 'conversations',
-							// 'conversations,conversations_replys',
-							// 'conversations,conversations_replys,users',
-						],
-						order: 'id,desc'
-					}
-				})
-				.then(response => { self.validateResult(response); })
-				.catch(e => { self.validateResult(e.response); });
-			},
-			validateResult(a){
-				var self = this;
-				try{
-					if (a.data != undefined && a.data.records != undefined){
-						self.conversations = [];
-						a.data.records.forEach(item => {
-							self.conversations.push(item.conversation);
-						});
-						if(self.conversations.length > 0){
-							api.get('/records/conversations/', {
-								params: {
-									filter: [
-										'id,in,' + self.conversations.join(',')
-									],
-									join: [
-										'conversations_replys',
-										'conversations_replys,users'
-									],
-									order: 'updated,desc'
-								}
-							})
-							.then(response => { self.validateConversations(response); })
-							.catch(e => { self.validateConversations(e.response); });
-						}
-					}
-				}catch(e){
-					console.log(e);
-					console.log(e.response);	
-				};
-			},
-			validateConversations(response){
-				var self = this;
-				self.records = [];
-				self.count = 0;
-				try{
-					if (response.data != undefined){
-						
-						if (response.data.records.length > 0){
-							response.data.records.forEach(item => {
-								item.conversations_replys.forEach(function(a){
-									a.reply = JSON.parse(a.reply);
-								});
-								
-								const epochTime = new Date(item.updated);
-								item.updated = epochTime.toConversationsFormat();
-								
-								
-								
-								self.records.push(item);
-								if (item.status === 3){ self.count++; }
-							});
-						} else {
-							self.searchBox.errorText = "No hay mensajes";
-						}
-					} 
-				}catch(e){
-					console.log(response);
-					console.log(e);
-					console.log(e.response);	
-				};
-				
-			},
-			getAvatar(user){
-				var self = this;
-				isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
-				if(isAvatar == true){
-					return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
-				}else{
-					return "/crm-content/uploads/avatar001.jpg";
-				}
-			},
-		},
-	}).$mount('#navbartop-notifications-inbox');
-	<?php if(isUser() && validatePermission($this->adapter, 'SAC', 'inbox')){ ?>
+	<?php if(validatePermission($this->adapter, 'Usuarios', 'inbox')){ ?>
 		var NotificationsInboxNavbarTop = new Vue({
+			data(){
+				return {
+					count: 0,
+					conversations: [],
+					records: []
+				};
+			},
+			mounted(){
+				var self = this;
+				self.load();
+			},
+			methods: {
+				load(){
+					var self = this;
+					api.get('/records/conversations_groups', {
+						params: {
+							filter: [
+								'user,eq,<?php echo ($myInfo['id']); ?>',
+								// 'conversations.status,eq,2'
+							],
+							join: [
+								// 'conversations',
+								// 'conversations,conversations_replys',
+								// 'conversations,conversations_replys,users',
+							],
+							order: 'id,desc'
+						}
+					})
+					.then(response => { self.validateResult(response); })
+					.catch(e => { self.validateResult(e.response); });
+				},
+				validateResult(a){
+					var self = this;
+					try{
+						if (a.data != undefined && a.data.records != undefined){
+							self.conversations = [];
+							a.data.records.forEach(item => {
+								self.conversations.push(item.conversation);
+							});
+							if(self.conversations.length > 0){
+								api.get('/records/conversations/', {
+									params: {
+										filter: [
+											'id,in,' + self.conversations.join(',')
+										],
+										join: [
+											'conversations_replys',
+											'conversations_replys,users'
+										],
+										order: 'updated,desc'
+									}
+								})
+								.then(response => { self.validateConversations(response); })
+								.catch(e => { self.validateConversations(e.response); });
+							}
+						}
+					}catch(e){
+						console.log(e);
+						console.log(e.response);	
+					};
+				},
+				validateConversations(response){
+					var self = this;
+					self.records = [];
+					self.count = 0;
+					try{
+						if (response.data != undefined){
+							
+							if (response.data.records.length > 0){
+								response.data.records.forEach(item => {
+									if(item.conversations_replys.length > 0){
+										item.conversations_replys.forEach(function(a){
+											a.reply = JSON.parse(a.reply);
+										});
+										
+										const epochTime = new Date(item.updated);
+										item.updated = epochTime.toConversationsFormat();
+										
+										
+										
+										self.records.push(item);
+										if (item.status === 3){ self.count++; }
+									}
+								});
+							} else {
+								self.searchBox.errorText = "No hay mensajes";
+							}
+						} 
+					}catch(e){
+						console.log(response);
+						console.log(e);
+						console.log(e.response);	
+					};
+					
+				},
+				getAvatar(user){
+					var self = this;
+					isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
+					if(isAvatar == true){
+						return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
+					}else{
+						return "/crm-content/uploads/avatar001.jpg";
+					}
+				},
+			},
+		}).$mount('#navbartop-notifications-inbox');
+	<?php } ?>
+	<?php if(validatePermission($this->adapter, 'SAC', 'inbox')){ ?>
+		var NotificationsInboxNavbarTopSAC = new Vue({
 			data(){
 				return {
 					count: 0,
@@ -439,16 +443,18 @@ var ComposeInbox = new Vue({
 							console.log('item: response;', response);
 							if (response.data.records.length > 0){
 								response.data.records.forEach(item => {
-									item.conversations_replys.forEach(function(a){
-										a.reply = JSON.parse(a.reply);
-									});
-									
-									const epochTime = new Date(item.updated);
-									item.updated = epochTime.toConversationsFormat();
-									
-									
-									self.records.push(item);
-									if (item.status === 0 || item.status === 1){ self.count++; }
+									if(item.conversations_replys.length > 0){
+										item.conversations_replys.forEach(function(a){
+											a.reply = JSON.parse(a.reply);
+										});
+										
+										const epochTime = new Date(item.updated);
+										item.updated = epochTime.toConversationsFormat();
+										
+										
+										self.records.push(item);
+										if (item.status === 0 || item.status === 1){ self.count++; }
+									}
 								});
 							} else {
 								self.searchBox.errorText = "No hay mensajes";

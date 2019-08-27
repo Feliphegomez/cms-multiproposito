@@ -29,10 +29,14 @@
 								</li>
 								
 								<?php if(isUser() == true){ ?>
-									<?php $this->getInclude('navbar-inbox-user'); ?>
-									<?php if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'SAC', 'inbox')){ ?>
-										<?php $this->getInclude('navbar-inbox-sac'); ?>
-									<?php } ?>
+									<?php 
+										if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'SAC', 'inbox')){
+											$this->getInclude('navbar-inbox-sac');
+										}
+										if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'Usuarios', 'inbox')){
+											$this->getInclude('navbar-inbox-user');
+										}
+									?>
 								<?php } ?>
 							</ul>
 						</nav>

@@ -13,109 +13,163 @@
 	<link href='//fonts.googleapis.com/css?family=Buenard:700' rel='stylesheet' type='text/css'>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.mb.YTPlayer/3.2.10/jquery.mb.YTPlayer.js"></script>
 
-		<style>
-		body {
-			min-height: calc(100vh);
-			overflow-x: hidden;
-			background-image: url(<?php echo $this->getDirTheme(); ?>/assets/images/bg-2.jpg);
-			background-size: cover;
-			background-position: center;
-			background-attachment: fixed;
-			background-repeat: no-repeat;
-		}
-		.bg-dark {
-			/* width: calc(85vw); */
-			background-color: rgba(0, 0, 0, 0.4);
-			border-radius: calc(3vw);
-		}
-		.video-section .pattern-overlay {
-		min-height: calc(25vh);
-		}
-		.video-section h1, .video-section h3{
-		text-align:center;
-		color:#fff;
-		}
-		.video-section h1{
-		font-size:75px;
-		font-family: 'Buenard', serif;
-		font-weight:bold;
-		text-transform: uppercase;
-		margin: 40px auto 0px;
-		text-shadow: 1px 1px 1px #000;
-		-webkit-text-shadow: 1px 1px 1px #000;
-		-moz-text-shadow: 1px 1px 1px #000;
-		}
-		.video-section h3{
+	<style>
+	body {
+		margin:0;
+		color:#edf3ff;
+		background:#c8c8c8;
+		background:url(<?php echo $this->getDirTheme(); ?>/assets/images/bg-2.jpg) fixed;
+		background-size: cover;
+		font:600 16px/18px 'Open Sans',sans-serif;
+	}
+	.big-button .btn {
+		font-size: 14px;
+		line-height: 20px;
+		padding: 14px 28px;
+	}
+	.big-button .btn-success {
+		background: #8ca744;
+		border: 1px solid #ffffff00;
+	}
+	.big-button .btn-success:hover {
+		background: #8ca744;
+		border: 1px solid #ffffff00;
+	}
+	.social-icons {
+		width: 40px;
+		height: 40px;
+		background-color: #8ca744;
+		color: #fff!important;
+		line-height: 25px;
+		border: none;
+	}
+	.social-icons i {
+		color: #FFF;
 		font-size: 18px;
-		font-weight:lighter;
-		margin: 0px auto 15px;
-		}
-		.video-section .buttonBar{display:none;}
-		.player {font-size: 1px;}
-		.mbYTP_wrapper {
-			height: calc(100vh);
-		}
-		.social-icons {
-			width: 40px;
-			height: 40px;
-			background-color: rgba(255,255,255,.3);
-			color: #fff!important;
-			line-height: 25px;
-		}
-		.social-icons i {
-			color: #FFF;
-			font-size: 18px;
-			vertical-align: middle;
-		}
-		.big-button .btn {
-			font-size: 14px;
-			line-height: 20px;
-			padding: 14px 28px;
-		}
-		.big-button .btn-success {
-			background: #8ca744;
-			border: 1px solid #ffffff00;
-		}
-		.big-button .btn-success:hover {
-			background: #8ca744;
-			border: 1px solid #ffffff00;
-		}
-		.big-text h3 {
-			color: #fff;
-			text-align: center;
-			font-size: 21px;
-			margin-bottom: 10px;
-			font-weight: 500;
-			text-transform: uppercase;
-		}
-		.list-services {
-			margin: 0;
-			padding: 0;
-			border: 0;
-			font: inherit;
-			font-size: 100%;
-			vertical-align: baseline;
-		}
-		.list-services h2 {
-			font-family: 'Quicksand', sans-serif;
-			font-weight: 400;
-			font-size: 16px;
-			color: #fff;
-			text-align: center;
-			font-size: 14px;
-			margin-bottom: 10px;
-			font-weight: 500;
-		}
-		span.section {
-			color: #CCC;
-		}
-		</style>
+		vertical-align: middle;
+	}
+	.big-text h3 {
+		color: #fff;
+		text-align: center;
+		font-size: 21px;
+		margin-bottom: 10px;
+		font-weight: 500;
+		text-transform: uppercase;
+	}
+	.list-services {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font: inherit;
+		font-size: 100%;
+		vertical-align: baseline;
+	}
+	.list-services h2 {
+		font-family: 'Quicksand', sans-serif;
+		font-weight: 400;
+		font-size: 16px;
+		color: #fff;
+		text-align: center;
+		font-size: 14px;
+		margin-bottom: 10px;
+		font-weight: 500;
+	}
+	.bg-dark {
+		/* width: calc(50vw); */
+		background-color: rgba(0, 0, 0, 0.4);
+		border-radius: calc(3vw);
+	}
+	/*
+	body {
+		min-height: calc(100vh);
+		overflow-x: hidden;
+		background-image: url(<?php echo $this->getDirTheme(); ?>/assets/images/bg-2.jpg);
+		background-size: cover;
+		background-position: center;
+		background-attachment: fixed;
+		background-repeat: no-repeat;
+	}
+	.bg-dark {
+		/* width: calc(85vw); */
+		background-color: rgba(0, 0, 0, 0.4);
+		border-radius: calc(3vw);
+	}
+	.video-section .pattern-overlay {
+	min-height: calc(25vh);
+	}
+	.video-section h1, .video-section h3{
+	text-align:center;
+	color:#fff;
+	}
+	.video-section h1{
+	font-size:75px;
+	font-family: 'Buenard', serif;
+	font-weight:bold;
+	text-transform: uppercase;
+	margin: 40px auto 0px;
+	text-shadow: 1px 1px 1px #000;
+	-webkit-text-shadow: 1px 1px 1px #000;
+	-moz-text-shadow: 1px 1px 1px #000;
+	}
+	.video-section h3{
+	font-size: 18px;
+	font-weight:lighter;
+	margin: 0px auto 15px;
+	}
+	.video-section .buttonBar{display:none;}
+	.player {font-size: 1px;}
+	.mbYTP_wrapper {
+		height: calc(100vh);
+	}
+	.social-icons {
+		width: 40px;
+		height: 40px;
+		background-color: rgba(255,255,255,.3);
+		color: #fff!important;
+		line-height: 25px;
+	}
+	.social-icons i {
+		color: #FFF;
+		font-size: 18px;
+		vertical-align: middle;
+	}
+	.big-button .btn {
+		font-size: 14px;
+		line-height: 20px;
+		padding: 14px 28px;
+	}
+	.big-text h3 {
+		color: #fff;
+		text-align: center;
+		font-size: 21px;
+		margin-bottom: 10px;
+		font-weight: 500;
+		text-transform: uppercase;
+	}
+	.list-services {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font: inherit;
+		font-size: 100%;
+		vertical-align: baseline;
+	}
+	.list-services h2 {
+		font-family: 'Quicksand', sans-serif;
+		font-weight: 400;
+		font-size: 16px;
+		color: #fff;
+		text-align: center;
+		font-size: 14px;
+		margin-bottom: 10px;
+		font-weight: 500;
+	}
+	span.section {
+		color: #CCC;
+	}
+	*/
+	</style>
 
-		<script>
-			$(document).ready(function () {
-				$(".player").mb_YTPlayer();
-			});
-		</script>
   </head>
 
 	<body class="nav-md">

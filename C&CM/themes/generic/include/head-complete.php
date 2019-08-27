@@ -511,8 +511,10 @@
 			<div class="ln_solid"></div>
 			<div class="form-group">
 				<div class="col-md-6 col-md-offset-3">
-					<button type="reset" class="btn btn-default">Limpiar</button>
-					<button type="submit" class="btn btn-success" onClick="javascript: $('#messageBox').html('');">Guardar</button>
+					<div class="big-button">
+						<button type="reset" class="btn btn-default">Limpiar</button>
+						<button type="submit" class="btn btn-success" onClick="javascript: $('#messageBox').html('');">Guardar</button>
+					</div>
 				</div>
 			</div>
 		</form>
@@ -815,8 +817,6 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 					self.callEvent(rrr);
 				}
 			}
-			
-			
 		},
 		MaysPrimera(string){
 			return string.charAt(0).toUpperCase() + string.slice(1);

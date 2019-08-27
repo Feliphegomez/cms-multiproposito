@@ -1,8 +1,8 @@
 <?php $myInfo = (isset($_SESSION['user'])) ? $_SESSION['user'] : null; ?>
-<div class="" id="inbox">
+<div class="" id="micuenta-inbox">
 	<div class="page-title">
 		<div class="title_left">
-			<h3>SAC <small>Inbox</small></h3>
+			<h3>SAC <small>Bandeja de entrada</small></h3>
 		</div>
 	</div>
 	<div class="clearfix"></div>
@@ -10,15 +10,10 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="x_panel">
-				<div class="x_title">
-					<h2>Inbox <small>Bandeja de mensajes</small></h2>
-					<div class="clearfix"></div>
-				</div>
-				
 				<div class="x_content">
 					<div class="row">
 						<div class="col-sm-3 mail_list_column">
-							<button id="compose" class="btn btn-sm btn-success btn-block" type="button">Redactar</button>
+							<!-- // <button id="compose" class="btn btn-sm btn-success btn-block" type="button">Redactar</button> -->
 							
 							<template v-if="records.length == 0">
 								<a href="#">
@@ -35,7 +30,7 @@
 							</template>
 							<template v-else>
 								<template v-for="(inbox, i) in records">
-									<router-link tag="a" :to="{ name: 'Inbox-Conversation-View', params: { conversation_id: inbox.id }}">
+									<router-link tag="a" :to="{ name: 'MiCuenta-Inbox-Conversation-View', params: { conversation_id: inbox.id }}">
 										<div class="mail_list">
 											<div class="left">
 												<i class="fa fa-circle" v-if="inbox.status.id == 1"></i> 
@@ -43,9 +38,15 @@
 												<!-- // <i class="fa fa-edit"></i> -->
 											</div>
 											<div class="right">
-												<h3> {{ inbox.conversations_replys[0].user.names }} <small>{{ inbox.updated }}</small> </h3>
-												<p v-html="inbox.conversations_replys[0].reply.text.replace(/<\/?[^>]+(>|$)/g, '').slice(0,50) + '...'"></p> 
+												<h3>
+													<template v-if="inbox.conversations_replys[0]">
+														{{ inbox.conversations_replys[0].user.names }} {{ inbox.conversations_replys[0].user.surname }}
+													</template>
+													<small>{{ inbox.updated }}</small>
+												</h3>
 												<!--
+													{{ inbox }}
+												<p v-html="inbox.conversations_replys[0].reply.text.replace(/<\/?[^>]+(>|$)/g, '').slice(0,50) + '...'"></p> 
 												-->
 											</div>
 										</div>
@@ -64,14 +65,14 @@
 	</div>
 </div>
 
-<template id="inbox-home">
+<template id="micuenta-inbox-home">
 	<div>
 		
 	</div>
 </template>
 		
 
-<template id="inbox-conversations-view">
+<template id="micuenta-inbox-conversations-view">
 	<div>
 		<div class="inbox-body">
 			<div class="mail_heading row">
@@ -93,40 +94,45 @@
 				</div>
 			</div>
 
-				<div class="col-md-12">
-					<h4> Participantes: </h4>
-					{{ conversation.conversations_groups }}
-					<div class="col-md-4 col-sm-3 col-xs-2 profile_details" v-for="(conversation, m) in conversation.conversations_groups">
-						<div class="well profile_view">
-							<div class="col-sm-12">
-								<h4 class="brief"><i>{{ conversation.user.names }} {{ conversation.user.surname }}</i></h4>
-								<div class="left col-xs-7">
-									<h2>{{ conversation.user.username }}</h2>
-								</div>
-								<div class="right col-xs-5 text-center">
-									<img :src="urlPictureById(conversation.user.avatar)" alt="" class="img-circle img-responsive">
-								</div>
+			<div class="col-md-12">
+				<h4> Participantes: </h4>
+				<div class="col-md-4 col-sm-3 col-xs-2 profile_details" v-for="(conversation, m) in conversation.conversations_groups">
+					<div class="well profile_view">
+						<div class="col-sm-12">
+							<h4 class="brief"><i>{{ conversation.user.names }} {{ conversation.user.surname }}</i></h4>
+							<div class="left col-xs-7">
+								<h2>{{ conversation.user.username }}</h2>
 							</div>
-							<div class="col-xs-12 bottom text-center">
-								<!--<div class="col-xs-12 col-sm-6 emphasis">
-									<p class="ratings">
-										<a>4.0</a>
-										<a href="#"><span class="fa fa-star"></span></a>
-										<a href="#"><span class="fa fa-star"></span></a>
-										<a href="#"><span class="fa fa-star"></span></a>
-										<a href="#"><span class="fa fa-star"></span></a>
-										<a href="#"><span class="fa fa-star-o"></span></a>
-									</p>
-								</div>	
+							<div class="right col-xs-5 text-center">
+								<img :src="urlPictureById(conversation.user.avatar)" alt="" class="img-circle img-responsive">
+							</div>
+						</div>
+						<div class="col-xs-12 bottom text-center">
+							<!--<div class="col-xs-12 col-sm-6 emphasis">
+								<p class="ratings">
+									<a>4.0</a>
+									<a href="#"><span class="fa fa-star"></span></a>
+									<a href="#"><span class="fa fa-star"></span></a>
+									<a href="#"><span class="fa fa-star"></span></a>
+									<a href="#"><span class="fa fa-star"></span></a>
+									<a href="#"><span class="fa fa-star-o"></span></a>
+								</p>
+							</div>	
+							-->
+							<div class="col-xs-12 col-sm-12 emphasis">
+								{{ conversation.conversations_groups }}
+								<!-- //
+								<button type="button" class="btn btn-success btn-xs"><i class="fa fa-user"></i> <i class="fa fa-comments-o"></i> </button>
+								<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-user"></i></button>
 								-->
-								<div class="col-xs-12 col-sm-12 emphasis">
-									<button type="button" class="btn btn-success btn-xs"><i class="fa fa-user"></i> <i class="fa fa-comments-o"></i> </button>
-									<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-user"></i></button>
-								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
+		
+			
+					
 			
 				
 			<template>
@@ -200,8 +206,6 @@
 					</div>
 					<!-- end of accordion -->
 				</div>
-					
-
 			
 				
 				<!-- // {{ conversation }} -->
@@ -227,7 +231,7 @@
 
 <script>
 var InboxHome = Vue.extend({
-	template: '#inbox-home',
+	template: '#micuenta-inbox-home',
 	data: function () {
 		return {
 		};
@@ -237,7 +241,7 @@ var InboxHome = Vue.extend({
 });
 
 var InboxConversationsView = Vue.extend({
-	template: '#inbox-conversations-view',
+	template: '#micuenta-inbox-conversations-view',
 	data: function () {
 		return {
 			user_id: <?php echo (isset($myInfo['id'])) ? $myInfo['id'] : 0; ?>,
@@ -264,7 +268,7 @@ var InboxConversationsView = Vue.extend({
 	},
 	methods: {
 		urlPictureById(id){
-			return "/index.php?controller=Sistema&action=picture&id=" + id;
+			return (id !== null) ? "https://a11.t26.net/taringa/avatares/9/1/2/F/7/8/Demon_King1/48x48_5C5.jpg" : "/index.php?controller=Sistema&action=picture&id=" + id;
 		},
 		validateResultConversation(r){
 			// console.log('validateResultConversation', r)
@@ -359,8 +363,8 @@ var InboxConversationsView = Vue.extend({
 var router = new VueRouter({
 	linkActiveClass: 'active',
 	routes:[
-		{ path: '/', component: InboxHome, name: 'Inbox' },
-		{ path: '/conversation/:conversation_id/view', component: InboxConversationsView, name: 'Inbox-Conversation-View' },
+		{ path: '/', component: InboxHome, name: 'MiCuenta-Inbox' },
+		{ path: '/conversation/:conversation_id/view', component: InboxConversationsView, name: 'MiCuenta-Inbox-Conversation-View' },
 	]
 });
 
@@ -370,7 +374,6 @@ var Inbox = new Vue({
 	data(){
 		return {
 			count: 0,
-			conversations: [],
 			records: []
 		};
 	},
@@ -384,24 +387,19 @@ var Inbox = new Vue({
 			api.get('/records/conversations', {
 				params: {
 					filter: [
-						'status,in,0,1'						
+						'status,in,0,1'
+						// 'conversations.status,eq,2'
 					],
 					join: [
 						// 'conversations',
-						// 'conversations,conversations_status',
 						// 'conversations,conversations_replys',
 						// 'conversations,conversations_replys,users',
 					],
 					order: 'id,desc'
 				}
 			})
-			.then(response => {
-				self.validateResult(response);
-			})
-			.catch(e => {
-				// Capturamos los errores
-				self.validateResult(e.response);
-			});
+			.then(response => { self.validateResult(response); })
+			.catch(e => { self.validateResult(e.response); });
 		},
 		getLink(pqrs){
 			var self = this;
@@ -412,38 +410,100 @@ var Inbox = new Vue({
 		},
 		validateResult(a){
 			var self = this;
-			try {
+			try{
 				if (a.data != undefined && a.data.records != undefined){
 					self.conversations = [];
 					a.data.records.forEach(item => {
 						self.conversations.push(item.id);
 					});
-					api.get('/records/conversations', {
-						params: {
-							filter: [
-								'id,in,' + self.conversations.join(',')
-							],
-							join: [
-								'conversations_replys',
-								'conversations_replys,users',
-							],
-							order: 'updated,desc'
-						}
-					})
-					.then(response => { self.validateMessages(response); })
-					.catch(e => { self.validateMessages(e.response); });
+					if(self.conversations.length > 0){
+						api.get('/records/conversations', {
+							params: {
+								filter: [
+									'id,in,' + self.conversations.join(',')
+								],
+								join: [
+									'users',
+									'conversations_status',
+									'conversations_replys',
+									'conversations_replys,users'
+								],
+								order: 'updated,desc'
+							}
+						})
+						.then(response => { self.validateConversations(response); })
+						.catch(e => { self.validateConversations(e.response); });
+					}
 				}
 			}catch(e){
 				console.log(e);
-				console.log(e.response);
-			}
+				console.log(e.response);	
+			};
+				/*
+			var self = this;
+				self.records = [];
+				self.count = 0;
+			if (response != undefined){
+				if (response.data != undefined && response.data.records != undefined){
+					if(response.data.records[0] != undefined){
+						response.data.records.forEach(item => {
+							item.conversation.conversations_replys.forEach(function(rp){
+								rp.reply = JSON.parse(rp.reply);
+							});
+							item.replys = item.conversation.conversations_replys;
+							self.records.push(item);
+							self.count++;
+						});
+					} else {
+						self.searchBox.errorText = "Esta queja no fue encontrada";
+					}
+				} else {
+					 console.log('Error: consulta validateResult'); 
+					 console.log(response); 
+				}
+			}*/
 		},
-		validateMessages(response){
-			console.log('validateMessages ', response);
+		validateConversations(response){
 			var self = this;
 			self.records = [];
 			self.count = 0;
-			try {
+			try{
+				if (response.data != undefined){
+					console.log('item: response;', response);
+					if (response.data.records.length > 0){
+						response.data.records.forEach(item => {
+							if(item.conversations_replys.length > 0){
+								item.conversations_replys.forEach(function(a){
+									a.reply = JSON.parse(a.reply);
+								});
+								
+								const epochTime = new Date(item.updated);
+								item.updated = epochTime.toConversationsFormat();
+								
+								
+								self.records.push(item);
+								if (item.status === 0 || item.status === 1){ self.count++; }
+							}else{
+								console.log('item', item);
+							}
+						});
+					} else {
+						self.searchBox.errorText = "No hay mensajes";
+					}
+				} 
+			}catch(e){
+				console.log(response);
+				console.log(e);
+				console.log(e.response);	
+			};
+			
+		},
+		validateMessages(response){
+			var self = this;
+			self.records = [];
+			self.count = 0;
+			
+			if (response.data != undefined){
 				if(response.data.records.length > 0){
 					response.data.records.forEach(item => {
 						item.conversations_replys.forEach(function(a){
@@ -468,13 +528,13 @@ var Inbox = new Vue({
 						self.records.push(item);
 					});
 				}
-			}catch(e){
-				console.log(e);
-				console.log(e.response);
+			} else {
+				 console.log('Error: consulta'); 
+				 console.log(response.data); 
 			}
 		},
 	},
-}).$mount('#inbox');
+}).$mount('#micuenta-inbox');
 
 </script>
 

@@ -33,7 +33,7 @@
 									<router-link tag="a" :to="{ name: 'MiCuenta-Inbox-Conversation-View', params: { conversation_id: inbox.id }}">
 										<div class="mail_list">
 											<div class="left">
-												<i class="fa fa-circle" v-if="inbox.status.id == 1"></i> 
+												<i class="fa fa-circle" v-if="inbox.status.id == 3"></i> 
 												<i class="fa fa-circle-o" v-else></i> 
 												<!-- // <i class="fa fa-edit"></i> -->
 											</div>
@@ -383,8 +383,11 @@ var Inbox = new Vue({
 									'id,in,' + ids.join(',')
 								],
 								join: [
+									'conversations_status',
 									'conversations_replys',
 									'conversations_replys,users',
+									'conversations_groups',
+									'conversations_groups,users',
 								],
 								order: 'updated,desc'
 							}
