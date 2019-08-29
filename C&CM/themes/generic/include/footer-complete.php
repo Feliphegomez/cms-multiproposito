@@ -80,7 +80,7 @@
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jszip/dist/jszip.min.js"></script>
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/pdfmake/build/pdfmake.min.js"></script>
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/pdfmake/build/vfs_fonts.js"></script>
-<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/dist/fullcalendar.min.js"></script>
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.min.js"></script>
 <!-- jQuery Sparklines -->
 <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
 <!-- morris.js -->

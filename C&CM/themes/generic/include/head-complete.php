@@ -38,9 +38,7 @@
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">	
-		<!-- FullCalendar -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+		
 		<!-- bootstrap-wysiwyg -->
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
 		<!-- Dropzone.js -->
@@ -56,7 +54,25 @@
 		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootbox/bootbox.locales.min.js"></script>
 		<!-- Notify.js -->
 		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/notify.js/notify.min.js"></script>
-
+		<!-- FullCalendar 3 -->
+		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.min.css" rel="stylesheet">
+		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.print.css" rel="stylesheet" media="print"> 
+		<!-- // 
+		-->
+		<!-- FullCalendar 4.3.1 -->
+		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/main.css' rel='stylesheet' />
+		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/daygrid/main.css' rel='stylesheet' />
+		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/timegrid/main.css' rel='stylesheet' />
+		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/list/main.css' rel='stylesheet' />
+		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/main.js'></script>
+		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/locales-all.js'></script>
+		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/interaction/main.js'></script>
+		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/daygrid/main.js'></script>
+		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/timegrid/main.js'></script>
+		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/list/main.js'></script>
+		
+		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/daypilot/pro/javascript/scripts/daypilot-all.min.js"></script>
+		
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
@@ -70,8 +86,13 @@
 					if(-10 < d && d < 0) return "-0" + (-1*d).toString();
 					return d.toString();
 				}
-				return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+				if(new Date("2015-01-01T00:00:00").toString() === new Date("2015-01-01T00:00:00").toUTCString()){
+					return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+				}else{
+					return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
+				}
 			};
+			
 			Date.prototype.toConversationsFormat = function() {
 				const now = new Date();
 				const epochTime = this;
@@ -89,17 +110,17 @@
 					'Noviembre',
 					'Diciembre'
 				];
-				isToday = (now.getDate() === epochTime.getDate() && now.getMonth() === epochTime.getMonth() && now.getFullYear() === epochTime.getFullYear()) ? true : false;
-				isYesterday = (now.getDate() === (epochTime.getDate()+1) && now.getMonth() === epochTime.getMonth() && now.getFullYear() === epochTime.getFullYear()) ? true : false;
-				totalDays = (now.getMonth() === epochTime.getMonth() && now.getFullYear() === epochTime.getFullYear()) ? (now.getDate() - epochTime.getDate()) : 999;
+				isToday = (now.getDate() === this.getDate() && now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? true : false;
+				isYesterday = (now.getDate() === (this.getDate()+1) && now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? true : false;
+				totalDays = (now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? (now.getDate() - this.getDate()) : 999;
 				
 				
 				if (isToday === true){
-					horas = now.getHours() - epochTime.getHours();	
+					horas = now.getHours() - this.getHours();	
 					if (horas >= 1){
 						return 'Hace ' + horas + ' hora(s)';
 					} else if (horas < 1){
-						minutos = now.getMinutes() - epochTime.getMinutes();
+						minutos = now.getMinutes() - this.getMinutes();
 						return 'Hace ' + minutos + ' minuto(s)';
 					}
 				} else if (isYesterday === true){
@@ -107,9 +128,9 @@
 				} else if (totalDays <= 30){
 					return 'Hace ' + totalDays + ' días(s)';;
 				} else {
-					mesText = arrayMesesText[epochTime.getMonth()]
-					return epochTime.getDate() + ' de ' + mesText + ' ' + epochTime.format('H:s');
-					return epochTime.format('d M H:s');
+					mesText = arrayMesesText[this.getMonth()]
+					return this.getDate() + ' de ' + mesText + ' ' + this.format('H:s');
+					return this.format('d M H:s');
 				}
 			};
 		</script>

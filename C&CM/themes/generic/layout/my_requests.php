@@ -1,4 +1,4 @@
-<?php 
+<?php
 $myInfo = $this->myUser;
 ?>
 <div class="" id="micuenta-requests">
@@ -8,12 +8,12 @@ $myInfo = $this->myUser;
 		</div>
 	</div>
 	<div class="clearfix"></div>
-	
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="x_panel">
 				<div class="x_content">
-					<div class="row">						
+					<div class="row">
 						<div class="col-sm-12 mail_view">
 							<router-view :key="$route.fullPath"></router-view>
 						</div>
@@ -49,8 +49,8 @@ $myInfo = $this->myUser;
 						<td>
 							<ul class="list-inline">
 								<li v-for="(member_team, i2) in item.request.requests_team">
-									<small>{{ member_team }}</small>
-									<img src="images/user.png" class="avatar" alt="Avatar">
+									<small>{{ member_team.user.username }}</small>
+									<img src="/C&CM/themes/generic/assets/images/default_user.png" class="avatar" alt="Avatar" />
 								</li>
 							</ul>
 						</td>
@@ -141,8 +141,59 @@ $myInfo = $this->myUser;
 					<div>
 						<h4>Actividad Reciente</h4>
 						<ul class="messages">
+							<template v-if="record.requests_activity.length > 0">
+								<li v-for="activity in record.requests_activity">
+									<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+									<div class="message_date">
+										<!--
+										<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
+										<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
+										-->
+									</div>
+									<div class="message_wrapper">
+										<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
+										<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
+										<br />
+										<template v-if="activity.type == 'attachment'">
+											<p class="url" v-for="attachment in activity.info.attachment">
+												<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+												<!-- //
+												<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
+												<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
+												<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
+												-->
+												<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
+											</p>
+										</template>
+									</div>
+								</li>
+							</template>
+							<template v-else>
+								<li>
+									<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+									<div class="message_date">
+										<h3 class="date text-info"></h3>
+										<p class="month"></p>
+									</div>
+									<div class="message_wrapper">
+										<h4 class="heading">Mensaje automatico del sistema</h4>
+										<blockquote class="message">
+											Esta solicitud necesita de tu gestión, Comencemos!
+										</blockquote>
+										<br />
+										<!--
+										<p class="url">
+											<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+											<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+										</p>
+										-->
+									</div>
+								</li>
+							</template>
+
+							<!-- //
 							<li v-for="activity in record.requests_activity">
-								<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+								<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -- >
 								<div class="message_date">
 									<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
 									<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
@@ -154,17 +205,18 @@ $myInfo = $this->myUser;
 									<template v-if="activity.type == 'attachment'">
 										<p class="url" v-for="attachment in activity.info.attachment">
 											<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-											<!-- //
+											<! -- //
 											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
 											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
 											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
-											-->
+											-- >
 											<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
 										</p>
 									</template>
 								</div>
 							</li>
-							<!-- //
+
+
 							<li>
 								<img src="images/img.jpg" class="avatar" alt="Avatar">
 								<div class="message_date">
@@ -242,7 +294,7 @@ $myInfo = $this->myUser;
 								<p>{{ record.phone }}</p>
 								<p class="title">Teléfono Móvil</p>
 								<p>{{ record.mobile }}</p>
-								
+
 								<p class="title">Project Leader</p>
 								<p>Tony Chicken</p>
 							</div>
@@ -314,8 +366,8 @@ var MyRequestsList = Vue.extend({
 				// console.log(r.data);
 				self.records = r.data.records;
 			} else {
-				 console.log('Error: consulta validateResult'); 
-				 //console.log(response); 
+				 console.log('Error: consulta validateResult');
+				 //console.log(response);
 			}
 		},
 	}
@@ -356,7 +408,7 @@ var MyRequestsView = Vue.extend({
 			  "created": "",
 			  "updated": "",
 			  "requests_team": [
-				
+
 			  ]
 			},
 		};
@@ -412,8 +464,8 @@ var MyRequestsView = Vue.extend({
 				});
 				self.record = r.data.records[0].request;
 			} else {
-				 console.log('Error: consulta validateResult'); 
-				 //console.log(response); 
+				 console.log('Error: consulta validateResult');
+				 //console.log(response);
 			}
 		},
 	}
@@ -444,4 +496,3 @@ var MyRequests = new Vue({
 }).$mount('#micuenta-requests');
 
 </script>
-

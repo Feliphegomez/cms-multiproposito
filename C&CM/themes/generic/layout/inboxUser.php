@@ -13,7 +13,7 @@
 				<div class="x_content">
 					<div class="row">
 						<div class="col-sm-3 mail_list_column">
-							<button id="compose" class="btn btn-sm btn-success btn-block" type="button">Redactar</button>
+							<button id="compose" class="btn btn-sm btn-success btn-block" type="button">Enviar Mensaje</button>
 							
 							<template v-if="records.length == 0">
 								<a href="#">
@@ -72,15 +72,20 @@
 			<div class="mail_heading row">
 				<div class="col-md-8">
 					<div class="btn-group">
-						<button class="btn btn-sm btn-primary" type="button">
+						<button @click="toggleMessage()" class="btn btn-sm btn-primary" type="button">
+							<i class="fa fa-reply"></i> Responder
+						</button>
+						<!-- //
+						<button disabled="" class="btn btn-sm btn-primary" type="button">
 							<i class="fa fa-reply"></i> 
 							Terminar Conversacion
 						</button>
-						<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Eliminar"><i class="fa fa-trash-o"></i></button>
+						-->
+						<button disabled="" class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Eliminar"><i class="fa fa-trash-o"></i></button>
 					</div>
 				</div>
 				<div class="col-md-4 text-right">
-					<p class="date"> Fecha de creacion: {{ conversation.created }}</p>
+					<p class="date"> Fecha de creacion: {{ $root.convertDate(conversation.created) }}</p>
 				</div>
 				<div class="col-md-12">
 					<h4> Estado Actual: {{ conversation.status.name }}</h4>
@@ -94,31 +99,44 @@
 				<div class="x_content">
 					<!-- start accordion  in -->
 					<div class="accordion" id="accordion_" role="tablist" aria-multiselectable="true">
-						<div class="panel" v-for="(item, a) in conversation.replys" :key="item.id">
-							<a class="panel-heading" role="tab" 
-								:id="'headingOne' + item.id" 
-								data-toggle="collapse" 
-								data-parent="#accordion" 
-								:data-target="'#collapseOne' + item.id" 
-								aria-expanded="false" 
-								:aria-controls="'collapseOne' + item.id">
-								
-								<template v-if="item.user.id === user_id">
-									<h4 class="panel-title text-right">Tú (@{{ item.user.username }})</h4>
-								</template>
-								<template v-else>
-									<h4 class="panel-title text-left">{{ item.user.names }} {{ item.user.names }} (@{{ item.user.username }})</h4>
-								</template>
-							</a>
+						<div class="panel" v-for="(item, a) in conversation.replys" :key="item.id">								
+							<template v-if="item.user.id === user_id">
+								<a class="panel-heading" role="tab" 
+									:id="'headingOne' + item.id" 
+									data-toggle="collapse" 
+									data-parent="#accordion" 
+									:data-target="'#collapseOne' + item.id" 
+									aria-expanded="false" 
+									:aria-controls="'collapseOne' + item.id">
+										<h4 class="panel-title text-right">
+											Tú ({{ $root.convertDate(item.created) }})
+											<i class="fa fa-chevron-down"></i>
+										</h4>
+								</a>
+							</template>
+							<template v-else>
+								<a class="panel-heading bg-green" role="tab" 
+									:id="'headingOne' + item.id" 
+									data-toggle="collapse" 
+									data-parent="#accordion" 
+									:data-target="'#collapseOne' + item.id" 
+									aria-expanded="false" 
+									:aria-controls="'collapseOne' + item.id">
+										<h4 class="panel-title text-left">
+											<i class="fa fa-chevron-down"></i>
+											<span>{{ item.user.names }} {{ item.user.surname }}</span> ({{ $root.convertDate(item.created) }})
+										</h4>
+								</a>
+							</template>
+							
+							
 							<div :id="'collapseOne' + item.id" :class="((a+1)==conversation.replys.length) ? 'panel-collapse collapse in multi-collapse' : 'panel-collapse collapse multi-collapse'" role="tabpanel" :aria-labelledby="'headingOne' + item.id">
 								<div class="panel-body">
 									<div class="sender-info">
 										<div class="row">
 											<div class="col-md-12">
-												<strong>{{ item.user.names }} {{ item.user.names }}</strong>
-												<span>( {{ item.user.username }} )</span> to
-												<strong>me</strong>
-												<a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a>
+												<strong> </strong>
+												<span>(@{{ item.user.username }})</span> <strong>dijo </strong>
 											</div>
 											<hr>
 										</div>
@@ -147,14 +165,6 @@
 											</ul>
 										</div>
 									</template>
-									
-									
-									<div class="btn-group">
-										<button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> Reply</button>
-										<button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
-										<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
-										<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -162,19 +172,38 @@
 					<!-- end of accordion -->
 				</div>
 			
+				<div class="btn-group">
+					<button @click="toggleMessage()" class="btn btn-sm btn-primary" type="button" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Responder"><i class="fa fa-reply"></i> </button>
+					
+					<!-- //
+					<button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
+					<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
+					<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
+					-->
+				</div>
 				
 				<!-- // {{ conversation }} -->
 				<div class="ln_solid"></div>
 				
-				<div class="x_content">
+				<div class="x_content" v-if="enableMessage == true">
 					<textarea rows="6" v-model="me.compose.text" class="form-control"></textarea>
+					<div class="btn-group pull-right">
+						<!-- // <button v-if="conversation.status.id == 0 || conversation.status.id == 2" class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> </button> -->
+						
+						<template v-if="enableMessage == true">
+							<button @click="toggleMessage()" class="btn btn-sm btn-default" type="button">
+								<i class="fa fa-times"></i> Cerrar
+							</button>
+						</template>
+						
+						<button @click="sendMessage" class="btn btn-sm btn-success" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward">
+							<i class="fa fa-share"></i> Enviar Mensaje
+						</button>
+						
+						<!-- // <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button> -->
+					</div>
 				</div>
 					
-				<div class="btn-group pull-right">
-					<!-- // <button v-if="conversation.status.id == 0 || conversation.status.id == 2" class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> </button> -->
-					<button @click="sendMessage" class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i> Enviar Mensaje</button>
-					<!-- // <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button> -->
-				</div>
 			</template>
 		</div>
 		
@@ -219,6 +248,8 @@ var InboxConversationsView = Vue.extend({
 			you: {
 				avatar: "https://a11.t26.net/taringa/avatares/9/1/2/F/7/8/Demon_King1/48x48_5C5.jpg"
 			},
+			timer: '',
+			enableMessage: false,
 		};
 	},
 	methods: {
@@ -307,11 +338,26 @@ var InboxConversationsView = Vue.extend({
 			.then(response => { self.validateResultConversation(response); })
 			.catch(e => { self.validateResultConversation(e); });
 		},
+		fetchEventsList() {
+			var self = this;
+			self.load();
+		},
+		cancelAutoUpdate(){
+			var self = this;
+			clearInterval(self.timer);
+		},
+		toggleMessage(){
+			var self = this;
+			self.enableMessage = !self.enableMessage;
+		}
 	},
-	created(){},
+	created(){
+		var self = this;
+		self.fetchEventsList();
+		self.timer = setInterval(self.fetchEventsList, 5000); // 3000 = 3Sec --- 300000
+	},
 	mounted(){
 		var self = this;
-		self.load();
 	},
 });
 
@@ -431,21 +477,7 @@ var Inbox = new Vue({
 						item.conversations_replys.forEach(function(a){
 							a.reply = JSON.parse(a.reply);
 						});
-						const now = new Date();
-						const epochTime = new Date(item.updated);
-						isToday = (now.getDate() === epochTime.getDate() && now.getMonth() === epochTime.getMonth() && now.getFullYear() === epochTime.getFullYear()) ? true : false;
-						
-						if(isToday === true){
-							horas = now.getHours() - epochTime.getHours();	
-							if(horas >= 1){
-								// console.log('horas:', horas);.
-								item.updated = 'Hace ' + horas + ' hora(s)';
-							} else if(horas < 1){
-								minutos = now.getMinutes() - epochTime.getMinutes();
-								// console.log('minutos:', minutos);
-								item.updated = 'Hace ' + minutos + ' minuto(s)';
-							}
-						}
+						item.updated = new Date(item.updated).toConversationsFormat();
 						if(item.status === 2){ self.count++; }
 						self.records.push(item);
 					});
@@ -455,6 +487,9 @@ var Inbox = new Vue({
 				 console.log(response.data); 
 			}
 		},
+		convertDate(date){
+			return new Date(date).toConversationsFormat();
+		}
 	},
 }).$mount('#micuenta-inbox');
 

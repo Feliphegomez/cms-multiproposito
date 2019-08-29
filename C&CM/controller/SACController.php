@@ -24,4 +24,10 @@ class SACController extends ControladorBase{
             "title"    =>"¿ QUE ES PQRSF ?"
         ));
     }
+	
+    public function requests_new(){
+        $this->view("requests_new",array(
+            "title"    =>"Nuevas Solicitudes"
+        ));
+    }
 }

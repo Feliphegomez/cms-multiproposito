@@ -188,7 +188,7 @@ var ComposeInbox = new Vue({
 				user: self.session.user.id
 			})
 			.then(r => {
-				console.log('then', r);
+				// console.log('then', r);
 				self.validateResult(r, function(a){
 					if(a > 0){
 						self.conversation_id = a;
@@ -197,7 +197,7 @@ var ComposeInbox = new Vue({
 				});
 			})
 			.catch(e => {
-				console.log('then', e);
+				// console.log('then', e);
 				self.validateResult(e.response, function(a){
 					if(a > 0){
 						self.conversation_id = a;
@@ -267,14 +267,24 @@ var ComposeInbox = new Vue({
 				return {
 					count: 0,
 					conversations: [],
-					records: []
+					records: [],
+					timer: ''
 				};
 			},
-			mounted(){
+			created(){
 				var self = this;
-				self.load();
+				self.fetchEventsList();
+				self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
 			},
 			methods: {
+				fetchEventsList() {
+					var self = this;
+					self.load();
+				},
+				cancelAutoUpdate(){
+					var self = this;
+					clearInterval(self.timer);
+				},
 				load(){
 					var self = this;
 					api.get('/records/conversations_groups', {
@@ -337,14 +347,9 @@ var ComposeInbox = new Vue({
 										item.conversations_replys.forEach(function(a){
 											a.reply = JSON.parse(a.reply);
 										});
-										
-										const epochTime = new Date(item.updated);
-										item.updated = epochTime.toConversationsFormat();
-										
-										
-										
-										self.records.push(item);
+										item.updated = new Date(item.updated).toConversationsFormat();
 										if (item.status === 3){ self.count++; }
+										self.records.push(item);
 									}
 								});
 							} else {
@@ -376,20 +381,31 @@ var ComposeInbox = new Vue({
 				return {
 					count: 0,
 					conversations: [],
-					records: []
+					records: [],
+					timer: ''
 				};
 			},
-			mounted(){
+			created(){
 				var self = this;
-				self.load();
+				self.fetchEventsList();
+				self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec --- 300000
 			},
 			methods: {
+				fetchEventsList() {
+					var self = this;
+					self.load();
+				},
+				cancelAutoUpdate(){
+					var self = this;
+					clearInterval(self.timer);
+				},
 				load(){
 					var self = this;
 					api.get('/records/conversations', {
 						params: {
 							filter: [
-								'status,in,0,1'
+								'sac,eq,1'
+								// 'status,in,0,1'
 								// 'conversations.status,eq,2'
 							],
 							join: [
@@ -440,20 +456,16 @@ var ComposeInbox = new Vue({
 					try{
 						if (response.data != undefined){
 							
-							console.log('item: response;', response);
+							// console.log('item: response;', response);
 							if (response.data.records.length > 0){
 								response.data.records.forEach(item => {
 									if(item.conversations_replys.length > 0){
 										item.conversations_replys.forEach(function(a){
 											a.reply = JSON.parse(a.reply);
 										});
-										
-										const epochTime = new Date(item.updated);
-										item.updated = epochTime.toConversationsFormat();
-										
-										
-										self.records.push(item);
+										item.updated = new Date(item.updated).toConversationsFormat();
 										if (item.status === 0 || item.status === 1){ self.count++; }
+										self.records.push(item);
 									}
 								});
 							} else {

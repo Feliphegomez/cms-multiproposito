@@ -33,7 +33,7 @@
 									<router-link tag="a" :to="{ name: 'MiCuenta-Inbox-Conversation-View', params: { conversation_id: inbox.id }}">
 										<div class="mail_list">
 											<div class="left">
-												<i class="fa fa-circle" v-if="inbox.status.id == 1"></i> 
+												<i class="fa fa-circle" v-if="inbox.status.id == 1 || inbox.status.id == 0"></i> 
 												<i class="fa fa-circle-o" v-else></i> 
 												<!-- // <i class="fa fa-edit"></i> -->
 											</div>
@@ -78,15 +78,20 @@
 			<div class="mail_heading row">
 				<div class="col-md-8">
 					<div class="btn-group">
-						<button class="btn btn-sm btn-primary" type="button">
+						<button @click="toggleMessage()" class="btn btn-sm btn-primary" type="button">
+							<i class="fa fa-reply"></i> Responder
+						</button>
+						<!-- //
+						<button disabled="" class="btn btn-sm btn-primary" type="button">
 							<i class="fa fa-reply"></i> 
 							Terminar Conversacion
 						</button>
-						<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Eliminar"><i class="fa fa-trash-o"></i></button>
+						-->
+						<button disabled="" class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Eliminar"><i class="fa fa-trash-o"></i></button>
 					</div>
 				</div>
 				<div class="col-md-4 text-right">
-					<p class="date"> Fecha de creacion: {{ conversation.created }}</p>
+					<p class="date"> Fecha de creacion: {{ $root.convertDate(conversation.created) }}</p>
 				</div>
 				<div class="col-md-12">
 					<h4> Estado Actual: {{ conversation.status.name }}</h4>
@@ -96,35 +101,42 @@
 
 			<div class="col-md-12">
 				<h4> Participantes: </h4>
-				<div class="col-md-4 col-sm-3 col-xs-2 profile_details" v-for="(conversation, m) in conversation.conversations_groups">
-					<div class="well profile_view">
-						<div class="col-sm-12">
-							<h4 class="brief"><i>{{ conversation.user.names }} {{ conversation.user.surname }}</i></h4>
-							<div class="left col-xs-7">
-								<h2>{{ conversation.user.username }}</h2>
+				<div class="row">
+					<div class="col-xs-3 profile_details" v-for="(conversation, m) in conversation.conversations_groups">
+						<div class="well profile_view">
+							<div class="col-sm-12">
+								<h4 class="brief"><i>{{ conversation.user.username }}</i></h4>
+								<div class="left col-xs-7">
+									<h2>{{ conversation.user.names }} {{ conversation.user.surname }}</h2>
+								</div>
+								<div class="right col-xs-5 text-center">
+									<!-- // <img :src="urlPictureById(conversation.user.avatar)" alt="" class="img-circle img-responsive"> -->
+									<img src="https://d2ln1xbi067hum.cloudfront.net/assets/default_user-951af10295a22e5f7fa2fa6165613c14.png" alt="" class="img-circle img-responsive">
+								</div>
 							</div>
-							<div class="right col-xs-5 text-center">
-								<img :src="urlPictureById(conversation.user.avatar)" alt="" class="img-circle img-responsive">
-							</div>
-						</div>
-						<div class="col-xs-12 bottom text-center">
-							<!--<div class="col-xs-12 col-sm-6 emphasis">
-								<p class="ratings">
-									<a>4.0</a>
-									<a href="#"><span class="fa fa-star"></span></a>
-									<a href="#"><span class="fa fa-star"></span></a>
-									<a href="#"><span class="fa fa-star"></span></a>
-									<a href="#"><span class="fa fa-star"></span></a>
-									<a href="#"><span class="fa fa-star-o"></span></a>
-								</p>
-							</div>	
-							-->
-							<div class="col-xs-12 col-sm-12 emphasis">
-								{{ conversation.conversations_groups }}
-								<!-- //
-								<button type="button" class="btn btn-success btn-xs"><i class="fa fa-user"></i> <i class="fa fa-comments-o"></i> </button>
-								<button type="button" class="btn btn-primary btn-xs"><i class="fa fa-user"></i></button>
+							<div class="col-xs-12 bottom text-center">
+								<div class="col-xs-12 col-sm-6 emphasis">
+									
+								<!--
+									<p class="ratings">
+										<a>4.0</a>
+										<a href="#"><span class="fa fa-star"></span></a>
+										<a href="#"><span class="fa fa-star"></span></a>
+										<a href="#"><span class="fa fa-star"></span></a>
+										<a href="#"><span class="fa fa-star"></span></a>
+										<a href="#"><span class="fa fa-star-o"></span></a>
+									</p>	
 								-->
+								</div>
+								<div class="col-xs-12 col-sm-12 emphasis">
+									{{ conversation.conversations_groups }}
+									<button type="button" class="btn btn-primary btn-xs" data-placement="top" data-toggle="tooltip" data-original-title="Enviar Privado">
+										<i class="fa fa-comments-o"></i>
+									</button>
+									<button type="button" class="btn btn-danger btn-xs" data-placement="top" data-toggle="tooltip" data-original-title="Retirar de la conversacion">
+										<i class="fa fa-times"></i>
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -140,21 +152,34 @@
 					<!-- start accordion  in -->
 					<div class="accordion" id="accordion_" role="tablist" aria-multiselectable="true">
 						<div class="panel" v-for="(item, a) in conversation.replys" :key="item.id">
-							<a class="panel-heading" role="tab" 
-								:id="'headingOne' + item.id" 
-								data-toggle="collapse" 
-								data-parent="#accordion" 
-								:data-target="'#collapseOne' + item.id" 
-								aria-expanded="false" 
-								:aria-controls="'collapseOne' + item.id">
-								
-								<template v-if="item.user.id === user_id">
-									<h4 class="panel-title text-right">Tú (@{{ item.user.username }})</h4>
-								</template>
-								<template v-else>
-									<h4 class="panel-title text-left">{{ item.user.names }} {{ item.user.names }} (@{{ item.user.username }})</h4>
-								</template>
-							</a>
+							<template v-if="item.user.id === user_id">
+								<a class="panel-heading" role="tab" 
+									:id="'headingOne' + item.id" 
+									data-toggle="collapse" 
+									data-parent="#accordion" 
+									:data-target="'#collapseOne' + item.id" 
+									aria-expanded="false" 
+									:aria-controls="'collapseOne' + item.id">
+										<h4 class="panel-title text-right">
+											Tú ({{ $root.convertDate(item.created) }})
+											<i class="fa fa-chevron-down"></i>
+										</h4>
+								</a>
+							</template>
+							<template v-else>
+								<a class="panel-heading bg-green" role="tab" 
+									:id="'headingOne' + item.id" 
+									data-toggle="collapse" 
+									data-parent="#accordion" 
+									:data-target="'#collapseOne' + item.id" 
+									aria-expanded="false" 
+									:aria-controls="'collapseOne' + item.id">
+										<h4 class="panel-title text-left">
+											<i class="fa fa-chevron-down"></i>
+											<span>{{ item.user.names }} {{ item.user.surname }}</span> ({{ $root.convertDate(item.created) }})
+										</h4>
+								</a>
+							</template>
 							<div :id="'collapseOne' + item.id" :class="((a+1)==conversation.replys.length) ? 'panel-collapse collapse in multi-collapse' : 'panel-collapse collapse multi-collapse'" role="tabpanel" :aria-labelledby="'headingOne' + item.id">
 								<div class="panel-body">
 									<div class="sender-info">
@@ -193,13 +218,6 @@
 										</div>
 									</template>
 									
-									
-									<div class="btn-group">
-										<button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> Reply</button>
-										<button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
-										<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
-										<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
-									</div>
 								</div>
 							</div>
 						</div>
@@ -207,18 +225,36 @@
 					<!-- end of accordion -->
 				</div>
 			
+				<div class="btn-group">
+					<button @click="toggleMessage()" class="btn btn-sm btn-primary" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Responder"><i class="fa fa-reply"></i> </button>
+					
+					
+					<!-- //
+					<button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
+					<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
+					<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
+					-->
+				</div>
 				
 				<!-- // {{ conversation }} -->
 				<div class="ln_solid"></div>
 				
-				<div class="x_content">
+				<div class="x_content" v-if="enableMessage == true">
 					<textarea rows="6" v-model="me.compose.text" class="form-control"></textarea>
-				</div>
-					
-				<div class="btn-group pull-right">
-					<!-- // <button v-if="conversation.status.id == 0 || conversation.status.id == 2" class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> </button> -->
-					<button @click="sendMessage" class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i> Enviar Mensaje</button>
-					<!-- // <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button> -->
+						
+					<div class="btn-group pull-right">
+						<!-- // <button v-if="conversation.status.id == 0 || conversation.status.id == 2" class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> </button> -->
+						
+							<template v-if="enableMessage == true">
+								<button @click="toggleMessage()" class="btn btn-sm btn-default" type="button">
+									<i class="fa fa-times"></i> Cerrar
+								</button>
+							</template>
+							
+							
+						<button @click="sendMessage" class="btn btn-sm btn-success" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i> Enviar Mensaje</button>
+						<!-- // <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button> -->
+					</div>
 				</div>
 			</template>
 		</div>
@@ -264,6 +300,7 @@ var InboxConversationsView = Vue.extend({
 			you: {
 				avatar: "https://a11.t26.net/taringa/avatares/9/1/2/F/7/8/Demon_King1/48x48_5C5.jpg"
 			},
+			enableMessage: false,
 		};
 	},
 	methods: {
@@ -286,8 +323,8 @@ var InboxConversationsView = Vue.extend({
 				});
 				self.conversation.replys = r.data.conversations_replys;
 			} else {
-				 console.log('Error: consulta validateResultConversation'); 
-				 //console.log(response); 
+				 // console.log('Error: consulta validateResultConversation'); 
+				 // console.log(response); 
 			}
 		},
 		showErrorAlert(reason, detail){
@@ -295,7 +332,7 @@ var InboxConversationsView = Vue.extend({
           if (reason === 'unsupported-file-type') {
             msg = "Unsupported format " + detail;
           } else {
-            console.log("error uploading file", reason, detail);
+            // console.log("error uploading file", reason, detail);
           }
           $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
             '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
@@ -305,31 +342,55 @@ var InboxConversationsView = Vue.extend({
 			obj_message = {};
 			
 			if(self.me.compose.text != ''){
-				console.log('enviar');
+				// console.log('enviar');
 				obj_message.reply = JSON.stringify({ "text": self.me.compose.text });
 				obj_message.conversation = Number(self.$route.params.conversation_id);
 				obj_message.user = self.user_id;
-				console.log(obj_message);
+				// console.log(obj_message);
 				api.post('/records/conversations_replys/', obj_message)
 				.then(response => {
-					console.log(response);
+					// console.log(response);
 					self.me.compose.text = '';
 					api.put('/records/conversations/' + self.conversation.id, {
 						status: 3
 					})
 					.then(response => {
-						console.log("Conversacion actualizanda.");
-						console.log("response: ", response);
+						// console.log("Conversacion actualizanda.");
+						// console.log("response: ", response);
 						self.load();
+						// Validar que el `user` este en la conversacion
+						api.get('/records/conversations_groups', {
+							params: {
+								filter: [
+									'user,eq,' + obj_message.user,
+									'conversation,eq,' + obj_message.conversation
+								]
+							}
+						})
+						.then(abi => {
+							console.log('abi', abi);
+							if(abi.data != undefined && abi.data.records != undefined && abi.data.records.length == 0){
+								api.post('/records/conversations_groups', {
+									user: obj_message.user,
+									conversation: obj_message.conversation
+								})
+								.then(r_abi => {
+									console.log("r_abi", r_abi);
+								})
+								.catch(e => {
+									// console.log("Error actualizando la conversacion.");
+								})
+							}
+						});
 					})
 					.catch(e => {
-						console.log("Error actualizando la conversacion.");
-					});
-					self.load();
+						// console.log("Error actualizando la conversacion.");
+					})
+					
 				})
 				.catch(e => {
-					console.log("Error");
-					console.log(e.response);
+					// console.log("Error");
+					// console.log(e.response);
 				});
 			}
 		},
@@ -352,11 +413,26 @@ var InboxConversationsView = Vue.extend({
 			.then(response => { self.validateResultConversation(response); })
 			.catch(e => { self.validateResultConversation(e); });
 		},
+		fetchEventsList() {
+			var self = this;
+			self.load();
+		},
+		cancelAutoUpdate(){
+			var self = this;
+			clearInterval(self.timer);
+		},
+		toggleMessage(){
+			var self = this;
+			self.enableMessage = !self.enableMessage;
+		}
 	},
-	created(){},
+	created(){
+		var self = this;
+		self.fetchEventsList();
+		self.timer = setInterval(self.fetchEventsList, 5000); // 3000 = 3Sec --- 300000
+	},
 	mounted(){
 		var self = this;
-		self.load();
 	},
 });
 
@@ -387,7 +463,8 @@ var Inbox = new Vue({
 			api.get('/records/conversations', {
 				params: {
 					filter: [
-						'status,in,0,1'
+						'sac,eq,1'
+						// 'status,in,0,1'
 						// 'conversations.status,eq,2'
 					],
 					join: [
@@ -436,32 +513,9 @@ var Inbox = new Vue({
 					}
 				}
 			}catch(e){
-				console.log(e);
-				console.log(e.response);	
+				// console.log(e);
+				// console.log(e.response);	
 			};
-				/*
-			var self = this;
-				self.records = [];
-				self.count = 0;
-			if (response != undefined){
-				if (response.data != undefined && response.data.records != undefined){
-					if(response.data.records[0] != undefined){
-						response.data.records.forEach(item => {
-							item.conversation.conversations_replys.forEach(function(rp){
-								rp.reply = JSON.parse(rp.reply);
-							});
-							item.replys = item.conversation.conversations_replys;
-							self.records.push(item);
-							self.count++;
-						});
-					} else {
-						self.searchBox.errorText = "Esta queja no fue encontrada";
-					}
-				} else {
-					 console.log('Error: consulta validateResult'); 
-					 console.log(response); 
-				}
-			}*/
 		},
 		validateConversations(response){
 			var self = this;
@@ -469,22 +523,18 @@ var Inbox = new Vue({
 			self.count = 0;
 			try{
 				if (response.data != undefined){
-					console.log('item: response;', response);
+					// console.log('item: response;', response);
 					if (response.data.records.length > 0){
 						response.data.records.forEach(item => {
 							if(item.conversations_replys.length > 0){
 								item.conversations_replys.forEach(function(a){
 									a.reply = JSON.parse(a.reply);
 								});
-								
-								const epochTime = new Date(item.updated);
-								item.updated = epochTime.toConversationsFormat();
-								
-								
-								self.records.push(item);
+								item.updated = new Date(item.updated).toConversationsFormat();
 								if (item.status === 0 || item.status === 1){ self.count++; }
+								self.records.push(item);
 							}else{
-								console.log('item', item);
+								// console.log('item', item);
 							}
 						});
 					} else {
@@ -492,9 +542,9 @@ var Inbox = new Vue({
 					}
 				} 
 			}catch(e){
-				console.log(response);
-				console.log(e);
-				console.log(e.response);	
+				// console.log(response);
+				// console.log(e);
+				// console.log(e.response);	
 			};
 			
 		},
@@ -509,30 +559,19 @@ var Inbox = new Vue({
 						item.conversations_replys.forEach(function(a){
 							a.reply = JSON.parse(a.reply);
 						});
-						const now = new Date();
-						const epochTime = new Date(item.updated);
-						isToday = (now.getDate() === epochTime.getDate() && now.getMonth() === epochTime.getMonth() && now.getFullYear() === epochTime.getFullYear()) ? true : false;
-						
-						if(isToday === true){
-							horas = now.getHours() - epochTime.getHours();	
-							if(horas >= 1){
-								// console.log('horas:', horas);.
-								item.updated = 'Hace ' + horas + ' hora(s)';
-							} else if(horas < 1){
-								minutos = now.getMinutes() - epochTime.getMinutes();
-								// console.log('minutos:', minutos);
-								item.updated = 'Hace ' + minutos + ' minuto(s)';
-							}
-						}
+						item.updated = new Date(item.updated).toConversationsFormat();
 						if(item.status === 2){ self.count++; }
 						self.records.push(item);
 					});
 				}
 			} else {
-				 console.log('Error: consulta'); 
-				 console.log(response.data); 
+				 // console.log('Error: consulta'); 
+				 // console.log(response.data); 
 			}
 		},
+		convertDate(date){
+			return new Date(date).toConversationsFormat();
+		}
 	},
 }).$mount('#micuenta-inbox');
 
