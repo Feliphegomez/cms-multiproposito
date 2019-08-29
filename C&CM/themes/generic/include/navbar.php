@@ -30,9 +30,11 @@
 
 				<?php if(isUser() == true){ ?>
 					<?php
+					if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'Usuarios', 'calendar')){ $this->getInclude('navbar-my-calendar'); };
+					if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'Usuarios', 'inbox')){ $this->getInclude('navbar-inbox-user'); };
 						if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'SAC', 'inbox')){ $this->getInclude('navbar-inbox-sac');	};
-						if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'Usuarios', 'inbox')){ $this->getInclude('navbar-inbox-user'); };
-						if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'Usuarios', 'calendar')){ $this->getInclude('navbar-my-calendar'); };
+						if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'SAC', 'requests_new')){ $this->getInclude('navbar-requests-new'); };
+						if(isUser() && isset($this->adapter) && validatePermission($this->adapter, 'SAC', 'requests_technicals')){ $this->getInclude('navbar-requests-technicals'); };
 					?>
 				<?php } ?>
 			</ul>

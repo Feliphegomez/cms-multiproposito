@@ -14,7 +14,7 @@
 		<!-- NProgress -->
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/nprogress/nprogress.css" rel="stylesheet">
 		<!-- iCheck -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/iCheck/skins/flat/green.css" rel="stylesheet">	
+		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 		<!-- bootstrap-progressbar -->
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
 		<!-- JQVMap -->
@@ -31,14 +31,14 @@
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet">
 		<!-- Bootstrap Colorpicker -->
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/cropper/dist/cropper.min.css" rel="stylesheet">	
+		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/cropper/dist/cropper.min.css" rel="stylesheet">
 		<!-- Datatables -->
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">	
-		
+		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
 		<!-- bootstrap-wysiwyg -->
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
 		<!-- Dropzone.js -->
@@ -46,7 +46,7 @@
 		<!-- jQuery -->
 		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery/dist/jquery.min.js"></script>
 		<!-- Bootstrap -->
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>		
+		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
 		<!-- validator -->
 		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/validator/validator.js"></script>
 		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery-validation/jquery.validate.js"></script>
@@ -56,8 +56,8 @@
 		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/notify.js/notify.min.js"></script>
 		<!-- FullCalendar 3 -->
 		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.print.css" rel="stylesheet" media="print"> 
-		<!-- // 
+		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+		<!-- //
 		-->
 		<!-- FullCalendar 4.3.1 -->
 		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/main.css' rel='stylesheet' />
@@ -70,13 +70,13 @@
 		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/daygrid/main.js'></script>
 		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/timegrid/main.js'></script>
 		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/list/main.js'></script>
-		
+
 		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/daypilot/pro/javascript/scripts/daypilot-all.min.js"></script>
-		
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
-		
+
 		<!-- https://github.com/nevins-b/javascript-bcrypt -->
 		<!-- <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/javascript-bcrypt/bCrypt.js"></script> -->
 		<script>
@@ -92,7 +92,7 @@
 					return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
 				}
 			};
-			
+
 			Date.prototype.toConversationsFormat = function() {
 				const now = new Date();
 				const epochTime = this;
@@ -113,25 +113,46 @@
 				isToday = (now.getDate() === this.getDate() && now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? true : false;
 				isYesterday = (now.getDate() === (this.getDate()+1) && now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? true : false;
 				totalDays = (now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? (now.getDate() - this.getDate()) : 999;
-				
-				
+
+				texto_start = 'Hace ';
+				tiempo = '';
 				if (isToday === true){
-					horas = now.getHours() - this.getHours();	
+					horas = now.getHours() - this.getHours();
 					if (horas >= 1){
-						return 'Hace ' + horas + ' hora(s)';
+						texto_start = 'Hace ';
+						texto_end = ' hora(s)';
+						tiempo = horas;
 					} else if (horas < 1){
 						minutos = now.getMinutes() - this.getMinutes();
-						return 'Hace ' + minutos + ' minuto(s)';
+						texto_start = 'Hace ';
+						texto_end = ' minuto(s)';
+						tiempo = minutos;
 					}
 				} else if (isYesterday === true){
-					return 'Ayer';
+					texto_start = 'Ayer ';
+					texto_end = ' ';
+					tiempo = null;
 				} else if (totalDays <= 30){
-					return 'Hace ' + totalDays + ' días(s)';;
+					texto_start = 'Hace ';
+					texto_end = ' días(s)';
+					tiempo = totalDays;
 				} else {
 					mesText = arrayMesesText[this.getMonth()]
-					return this.getDate() + ' de ' + mesText + ' ' + this.format('H:s');
-					return this.format('d M H:s');
+					texto_start = this.getDate() + ' de ' + mesText + ' ';
+					texto_end = this.format('H:s');
+					tiempo = null;
+					//return this.format('d M H:s');
 				}
+				if(tiempo == null){
+					return texto_start + texto_end;
+				}else{
+					if(tiempo>0){
+						return texto_start + tiempo + texto_end;
+					}else{
+						return 'Dentro de ' + Number((tiempo)-tiempo*2) + texto_end;
+					}
+				}
+
 			};
 		</script>
 		<script>
@@ -140,13 +161,13 @@
 				var length = number.toString().length;
 				var zero = "0";
 				if (width <= length) {
-					if (number < 0) { return ("-" + numberOutput.toString()); } 
+					if (number < 0) { return ("-" + numberOutput.toString()); }
 					else { return numberOutput.toString(); }
 				} else {
-					if (number < 0) { return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); } 
+					if (number < 0) { return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); }
 					else { return ((zero.repeat(width - length)) + numberOutput.toString()); }
 				}
-			};		
+			};
 			function formatMoney(n, c, d, t){
 				var c = isNaN(c = Math.abs(c)) ? 2 : c,
 					d = d == undefined ? "." : d,
@@ -156,7 +177,7 @@
 					j = (j = i.length) > 3 ? j % 3 : 0;
 				return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 			};
-		
+
 			var api = axios.create({
 				baseURL: '/api.php',
 				withCredentials: true,
@@ -164,7 +185,7 @@
 					'X-CORE': 'api'
 				}
 			});
-			
+
 			api.interceptors.response.use(function (response) {
 				if (response.headers['x-xsrf-token']) {
 					document.cookie = 'XSRF-TOKEN=' + response.headers['x-xsrf-token'] + '; path=/';
@@ -215,7 +236,7 @@
 					if (properties[key]['x-references']) {
 					  references[key] = properties[key]['x-references'];
 					} else {
-					  references[key] = false; 
+					  references[key] = false;
 					}
 				  }
 				  return references;
@@ -230,7 +251,7 @@
 				}
 			  }
 			};
-			
+
 			var orm = {
 			  methods: {
 				readRecord: function () {
@@ -251,10 +272,10 @@
 				  var params = [];
 				  for (var i=0;i<this.join.length;i++) {
 					params.push('join='+this.join[i]);
-				  }        
+				  }
 				  if (this.field) {
 					params.push('filter='+this.field+',eq,'+this.id);
-				  }        
+				  }
 				  if (params.length>0) {
 					url += '?'+params.join('&');
 				  }
@@ -325,8 +346,8 @@
 			  }
 			};
 		</script>
-		
-		
+
+
 <template id="Forms-Create-Diynamic">
 	<div>
 		<div class="x_title">
@@ -351,7 +372,7 @@
 			<div class="clearfix"></div>
 			<br />
 			<!-- // -->
-			
+
 			<template v-if="inputs !== null">
 				<div class="col-sm-12">
 					<div class="row">
@@ -371,39 +392,39 @@
 											{{ item.label }} <span class="required" v-if="item.required === true">*</span>
 										</label>
 										<div :class="'control-label col-sm-' + options_form.style.input_size + ' col-xs-12'">
-											<input class="form-control col-xs-12" v-if="item.tag === 'input'" 
-												:id="'id-' + item.name" 
+											<input class="form-control col-xs-12" v-if="item.tag === 'input'"
+												:id="'id-' + item.name"
 												:name="item.name"
-												:required="item.required" 
-												:readonly="item.readonly" 
-												:disabled="item.disabled" 
-												:type="item.type" 
-												:title="item.title" 
+												:required="item.required"
+												:readonly="item.readonly"
+												:disabled="item.disabled"
+												:type="item.type"
+												:title="item.title"
 												v-model="record[item.name]"
 											/>
-											<select v-if="item.tag === 'select'" class="form-control col-xs-12" 
-												:id="'id-' + item.name" 
-												:name="item.name" 
-												:required="item.required" 
-												:readonly="item.readonly" 
-												:disabled="item.disabled" 
-												:type="item.type" 
-												:title="item.title" 
+											<select v-if="item.tag === 'select'" class="form-control col-xs-12"
+												:id="'id-' + item.name"
+												:name="item.name"
+												:required="item.required"
+												:readonly="item.readonly"
+												:disabled="item.disabled"
+												:type="item.type"
+												:title="item.title"
 												v-model="record[item.name]"
 											>
 												<option :value="option.value" v-if="item.options != undefined && item.options != null" v-for="(option, index) in item.options">{{ option.text }}</option>
 											</select>
-											<textarea v-if="item.tag === 'textarea'" class="form-control col-xs-12" 
-												:id="'id-' + item.name" 
-												:name="item.name" 
-												:required="item.required" 
-												:readonly="item.readonly" 
-												:disabled="item.disabled" 
-												:title="item.title" 
-												v-model="record[item.name]" 
-												rows="5" 
+											<textarea v-if="item.tag === 'textarea'" class="form-control col-xs-12"
+												:id="'id-' + item.name"
+												:name="item.name"
+												:required="item.required"
+												:readonly="item.readonly"
+												:disabled="item.disabled"
+												:title="item.title"
+												v-model="record[item.name]"
+												rows="5"
 											>{{ record[item.name] }}</textarea>
-											
+
 											<template v-if="item.dynamic == true" class="row">
 												<div class="row" v-for="(subItem, j) in item.dynamicOptions.inputs">
 													<template v-if="subItem.show === true">
@@ -411,40 +432,40 @@
 															{{ subItem.label }} <span class="required" v-if="subItem.required === true">*</span>
 														</label>
 														<div class="col-sm-8">
-															<input class="form-control col-xs-12" v-if="subItem.tag === 'input'" 
-																:id="'id-' + subItem.name" 
+															<input class="form-control col-xs-12" v-if="subItem.tag === 'input'"
+																:id="'id-' + subItem.name"
 																:name="subItem.name"
-																:required="subItem.required" 
-																:readonly="subItem.readonly" 
-																:disabled="subItem.disabled" 
-																:type="subItem.type" 
-																:title="subItem.title" 
-																v-model="otherRecords[subItem.name]" 
+																:required="subItem.required"
+																:readonly="subItem.readonly"
+																:disabled="subItem.disabled"
+																:type="subItem.type"
+																:title="subItem.title"
+																v-model="otherRecords[subItem.name]"
 																@change="changeSubItem(item, subItem)"
 															/>
-															<select v-if="subItem.tag === 'select'" class="form-control col-xs-12" 
-																:id="'id-' + subItem.name" 
+															<select v-if="subItem.tag === 'select'" class="form-control col-xs-12"
+																:id="'id-' + subItem.name"
 																:name="subItem.name"
-																:required="subItem.required" 
-																:readonly="subItem.readonly" 
-																:disabled="subItem.disabled" 
-																:type="subItem.type" 
+																:required="subItem.required"
+																:readonly="subItem.readonly"
+																:disabled="subItem.disabled"
+																:type="subItem.type"
 																:title="subItem.title"
-																v-model="otherRecords[subItem.name]" 
+																v-model="otherRecords[subItem.name]"
 																@change="changeSubItem(item, subItem)"
 															>
 																<option :value="option.value" v-if="subItem.options != undefined && subItem.options != null" v-for="(option, index) in subItem.options">{{ option.text }}</option>
 															</select>
-															<textarea v-if="subItem.tag === 'textarea'" class="form-control col-xs-12" 
-																:id="'id-' + subItem.name" 
+															<textarea v-if="subItem.tag === 'textarea'" class="form-control col-xs-12"
+																:id="'id-' + subItem.name"
 																:name="subItem.name"
-																:required="subItem.required" 
-																:readonly="subItem.readonly" 
-																:disabled="subItem.disabled" 
-																:title="subItem.title" 
-																v-model="otherRecords[subItem.name]" 
-																@change="changeSubItem(item, subItem)" 
-																rows="3" 
+																:required="subItem.required"
+																:readonly="subItem.readonly"
+																:disabled="subItem.disabled"
+																:title="subItem.title"
+																v-model="otherRecords[subItem.name]"
+																@change="changeSubItem(item, subItem)"
+																rows="3"
 															></textarea>
 														</div>
 													</template>
@@ -457,14 +478,14 @@
 								</template>
 							</template>
 							<template v-else="">
-								<input class="form-control col-xs-12" v-if="item.tag === 'input'" 
+								<input class="form-control col-xs-12" v-if="item.tag === 'input'"
 									:name="item.name"
-									:required="item.required" 
-									:readonly="item.readonly" 
-									:disabled="item.disabled" 
-									:type="item.type" 
-									:title="item.title" 
-									v-model="record[item.name]" 
+									:required="item.required"
+									:readonly="item.readonly"
+									:disabled="item.disabled"
+									:type="item.type"
+									:title="item.title"
+									v-model="record[item.name]"
 								/>
 								<template v-if="item.dynamic == true" class="row">
 										<div class="row" v-for="(subItem, j) in item.dynamicOptions.inputs">
@@ -473,40 +494,40 @@
 													{{ subItem.label }} <span class="required" v-if="subItem.required === true">*</span>
 												</label>
 												<div class="col-sm-8">
-													<input class="form-control col-xs-12" v-if="subItem.tag === 'input'" 
-														:id="'id-' + subItem.name" 
+													<input class="form-control col-xs-12" v-if="subItem.tag === 'input'"
+														:id="'id-' + subItem.name"
 														:name="subItem.name"
-														:required="subItem.required" 
-														:readonly="subItem.readonly" 
-														:disabled="subItem.disabled" 
-														:type="subItem.type" 
-														:title="subItem.title" 
-														v-model="otherRecords[subItem.name]" 
+														:required="subItem.required"
+														:readonly="subItem.readonly"
+														:disabled="subItem.disabled"
+														:type="subItem.type"
+														:title="subItem.title"
+														v-model="otherRecords[subItem.name]"
 														@change="changeSubItem(item, subItem)"
 													/>
-													<select v-if="subItem.tag === 'select'" class="form-control col-xs-12" 
-														:id="'id-' + subItem.name" 
+													<select v-if="subItem.tag === 'select'" class="form-control col-xs-12"
+														:id="'id-' + subItem.name"
 														:name="subItem.name"
-														:required="subItem.required" 
-														:readonly="subItem.readonly" 
-														:disabled="subItem.disabled" 
-														:type="subItem.type" 
+														:required="subItem.required"
+														:readonly="subItem.readonly"
+														:disabled="subItem.disabled"
+														:type="subItem.type"
 														:title="subItem.title"
-														v-model="otherRecords[subItem.name]" 
+														v-model="otherRecords[subItem.name]"
 														@change="changeSubItem(item, subItem)"
 													>
 														<option :value="option.value" v-if="subItem.options != undefined && subItem.options != null" v-for="(option, index) in subItem.options">{{ option.text }}</option>
 													</select>
-													<textarea v-if="subItem.tag === 'textarea'" class="form-control col-xs-12" 
-														:id="'id-' + subItem.name" 
+													<textarea v-if="subItem.tag === 'textarea'" class="form-control col-xs-12"
+														:id="'id-' + subItem.name"
 														:name="subItem.name"
-														:required="subItem.required" 
-														:readonly="subItem.readonly" 
-														:disabled="subItem.disabled" 
-														:title="subItem.title" 
-														v-model="otherRecords[subItem.name]" 
-														@change="changeSubItem(item, subItem)" 
-														rows="3" 
+														:required="subItem.required"
+														:readonly="subItem.readonly"
+														:disabled="subItem.disabled"
+														:title="subItem.title"
+														v-model="otherRecords[subItem.name]"
+														@change="changeSubItem(item, subItem)"
+														rows="3"
 													></textarea>
 												</div>
 											</template>
@@ -514,14 +535,14 @@
 										Resultado => {{ item.result }}
 									</template>
 									<template v-else>
-									<input class="form-control col-xs-12" v-if="item.tag === 'input'" 
+									<input class="form-control col-xs-12" v-if="item.tag === 'input'"
 										:name="item.name"
-										:required="item.required" 
-										:readonly="item.readonly" 
-										:disabled="item.disabled" 
-										:type="item.type" 
-										:title="item.title" 
-										v-model="record[item.name]" 
+										:required="item.required"
+										:readonly="item.readonly"
+										:disabled="item.disabled"
+										:type="item.type"
+										:title="item.title"
+										v-model="record[item.name]"
 									/></template>
 							</template>
 						</template>
@@ -612,7 +633,7 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 		returnResultDynamic(itemResult){
 			var self = this;
 			var r = '';
-			
+
 			for (const [index, result] of  Object.entries(itemResult)) {
 				if(!self.record[result.parent]){
 					if (Array.isArray(result)) {
@@ -647,8 +668,8 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 		},
 		getValidatorForm(){
 			var self = this;
-			
-			
+
+
 			if(
 				self.idUpdate !== "" && self.idUpdate !== null && self.idUpdate !== undefined && self.idUpdate > 0
 				&& self.action !== "" && self.action !== null && self.action !== undefined
@@ -660,7 +681,7 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 							if(z.data){
 								for (const [k, v] of  Object.entries(z.data)) {
 									// console.log(k, v);
-									
+
 									if(self.record.hasOwnProperty(k)){
 										self.record[k] = v;
 									}
@@ -685,7 +706,7 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 				console.log('error buscando registro');
 				console.log(self.idUpdate);
 			}
-			
+
 			self.jvalidate = $("#jvalidate").validate({
 				//wrapper: "alert alert-danger alert-dismissible fade in",
 				///errorContainer: "#messageBox",
@@ -697,7 +718,7 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 				onsubmit: true,
 				errorPlacement: function(error, element){
 					var errorClone = error.clone();
-					
+
 					$("[name='" + element[0].name + "']").notify(
 					  'El campo ' + element[0].title + ' esta vacio o llenado de forma erronea.',
 					  {
@@ -718,7 +739,7 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 						errorHTML += 'El campo <strong>' + element[0].title + ' esta vacio o llenado de forma erronea.</strong>.';
 					errorHTML += '</div>';
 					$("#messageBox").append(errorHTML);
-					
+
 					*/
 				},
 				submitHandler: function(form){
@@ -747,10 +768,10 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 										})
 										.catch(function (e) {
 											console.log("Console catch ERROR:", e.response);
-											
+
 											if(e.response.data){
 												e.response.data.message = e.response.data.code == 1009 ? 'Ya existe una cuenta con estos campos.' : e.response.data.message;
-												
+
 												jQuery("#messageBox").html(
 												'<div class="alert alert-danger alert-dismissible fade in" role="alert">'
 													+ '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>'
@@ -798,7 +819,7 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 				"recordDateText": '',
 				"data": self.record,
 			};
-			
+
 			if(!z.status){
 				console.log('Ocurrio un error resposeCall. !z.status', z.status);
 			} else {
@@ -849,12 +870,12 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 			}
 			if(self.options_form != undefined){
 				fields = (self.options_form.fields != undefined) ? self.options_form.fields : {};
-				
+
 				for (const [key, value] of Object.entries(fields)) {
 					if(self.options[value.options] === undefined){
 						self.options[value.options] = [{ text: "Seleccione una opcion.", value: "" }];
 					}
-					
+
 					if((value.options != undefined)){
 						api.get('/records/' + value.options, {
 							params: {}
@@ -891,21 +912,21 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 			} else {
 				console.log('options_form no definido.');
 			}
-			
+
 			self.getValidatorForm();
 		},
 		createFormElement(fields){
 			var self = this;
 			if(fields == undefined || fields == null){ fields = []; };
-			
-			var returnData = { 
-				"fields": fields, 
+
+			var returnData = {
+				"fields": fields,
 				"inputs": [],
 				"record": {},
 				"othersRecord": {},
 				"rules": {}
 			};
-			
+
 			for (const [key, value] of Object.entries(fields)) {
 				var optionsRule = {};
 				var optionsInput = {};
@@ -926,9 +947,9 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 				if((value.number !== undefined)){ optionsRule.number = value.number; } else {}
 				if((value.digits !== undefined)){ optionsRule.digits = value.digits; } else {}
 				if((value.equalTo !== undefined)){ optionsRule.equalTo = value.equalTo; } else {}
-				
+
 				// for (const [kValue, vValue] of Object.entries(value)) {};
-				
+
 				optionsInput.name = key;
 				if(value.label !== undefined){ optionsInput.label = value.label; } else { optionsInput.label = key; }
 				if(value.required !== undefined){ optionsInput.required = value.required; } else { optionsInput.required = false; }
@@ -942,8 +963,8 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 					// returnData.record[key] = null;
 				}
 				if(value.show !== undefined){ optionsInput.show = value.show; } else { optionsInput.show = true; }
-				
-				
+
+
 				// returnData.record[key] = value.value;
 				if((value.typeInput != undefined)){
 					switch(value.typeInput){
@@ -1020,7 +1041,7 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 						default:
 							optionsInput.tag = 'input';
 							optionsInput.type = value.type;
-							
+
 							// returnData.record[key] = null;
 							returnData.record[key] = (optionsInput.value != null) ? optionsInput.value : '';
 						break;
@@ -1032,15 +1053,15 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 				}
 				optionsInput.title = value.label;
 				optionsInput.value = returnData.record[key];
-				
+
 				if(value.valueDataDynamic != undefined){
 					self.getValueDataDynamic(value, optionsInput);
 				}
-				
+
 				if(optionsInput.show == false){ optionsInput.tag = 'input'; optionsInput.type = 'hidden'; };
 				// self.inputs.push(optionsInput);
 				// self.rules[key] = optionsRule;
-				
+
 				returnData.inputs.push(optionsInput);
 				returnData.rules[key] = optionsRule;
 			}
@@ -1054,7 +1075,7 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 				optionsInput.dynamic = true;
 				optionsInput.result = value.valueDataDynamic.result;
 				optionsInput.dynamicOptions = self.createFormElement(value.valueDataDynamic.fields);
-				
+
 				for (const [kDynamic, vDynamic] of Object.entries(optionsInput.dynamicOptions.record)) {
 					// console.log(kDynamic, vDynamic);
 					//self.otherRecords.push(console.log(kDynamic));
@@ -1082,19 +1103,18 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 				};
 				fields = (self.options_form.fields != undefined) ? self.options_form.fields : {};
 				fieldsRepair = self.createFormElement(fields);
-				
+
 				if(fieldsRepair.record != undefined){ self.record = fieldsRepair.record; };
 				if(fieldsRepair.inputs != undefined){ self.inputs = fieldsRepair.inputs; };
 				if(fieldsRepair.rules != undefined){ self.rules = fieldsRepair.rules; };
 			} else {
 				console.log('options_form no definido.');
 			}
-			
+
 			self.getValidatorForm();
 		},
 	},
 	computed: {
 	},
-});		
+});
 </script>
-

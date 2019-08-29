@@ -8,7 +8,15 @@
 		<div style="height:auto;overflow-y:scroll;    overflow: auto">
 			<div id="calendar-navbar"></div>
 			<template v-if="records.length == 0 || records == undefined || records == null">
-				No tienes eventos
+					<li>
+						<a>
+							<span>
+								<span></span>
+								<span class="time"></span>
+							</span>
+							<span class="message">No hay eventos.</span>
+						</a>
+					</li>
 			</template>
 		</div>
 		<li>

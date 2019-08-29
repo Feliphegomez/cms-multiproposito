@@ -301,8 +301,10 @@ $myInfo = $this->myUser;
 							</ul>
 							<br />
 							<div class="text-center mtop20">
-								<a href="#" class="btn btn-sm btn-primary">Add files</a>
-								<a href="#" class="btn btn-sm btn-warning">Report contact</a>
+								<!--
+									<a href="#" class="btn btn-sm btn-primary">Add files</a>
+									<a href="#" class="btn btn-sm btn-warning">Report contact</a>
+								-->
 							</div>
 						</div>
 					</section>

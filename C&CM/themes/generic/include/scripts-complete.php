@@ -482,6 +482,7 @@ var ComposeInbox = new Vue({
 		}).$mount('#navbartop-notifications-inbox-sac');
 	<?php } ?>
 
+
 	<?php if(validatePermission($this->adapter, 'Usuarios', 'calendar')){ ?>
 			var NotificationsCalendarNavbarTop = new Vue({
 				data(){
@@ -637,6 +638,183 @@ var ComposeInbox = new Vue({
 				},
 			}).$mount('#navbartop-notifications-calendar');
 		<?php } ?>
+
+		<?php if(validatePermission($this->adapter, 'SAC', 'requests_new')){ ?>
+				var NotificationsRequestsNewNavbarTop = new Vue({
+					data(){
+						return {
+							count: 0,
+							records: [],
+							timer: '',
+						};
+					},
+					created(){
+						var self = this;
+						self.fetchEventsList();
+						self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
+					},
+					methods: {
+						refreshList(){
+							var self = this;
+							self.load();
+						},
+						fetchEventsList() {
+							var self = this;
+							self.load();
+						},
+						cancelAutoUpdate(){
+							var self = this;
+							clearInterval(self.timer);
+						},
+						load(){
+							var self = this;
+							api.get('/records/requests', {
+								params: {
+									filter: [
+										'status,in,0,1'
+									],
+									join: [
+										'identifications_types',
+										'geo_departments',
+										'geo_citys',
+										'requests_status',
+										'requests_types'
+									],
+									order: 'id,desc'
+								}
+							})
+							.then(response => { self.validateResult(response); })
+							.catch(e => { self.validateResult(e.response); });
+						},
+						validateResult(a){
+							var self = this;
+							try{
+								if (a.data != undefined && a.data.records != undefined){
+									self.records = [];
+									self.count = 0;
+									a.data.records.forEach(item => {
+										console.log('item', item);
+											item.created = new Date(item.created).toConversationsFormat();
+											item.updated = new Date(item.updated).toConversationsFormat();
+											self.records.push(item);
+											self.count++;
+									});
+								}
+							}catch(e){
+								console.log(e);
+								console.log(e.response);
+							};
+						},
+					},
+				}).$mount('#navbartop-notifications-requests-new');
+			<?php } ?>
+
+			<?php if(validatePermission($this->adapter, 'SAC', 'requests_technicals')){ ?>
+					var NotificationsRequestsNewNavbarTop = new Vue({
+						data(){
+							return {
+								count: 0,
+								records: [],
+								timer: '',
+							};
+						},
+						created(){
+							var self = this;
+							self.fetchEventsList();
+							self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
+						},
+						methods: {
+							refreshList(){
+								var self = this;
+								self.load();
+							},
+							fetchEventsList() {
+								var self = this;
+								self.load();
+							},
+							cancelAutoUpdate(){
+								var self = this;
+								clearInterval(self.timer);
+							},
+							load(){
+								var self = this;
+								api.get('/records/requests', {
+									params: {
+										filter: [
+											'status,in,2'
+										],
+										join: [
+											'identifications_types',
+											'geo_departments',
+											'geo_citys',
+											'requests_status',
+											'requests_types',
+											'events'
+										],
+										order: 'id,desc'
+									}
+								})
+								.then(response => { self.validateResult(response); })
+								.catch(e => { self.validateResult(e.response); });
+							},
+							validateResult(a){
+								var self = this;
+								try{
+									if (a.data != undefined && a.data.records != undefined){
+										self.records = [];
+										self.count = 0;
+										a.data.records.forEach(item => {
+											console.log('item', item);
+												item.created = new Date(item.created).toConversationsFormat();
+												item.updated = new Date(item.updated).toConversationsFormat();
+												self.records.push(item);
+												self.count++;
+										});
+									}
+								}catch(e){
+									console.log(e);
+									console.log(e.response);
+								};
+							},
+							validateConversations(response){
+								var self = this;
+								self.records = [];
+								self.count = 0;
+								try{
+									if (response.data != undefined){
+
+										if (response.data.records.length > 0){
+											response.data.records.forEach(item => {
+												if(item.conversations_replys.length > 0){
+													item.conversations_replys.forEach(function(a){
+														a.reply = JSON.parse(a.reply);
+													});
+													item.updated = new Date(item.updated).toConversationsFormat();
+													if (item.status === 3){ self.count++; }
+													self.records.push(item);
+												}
+											});
+										} else {
+											self.searchBox.errorText = "No hay mensajes";
+										}
+									}
+								}catch(e){
+									console.log(e.response);
+								};
+
+							},
+							getAvatar(user){
+								var self = this;
+								isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
+								if(isAvatar == true){
+									return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
+								}else{
+									return "/crm-content/uploads/avatar001.jpg";
+								}
+							},
+						},
+					}).$mount('#navbartop-notifications-requests-technicals');
+				<?php } ?>
 <?php } else { ?>
 
 <?php } ?>

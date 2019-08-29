@@ -5,8 +5,8 @@
 		<span class="badge bg-green" v-if="count > 0">{{ count }}</span>
 	</a>
 	<ul class="dropdown-menu list-unstyled msg_list" role="menu">
-		<div style="height:350px;overflow-y:scroll;    overflow: auto;">
-			
+		<div style="height:auto;overflow-y:scroll;    overflow: auto;">
+
 			<template v-if="records.length > 0">
 				<li v-for="(inbox, i) in records">
 					<a v-bind:href="'/index.php?controller=Usuarios&action=inbox#/conversation/' + inbox.id + '/view'" v-if="inbox.conversations_replys[0]">
@@ -21,7 +21,7 @@
 			</template>
 			<template v-else><li><a><span><span></span><span class="time"></span></span><span class="message">No hay conversaciones.</span></a></li></template>
 		</div>
-		
+
 		<li>
 			<div class="text-center">
 				<a href="<?php echo $this->linkUrl('Usuarios', 'inbox'); ?>">

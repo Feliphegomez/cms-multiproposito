@@ -243,6 +243,12 @@
 															<div id="calendar-list"></div>
 															<template v-if="events.length == 0 || events == undefined || events == null">
 																No se a programado agenta.
+																<hr>
+
+																	<router-link class="btn btn-sm btn-success" tag="a" :to="{ name: 'MiCuenta-Requests-Calendar-Create', params: { request_id: $route.params.request_id } }">
+																		<i class="fa fa-calendar-plus-o"></i> Agendar una visita
+																	</router-link>
+
 															</template>
 														</div>
 
@@ -323,8 +329,11 @@
 								</ul>
 								<br />
 								<div class="text-center mtop20">
-									<a href="#" class="btn btn-sm btn-primary">Add files</a>
-									<a href="#" class="btn btn-sm btn-warning">Report contact</a>
+									<a href="#" class="btn btn-sm btn-primary">Gestionar Inventario</a>
+									<!--
+										<a href="#" class="btn btn-sm btn-primary">Add files</a>
+										<a href="#" class="btn btn-sm btn-warning">Report contact</a>
+									-->
 								</div>
 							</div>
 						</section>
@@ -332,10 +341,10 @@
 				</div>
 			</template>
 			<template v-else>
-				<p>Para acceder a la solucitud debes ser parte del equipo que la esta atendiendo.</p>
-				<a class="btn btn-default btn-lg" @click="addMeInTeam">
+				<p>Para acceder a la solucitud debes ser parte del equipo que esta atendiendo la misma, puedes ingresar al equipo pulsando el botón de abajo.</p>
+				<a class="btn btn-success btn-lg" @click="addMeInTeam">
 						<i class="fa fa-user-plus"></i>
-						Hacer parte del equipo
+						Ingresar
 				</a>
 			</template>
 		</div>
@@ -873,7 +882,20 @@ var MyRequestsView = Vue.extend({
 				})
 				.then(rd => {
 					if(rd.data != undefined && rd.data > 0){
-						self.load();
+						api.post('/records/requests_activity', {
+							request: self.$route.params.request_id,
+							user: <?php echo $_SESSION['user']['id']; ?>,
+							type: 'team_new_member',
+							info: JSON.stringify({
+								"text": "Se agregado personal para gestionar la solicitud."
+							}),
+						})
+						.then(activityResult => {
+							if(activityResult.data != undefined){
+								console.log('Gracias por  tu gestión.');
+								self.load();
+							}
+						});
 					}
 				})
 			}
@@ -977,7 +999,7 @@ var MyRequestsCalendarCreate = Vue.extend({
 				],
 				scale: "CellDuration",
 				cellDuration: 30,
-				days: DayPilot.Date.today().daysInMonth(),
+				days: DayPilot.Date.today().daysInMonth() *2,
 				startDate: DayPilot.Date.today().firstDayOfMonth(),
 				businessBeginsHour: 7,
 				businessEndsHour: 19,
