@@ -9,7 +9,7 @@
 <div class="" id="micuenta-requests">
 	<div class="page-title">
 		<div class="title_left">
-			<h3>Mi Cuenta <small> Mis Solicitudes</small></h3>
+			<h3>SAC <small> Solicitudes Nuevas</small></h3>
 		</div>
 	</div>
 	<div class="clearfix"></div>
@@ -115,12 +115,23 @@
 										<i class="fa fa-calendar-plus-o"></i> Agendar una visita
 									</router-link>
 								</li>
-								<li>
-									<a @click="changeStatus(2)">
-										<i class="fa fa-calendar-check-o"></i> Enviar a los Ings. Forestales
-									</a>
-								</li>
 							</ul>
+						</li>
+						<li>
+							<a @click="changeStatus(1)" v-if="record.status.id != 1 && record.status.id != 0">
+								<i class="fa fa-life-ring"></i>
+								<template v-if="record.status.id > 1">
+									Regresar a (Aten. Cliente)
+								</template>
+								<template v-else>
+									Enviar a (Aten. Cliente)
+								</template>
+							</a>
+						</li>
+						<li>
+							<a @click="changeStatus(2)" v-if="record.status.id != 2">
+								<i class="fa fa-tree"></i> Enviar a (Ings. Forestales)
+							</a>
 						</li>
 						<router-link tag="li" :to="{ name: 'MiCuenta-Requests' }">
 							<a class="close-link"><i class="fa fa-close"></i></a>
@@ -151,58 +162,126 @@
 						<br />
 						<!-- // <div id="mainb" style="height:350px;"></div> -->
 						<div>
-							<h4>Actividad Reciente</h4>
-							<ul class="messages">
-								<template v-if="record.requests_activity.length > 0">
-									<li v-for="activity in record.requests_activity">
-										<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-										<div class="message_date">
-											<!--
-											<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
-											<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
-											-->
+
+								<div class="row">
+									<div class="col-sm-12">
+										<div class="x_content">
+											<div class="row" role="tabpanel" data-example-id="togglable-tabs">
+												<div class="col-sm-12">
+													<ul id="myTab1" class="nav nav-tabs bar_tabs_ " role="tablist">
+														<li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Actividad Reciente</a></li>
+														<li role="presentation" class=""><a @click="refreshCalendar" href="#tab_calendar" role="tab" id="calendar-tabb" data-toggle="tab" aria-controls="calendar" aria-expanded="false">Calendario</a></li>
+														<li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Propuestas</a></li>
+													</ul>
+												</div>
+
+												<div class="col-sm-12">
+													<div id="myTabContent2" class="tab-content">
+														<div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
+
+															<ul class="messages">
+																<template v-if="record.requests_activity.length > 0">
+																	<li v-for="activity in record.requests_activity">
+																		<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																		<div class="message_date">
+																		<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
+																		<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
+																		</div>
+																		<div class="message_wrapper">
+																			<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
+																			<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
+																			<br />
+																			<template v-if="activity.type == 'attachment'">
+																				<p class="url" v-for="attachment in activity.info.attachment">
+																					<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																					<!-- //
+																					<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
+																					<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
+																					<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
+																					-->
+																					<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
+																				</p>
+																			</template>
+																			<template v-else-if="activity.type == 'events'">
+																				<ul>
+																					<li  v-for="event in activity.info.events">
+																						<span class="fs1 text-info fa fa-calendar-o" aria-hidden="true"></span>
+																							{{ event.title }}
+																							<br>Inicio: {{ event.start }}
+																							<br>Fin: {{ event.end }}
+																					</li>
+																				</ul>
+																			</template>
+																		</div>
+																	</li>
+																</template>
+																<template v-else>
+																	<li>
+																		<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																		<div class="message_date">
+																			<h3 class="date text-info"></h3>
+																			<p class="month"></p>
+																		</div>
+																		<div class="message_wrapper">
+																			<h4 class="heading">Mensaje automatico del sistema</h4>
+																			<blockquote class="message">
+																				Esta solicitud necesita de tu gestión, Comencemos!
+																			</blockquote>
+																			<br />
+																			<!--
+																			<p class="url">
+																				<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																				<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+																			</p>
+																			-->
+																		</div>
+																	</li>
+																</template>
+															</ul>
+														</div>
+														<div role="tabpanel" class="tab-pane fade" id="tab_calendar" aria-labelledby="calendar-tab">
+															<div id="calendar-list"></div>
+															<template v-if="events.length == 0 || events == undefined || events == null">
+																No se a programado agenta.
+															</template>
+														</div>
+
+
+
+														<div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+															<ul class="messages">
+																<li>
+																	<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																	<div class="message_date">
+																		<h3 class="date text-info"></h3>
+																		<p class="month"></p>
+																	</div>
+																	<div class="message_wrapper">
+																		<h4 class="heading">Mensaje automatico del sistema</h4>
+																		<blockquote class="message">
+																			Aún no tenemos propuestas, espera que nuestros especialistas analicen tu solicitud y realicen el estudio para enviarte tu propuesta.
+																		</blockquote>
+																		<br />
+																		<!--
+																		<p class="url">
+																			<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																			<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+																		</p>
+																		-->
+																	</div>
+																</li>
+															</ul>
+														</div>
+														<div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
+															<p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
+																booth letterpress, commodo enim craft beer mlkshk </p>
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
-										<div class="message_wrapper">
-											<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
-											<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
-											<br />
-											<template v-if="activity.type == 'attachment'">
-												<p class="url" v-for="attachment in activity.info.attachment">
-													<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-													<!-- //
-													<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
-													<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
-													<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
-													-->
-													<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
-												</p>
-											</template>
-										</div>
-									</li>
-								</template>
-								<template v-else>
-									<li>
-										<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-										<div class="message_date">
-											<h3 class="date text-info"></h3>
-											<p class="month"></p>
-										</div>
-										<div class="message_wrapper">
-											<h4 class="heading">Mensaje automatico del sistema</h4>
-											<blockquote class="message">
-												No te impocientes, nuetro equipo esta validando tu solicitud.
-											</blockquote>
-											<br />
-											<!--
-											<p class="url">
-												<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-												<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-											</p>
-											-->
-										</div>
-									</li>
-								</template>
-							</ul>
+									</div>
+								</div>
 						</div>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-12">
@@ -441,6 +520,7 @@ Vue.component('scheduler', {
 								.then(r => {
 									if(r.data != undefined){
 										console.log('r.data', r.data);
+										eventInsert.id = r.data;
 										api.post('/records/users_events', {
 											user: args.resource.split(':')[0],
 											event: r.data
@@ -449,6 +529,24 @@ Vue.component('scheduler', {
 											if(rs.data != undefined){
 												console.log('rs.data', rs.data);
 
+
+												// Agregar Actividad del evento en la solicitud
+												api.post('/records/requests_activity', {
+													request: self.$route.params.request_id,
+													user: <?php echo $_SESSION['user']['id']; ?>,
+													type: 'events',
+													info: JSON.stringify({
+														"text": "Se agendo una visita tecnica.",
+														"events": [ eventInsert ]
+													}),
+												})
+												.then(activityResult => {
+													if(activityResult.data != undefined){
+														console.log('activityResult.data', activityResult.data);
+													}
+												});
+
+
 												var e = new DayPilot.Event({
 													start: args.start,
 													end: args.start.addMinutes(90),
@@ -456,6 +554,7 @@ Vue.component('scheduler', {
 													resource: args.resource,
 													text: title
 												});
+
 												self.control.events.add(e);
 												self.control.message("El evento a sido creado");
 												self.$root.loadResources();
@@ -537,7 +636,6 @@ Vue.component('scheduler', {
 	}
 });
 
-
 var MyRequestsList = Vue.extend({
 	template: '#micuenta-requests-list',
 	data: function () {
@@ -548,6 +646,11 @@ var MyRequestsList = Vue.extend({
 	mounted(){
 		var self = this;
 		self.load();
+				// Progressbar
+				$(document).ready(function() {
+					console.log('ok');
+					$('.progress .progress-bar').progressbar();
+				});
 	},
 	methods: {
 		zfill: zfill,
@@ -559,10 +662,11 @@ var MyRequestsList = Vue.extend({
 		},
 		load(){
 			var self = this;
+			filter = self.$route.params.filterStatus != undefined ? "status,in," + self.$route.params.filterStatus : ""
 			api.get('/records/requests', {
 				params: {
 					filter: [
-						'status,in,0,1'
+						filter
 					],
 					join: [
 						'requests_types',
@@ -628,6 +732,9 @@ var MyRequestsView = Vue.extend({
 			  "requests_team": [],
 			  "requests_activity": [],
 			},
+			calendarEl: null,
+			calendar: null,
+			events: [],
 		};
 	},
 	mounted(){
@@ -635,6 +742,50 @@ var MyRequestsView = Vue.extend({
 		self.load();
 	},
 	methods: {
+		refreshCalendar(){
+			var self = this;
+			if(self.events.length > 0){
+				self.calendar.render();
+			}
+		},
+		loadCalendar(){
+			var self = this;
+			self.calendarEl = document.getElementById('calendar-list');
+			self.calendar = new FullCalendar.Calendar(self.calendarEl, {
+				timeZone: 'UTC',
+				lang: 'es',
+				header: {
+					left: 'listWeek,timeGridWeek',
+					center: 'title',
+					right: 'today prev,next',
+				},
+				height: 450,
+				plugins: [ 'list', 'timeGrid' ],
+				//defaultView: 'timeGridWeek',
+				defaultView: 'listWeek',
+				events: self.events
+			});
+		},
+		loadReservations(){
+			var self = this;
+			api.get('/records/events', {
+				params: {
+					filter: [
+						'request,eq,' + self.$route.params.request_id
+					]
+				}
+			})
+			.then(response => { self.validateResultCalendar(response); })
+			.catch(e => { self.validateResultCalendar(e.response); });
+		},
+		validateResultCalendar(r){
+			var self = this;
+			console.log('r', r);
+			if(r.data != undefined && r.data.records != undefined){
+				self.events = r.data.records;
+				self.loadCalendar();
+			}
+		},
 		zfill: zfill,
 		changeStatus(status){
 			var self = this;
@@ -649,8 +800,24 @@ var MyRequestsView = Vue.extend({
 						})
 						.then(rd => {
 							if(rd.data != undefined && rd.data > 0){
-								console.log('Gracias por  tu gestión.');
-								router.push({ name: 'MiCuenta-Requests' })
+
+
+								api.post('/records/requests_activity', {
+									request: self.$route.params.request_id,
+									user: <?php echo $_SESSION['user']['id']; ?>,
+									type: 'status',
+									info: JSON.stringify({
+										"text": "Se actualizó el estado de la solicitud."
+									}),
+								})
+								.then(activityResult => {
+									if(activityResult.data != undefined){
+										console.log('Gracias por  tu gestión.');
+										self.load();
+										router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
+									}
+								});
+
 							}
 						});
 					}
@@ -720,9 +887,10 @@ var MyRequestsView = Vue.extend({
 				});
 				self.record = r.data;
 				self.searchMeInTeam();
+				self.loadReservations();
 			} else {
 				 console.log('Error: consulta validateResult');
-				 //console.log(response);
+				 //console.log(response
 			}
 		},
 	}
@@ -1051,35 +1219,6 @@ var MyRequestsCalendarCreate = Vue.extend({
 			radFecha = radSeparate[0].split("-");
 			return radFecha[0] + radFecha[1] + radFecha[2] + self.zfill(item.id, 5);
 		},
-		load(){
-			var self = this;
-			api.get('/records/requests', {
-				params: {
-					filter: [
-						'status,in,0,1'
-					],
-					join: [
-						'requests_types',
-						'requests_status',
-						'requests_team',
-						'requests_team,users'
-					]
-				}
-			})
-			.then(response => { self.validateResult(response); })
-			.catch(e => { self.validateResult(e); });
-		},
-		validateResult(r){
-			var self = this;
-			self.records = [];
-			if (r.data.records != undefined){
-				// console.log(r.data);
-				self.records = r.data.records;
-			} else {
-				 console.log('Error: consulta validateResult');
-				 //console.log(response);
-			}
-		},
 	}
 });
 
@@ -1087,6 +1226,7 @@ var router = new VueRouter({
 	linkActiveClass: 'active',
 	routes:[
 		{ path: '/', component: MyRequestsList, name: 'MiCuenta-Requests' },
+		{ path: '/filter/status/:filterStatus', component: MyRequestsList, name: 'MiCuenta-filterStatus' },
 		{ path: '/view/:request_id', component: MyRequestsView, name: 'MiCuenta-Requests-View' },
 		{ path: '/view/:request_id/calendar/create', component: MyRequestsCalendarCreate, name: 'MiCuenta-Requests-Calendar-Create' },
 		{ path: '/view/:request_id/calendar/view', component: MyRequestsCalendarView, name: 'MiCuenta-Requests-Calendar-View' },

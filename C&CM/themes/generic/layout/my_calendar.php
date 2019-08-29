@@ -21,26 +21,11 @@
 	</div>
 </div>
 
-<template id="micuenta-calendar-view">
+<template id="micuenta-calendar-home">
 	<div>
 		<div class="x_panel">
 		  <div class="x_title">
-			<h2>Calendar Events <small>Sessions</small></h2>
-			<ul class="nav navbar-right panel_toolbox">
-			  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-			  </li>
-			  <li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-				<ul class="dropdown-menu" role="menu">
-				  <li><a href="#">Settings 1</a>
-				  </li>
-				  <li><a href="#">Settings 2</a>
-				  </li>
-				</ul>
-			  </li>
-			  <li><a class="close-link"><i class="fa fa-close"></i></a>
-			  </li>
-			</ul>
+			<h2>Calendario <small>Mis Eventos</small></h2>
 			<div class="clearfix"></div>
 		  </div>
 		  <div class="x_content">
@@ -49,7 +34,7 @@
 
 		  </div>
 		</div>
-		
+
 
 		<!-- calendar modal -->
 		<div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -102,6 +87,7 @@
 								</div>
 							</form>
 						</div>
+						<!--
 						<div class="table table-responsive">
 							<table class="table table-border table-hover">
 								<template v-if="selected != null">
@@ -122,10 +108,12 @@
 								</template>
 							</table>
 						</div>
+						-->
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Cerrar</button>
-						<button type="button" class="btn btn-primary antosubmit2">Guardar</button>
+						<button type="button" class="btn btn-primary antosubmit3">Ver Completo</button>
+						<button type="button" class="btn btn-success antosubmit2">Guardar</button>
 					</div>
 				</div>
 			</div>
@@ -136,9 +124,26 @@
 </template>
 
 
+<template id="micuenta-calendar-view">
+	<div>
+		<div class="x_panel">
+		  <div class="x_title">
+				<h2>Mi Calendario<small>Evento</small></h2>
+				<ul class="nav navbar-right panel_toolbox">
+				  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+					<router-link tag="li" :to="{ name: 'MiCuenta-Calendar-Home' }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</template>
+
 <script>
-var MyCalendarView = Vue.extend({
-	template: '#micuenta-calendar-view',
+var MyCalendarHome = Vue.extend({
+	template: '#micuenta-calendar-home',
 	data: function () {
 		return {
 			calendarEl: null,
@@ -205,7 +210,7 @@ var MyCalendarView = Vue.extend({
 								true // make the event "stick"
 							);
 						}
-						
+
 						$('#title').val('');
 						calendar.fullCalendar('unselect');
 						$('.antoclose').click();
@@ -214,7 +219,7 @@ var MyCalendarView = Vue.extend({
 				},
 				eventClick: function(calEvent, jsEvent, view) {
 					self.selected = calEvent.request;
-					
+
 					$('#fc_edit').click();
 					$('#title2').val(calEvent.title);
 					categoryClass = $("#event_type").val();
@@ -238,7 +243,21 @@ var MyCalendarView = Vue.extend({
 								}
 							}
 						});
-						
+
+					});
+					$(".antosubmit3").on("click", function() {
+						$('.antoclose2').click();
+						api.get('/records/events/' + calEvent.id, {
+							params: {
+							}
+						})
+						.then(response => {
+							if(response.data != undefined && response.data.request > 0){
+								location.replace('/micuenta/calendar#/view/' + response.data.id);
+							}else{
+								console.log("Error encontrando la solicitud.");
+							}
+						});
 					});
 					calendar.fullCalendar('unselect');
 				},
@@ -284,13 +303,58 @@ var MyCalendarView = Vue.extend({
 	},
 });
 
+var MyCalendarView = Vue.extend({
+	template: '#micuenta-calendar-view',
+	data() {
+		return {
+			event_id: this.$route.params.event_id,
+			record: {
+				all_day: 0,
+				barColor: "",
+				end: ",",
+				id: this.$route.params.event_id,
+				request: 0,
+				resource: "",
+				start: "",
+				title: "",
+				type: {
+					id: 0,
+					name: ""
+				}
+			}
+		};
+	},
+	mounted(){
+		var self = this;
+		api.get('/records/events/' + self.event_id, {
+			params: {
+				join: [
+					'events_types',
+				],
+			}
+		})
+		.then(response => { self.validateResult(response); })
+		.catch(e => { self.validateResult(e.response); });
+	},
+	methods: {
+		validateResult(a){
+			var self = this;
+			if(a.data != undefined){
+				self.record = a.data;
+			}
+		}
+	}
+});
+
 var router = new VueRouter({
 	linkActiveClass: 'active',
 	routes:[
-		{ path: '/', component: MyCalendarView, name: 'MiCuenta-Calendar-View' },
+		{ path: '/', component: MyCalendarHome, name: 'MiCuenta-Calendar-Home' },
+		{ path: '/view/:event_id', component: MyCalendarView, name: 'MiCuenta-Calendar-View' },
 	]
 });
 
+MyCalendarView
 
 var MyCalendar = new Vue({
 	router: router,

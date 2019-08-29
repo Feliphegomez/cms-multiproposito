@@ -139,134 +139,126 @@ $myInfo = $this->myUser;
 					<br />
 					<!-- // <div id="mainb" style="height:350px;"></div> -->
 					<div>
-						<h4>Actividad Reciente</h4>
-						<ul class="messages">
-							<template v-if="record.requests_activity.length > 0">
-								<li v-for="activity in record.requests_activity">
-									<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-									<div class="message_date">
-										<!--
-										<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
-										<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
-										-->
-									</div>
-									<div class="message_wrapper">
-										<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
-										<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
-										<br />
-										<template v-if="activity.type == 'attachment'">
-											<p class="url" v-for="attachment in activity.info.attachment">
-												<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-												<!-- //
-												<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
-												<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
-												<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
-												-->
-												<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
-											</p>
-										</template>
-									</div>
-								</li>
-							</template>
-							<template v-else>
-								<li>
-									<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-									<div class="message_date">
-										<h3 class="date text-info"></h3>
-										<p class="month"></p>
-									</div>
-									<div class="message_wrapper">
-										<h4 class="heading">Mensaje automatico del sistema</h4>
-										<blockquote class="message">
-											Esta solicitud necesita de tu gestión, Comencemos!
-										</blockquote>
-										<br />
-										<!--
-										<p class="url">
-											<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-											<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-										</p>
-										-->
-									</div>
-								</li>
-							</template>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="x_content">
+									<div class="row" role="tabpanel" data-example-id="togglable-tabs">
+										<div class="col-sm-12">
+											<ul id="myTab1" class="nav nav-tabs bar_tabs_ " role="tablist">
+												<li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Actividad Reciente</a></li>
+												<li role="presentation" class=""><a @click="refreshCalendar" href="#tab_calendar" role="tab" id="calendar-tabb" data-toggle="tab" aria-controls="calendar" aria-expanded="false">Calendario</a></li>
+												<li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Propuestas</a></li>
+											</ul>
+										</div>
 
-							<!-- //
-							<li v-for="activity in record.requests_activity">
-								<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -- >
-								<div class="message_date">
-									<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
-									<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
-								</div>
-								<div class="message_wrapper">
-									<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
-									<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
-									<br />
-									<template v-if="activity.type == 'attachment'">
-										<p class="url" v-for="attachment in activity.info.attachment">
-											<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-											<! -- //
-											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
-											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
-											<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
-											-- >
-											<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
-										</p>
-									</template>
-								</div>
-							</li>
+										<div class="col-sm-12">
+											<div id="myTabContent2" class="tab-content">
+												<div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
+
+													<ul class="messages">
+														<template v-if="record.requests_activity.length > 0">
+															<li v-for="activity in record.requests_activity">
+																<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																<div class="message_date">
+																	<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
+																	<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
+																</div>
+																<div class="message_wrapper">
+																	<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
+																	<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
+																	<br />
+																	<template v-if="activity.type == 'attachment'">
+																		<p class="url" v-for="attachment in activity.info.attachment">
+																			<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																			<!-- //
+																			<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
+																			<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
+																			<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
+																			-->
+																			<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
+																		</p>
+																	</template>
+																	<template v-else-if="activity.type == 'events'">
+																		<ul>
+																			<li  v-for="event in activity.info.events">
+																				<span class="fs1 text-info fa fa-calendar-o" aria-hidden="true"></span>
+																					{{ event.title }}
+																					<br>Inicio: {{ event.start }}
+																					<br>Fin: {{ event.end }}
+																			</li>
+																		</ul>
+																	</template>
+																</div>
+															</li>
+														</template>
+														<template v-else>
+															<li>
+																<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																<div class="message_date">
+																	<h3 class="date text-info"></h3>
+																	<p class="month"></p>
+																</div>
+																<div class="message_wrapper">
+																	<h4 class="heading">Mensaje automatico del sistema</h4>
+																	<blockquote class="message">
+																		Esta solicitud necesita de tu gestión, Comencemos!
+																	</blockquote>
+																	<br />
+																	<!--
+																	<p class="url">
+																		<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																		<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+																	</p>
+																	-->
+																</div>
+															</li>
+														</template>
+													</ul>
+												</div>
+												<div role="tabpanel" class="tab-pane fade" id="tab_calendar" aria-labelledby="calendar-tab">
+													<div id="calendar-list"></div>
+													<template v-if="events.length == 0 || events == undefined || events == null">
+														No se a programado agenta.
+													</template>
+												</div>
 
 
-							<li>
-								<img src="images/img.jpg" class="avatar" alt="Avatar">
-								<div class="message_date">
-									<h3 class="date text-info">24</h3>
-									<p class="month">May</p>
+
+												<div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+													<ul class="messages">
+														<li>
+															<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+															<div class="message_date">
+																<h3 class="date text-info"></h3>
+																<p class="month"></p>
+															</div>
+															<div class="message_wrapper">
+																<h4 class="heading">Mensaje automatico del sistema</h4>
+																<blockquote class="message">
+																	Aún no tenemos propuestas, espera que nuestros especialistas analicen tu solicitud y realicen el estudio para enviarte tu propuesta.
+																</blockquote>
+																<br />
+																<!--
+																<p class="url">
+																	<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																	<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+																</p>
+																-->
+															</div>
+														</li>
+													</ul>
+												</div>
+												<div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
+													<p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
+														booth letterpress, commodo enim craft beer mlkshk </p>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
-								<div class="message_wrapper">
-									<h4 class="heading">Desmond Davison</h4>
-									<blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-									<br />
-									<p class="url">
-										<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-										<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-									</p>
-								</div>
-							</li>
-							<li>
-								<img src="images/img.jpg" class="avatar" alt="Avatar">
-								<div class="message_date">
-									<h3 class="date text-error">21</h3>
-									<p class="month">May</p>
-								</div>
-								<div class="message_wrapper">
-									<h4 class="heading">Brian Michaels</h4>
-									<blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-									<br />
-									<p class="url">
-										<span class="fs1" aria-hidden="true" data-icon=""></span>
-										<a href="#" data-original-title="">Download</a>
-									</p>
-								</div>
-							</li>
-							<li>
-								<img src="images/img.jpg" class="avatar" alt="Avatar">
-								<div class="message_date">
-									<h3 class="date text-info">24</h3>
-									<p class="month">May</p>
-								</div>
-								<div class="message_wrapper">
-									<h4 class="heading">Desmond Davison</h4>
-									<blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-									<br />
-									<p class="url">
-										<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-										<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-									</p>
-								</div>
-							</li>
-							-->
-						</ul>
+							</div>
+						</div>
+
 					</div>
 				</div>
 				<div class="col-md-4 col-sm-4 col-xs-12">
@@ -331,6 +323,12 @@ var MyRequestsList = Vue.extend({
 	mounted(){
 		var self = this;
 		self.load();
+
+				// Progressbar
+				$(document).ready(function() {
+					console.log('ok');
+					$('.progress .progress-bar').progressbar();
+				});
 	},
 	methods: {
 		zfill: zfill,
@@ -377,7 +375,7 @@ var MyRequestsView = Vue.extend({
 	template: '#micuenta-requests-view',
 	data: function () {
 		return {
-			request_id: 0,
+			request_id: this.$route.params.request_id,
 			record: {
 			  "id": 0,
 			  "type": {
@@ -407,10 +405,12 @@ var MyRequestsView = Vue.extend({
 			  },
 			  "created": "",
 			  "updated": "",
-			  "requests_team": [
-
-			  ]
+			  "requests_team": [],
+				"requests_activity": []
 			},
+			calendarEl: null,
+			calendar: null,
+			events: [],
 		};
 	},
 	mounted(){
@@ -418,6 +418,50 @@ var MyRequestsView = Vue.extend({
 		self.load();
 	},
 	methods: {
+		refreshCalendar(){
+			var self = this;
+			if(self.events.length > 0){
+				self.calendar.render();
+			}
+		},
+		loadCalendar(){
+			var self = this;
+			self.calendarEl = document.getElementById('calendar-list');
+			self.calendar = new FullCalendar.Calendar(self.calendarEl, {
+				timeZone: 'UTC',
+				lang: 'es',
+				header: {
+					left: 'listWeek,timeGridWeek',
+					center: 'title',
+					right: 'today prev,next',
+				},
+				height: 450,
+				plugins: [ 'list', 'timeGrid' ],
+				//defaultView: 'timeGridWeek',
+				defaultView: 'listWeek',
+				events: self.events
+			});
+		},
+		loadReservations(){
+			var self = this;
+			api.get('/records/events', {
+				params: {
+					filter: [
+						'request,eq,' + self.$route.params.request_id
+					]
+				}
+			})
+			.then(response => { self.validateResultCalendar(response); })
+			.catch(e => { self.validateResultCalendar(e.response); });
+		},
+		validateResultCalendar(r){
+			var self = this;
+			console.log('r', r);
+			if(r.data != undefined && r.data.records != undefined){
+				self.events = r.data.records;
+				self.loadCalendar();
+			}
+		},
 		zfill: zfill,
 		returnMouthText(mouth){
 			array = [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ];
@@ -463,6 +507,7 @@ var MyRequestsView = Vue.extend({
 					x.info = JSON.parse(x.info);
 				});
 				self.record = r.data.records[0].request;
+				self.loadReservations();
 			} else {
 				 console.log('Error: consulta validateResult');
 				 //console.log(response);

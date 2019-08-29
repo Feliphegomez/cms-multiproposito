@@ -1,4 +1,4 @@
-<?php 
+<?php
 	$session = validateSession(false);
 	$myInfo = validateSession(true);
 ?>
@@ -121,7 +121,7 @@ var ComposeInbox = new Vue({
 				},
 				callEvent(resultado){
 					if(resultado.id != undefined && resultado.id > 0){
-						
+
 					}
 				},
 				style: {
@@ -140,7 +140,7 @@ var ComposeInbox = new Vue({
 		sendMessage(){
 			var self = this;
 			self.messageText = document.getElementById('editor').innerHTML;
-			
+
 			if(self.messageText == '' || self.messageText.length < 50){
 				alert('El mensaje es demaciado corto para ser enviado....');
 			}else{
@@ -164,8 +164,6 @@ var ComposeInbox = new Vue({
 		},
 		loadConversation(){
 			var self = this;
-			console.log('loadConversation');
-			console.log(self.conversation_id);
 		},
 		validateResult(a, call){
 			var self = this;
@@ -182,8 +180,7 @@ var ComposeInbox = new Vue({
 		},
 		createConversation(){
 			var self = this;
-			console.log('createConversation');
-			
+
 			api.post('/records/conversations', {
 				user: self.session.user.id
 			})
@@ -235,8 +232,7 @@ var ComposeInbox = new Vue({
 		},
 		addUserInConversation(){
 			var self = this;
-			console.log('addUserInConversation');
-			
+
 			api.post('/records/conversations_groups', {
 				conversation: self.conversation_id,
 				user: self.session.user.id
@@ -330,8 +326,7 @@ var ComposeInbox = new Vue({
 							}
 						}
 					}catch(e){
-						console.log(e);
-						console.log(e.response);	
+						console.log(e.response);
 					};
 				},
 				validateConversations(response){
@@ -340,7 +335,7 @@ var ComposeInbox = new Vue({
 					self.count = 0;
 					try{
 						if (response.data != undefined){
-							
+
 							if (response.data.records.length > 0){
 								response.data.records.forEach(item => {
 									if(item.conversations_replys.length > 0){
@@ -355,13 +350,11 @@ var ComposeInbox = new Vue({
 							} else {
 								self.searchBox.errorText = "No hay mensajes";
 							}
-						} 
+						}
 					}catch(e){
-						console.log(response);
-						console.log(e);
-						console.log(e.response);	
+						console.log(e.response);
 					};
-					
+
 				},
 				getAvatar(user){
 					var self = this;
@@ -445,8 +438,7 @@ var ComposeInbox = new Vue({
 							}
 						}
 					}catch(e){
-						console.log(e);
-						console.log(e.response);	
+						console.log(e.response);
 					};
 				},
 				validateConversations(response){
@@ -455,7 +447,7 @@ var ComposeInbox = new Vue({
 					self.count = 0;
 					try{
 						if (response.data != undefined){
-							
+
 							// console.log('item: response;', response);
 							if (response.data.records.length > 0){
 								response.data.records.forEach(item => {
@@ -471,13 +463,11 @@ var ComposeInbox = new Vue({
 							} else {
 								self.searchBox.errorText = "No hay mensajes";
 							}
-						} 
+						}
 					}catch(e){
-						console.log(response);
-						console.log(e);
-						console.log(e.response);	
+						console.log(e.response);
 					};
-					
+
 				},
 				getAvatar(user){
 					var self = this;
@@ -491,6 +481,162 @@ var ComposeInbox = new Vue({
 			},
 		}).$mount('#navbartop-notifications-inbox-sac');
 	<?php } ?>
+
+	<?php if(validatePermission($this->adapter, 'Usuarios', 'calendar')){ ?>
+			var NotificationsCalendarNavbarTop = new Vue({
+				data(){
+					return {
+						count: 0,
+						records: [],
+						timer: '',
+						selected: null,
+						calendarEl: null,
+						calendar: null,
+						events: [],
+					};
+				},
+				created(){
+					var self = this;
+					self.fetchEventsList();
+					self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
+				},
+				methods: {
+					refreshCalendar(){
+						var self = this;
+						if(self.records.length > 0){
+							self.calendar.render();
+						}
+					},
+					loadCalendar(){
+						var self = this;
+						self.calendarEl = document.getElementById('calendar-navbar');
+						self.calendar = new FullCalendar.Calendar(self.calendarEl, {
+							timeZone: 'UTC',
+							lang: 'es',
+							selectHelper: true,
+							eventClick: function(calEvent, jsEvent, view) {
+								api.get('/records/events/' + calEvent.event.id, {
+									params: {
+									}
+								})
+								.then(response => {
+									if(response.data != undefined && response.data.request > 0){
+										location.replace('/micuenta/calendar#/view/' + response.data.id);
+									}else{
+										console.log("Error encontrando la solicitud.");
+									}
+								});
+							},
+							header: {
+								left: '', // listWeek,timeGridWeek
+								center: 'title',
+								right: '', // today prev,next
+							},
+							height: 250,
+							plugins: [ 'list', 'timeGrid' ],
+							//defaultView: 'timeGridWeek',
+							defaultView: 'listWeek',
+							events: self.records
+						});
+						console.log('Calendario configurado.');
+					},
+					fetchEventsList() {
+						var self = this;
+						self.load();
+					},
+					cancelAutoUpdate(){
+						var self = this;
+						clearInterval(self.timer);
+					},
+					load(){
+						var self = this;
+						api.get('/records/users_events', {
+							params: {
+								filter: [
+									'user,eq,<?php echo ($myInfo['id']); ?>',
+									// 'conversations.status,eq,2'
+								],
+								join: [
+									'events',
+									'events,events_types',
+									'events,requests',
+									'events,requests,identifications_types',
+									'events,requests,geo_departments',
+									'events,requests,geo_citys',
+									'events,requests,requests_status',
+									'events,requests,requests_types'
+									// 'conversations,conversations_replys',
+									// 'conversations,conversations_replys,users',
+								],
+								order: 'id,desc'
+							}
+						})
+						.then(response => { self.validateResult(response); })
+						.catch(e => { self.validateResult(e.response); });
+					},
+					validateResult(a){
+						var self = this;
+						try{
+							if (a.data != undefined && a.data.records != undefined){
+								self.records = [];
+								var hoy = new Date();
+								a.data.records.forEach(item => {
+									fStart = new Date(item.event.start);
+
+									if (hoy.getDate() == fStart.getDate()
+									&& hoy.getMonth() == fStart.getMonth()
+									&& hoy.getFullYear() == fStart.getFullYear()) {
+										self.count++;
+									}
+
+									self.records.push(item.event);
+								});
+								self.loadCalendar();
+							}
+						}catch(e){
+							console.log(e);
+							console.log(e.response);
+						};
+					},
+					validateConversations(response){
+						var self = this;
+						self.records = [];
+						self.count = 0;
+						try{
+							if (response.data != undefined){
+
+								if (response.data.records.length > 0){
+									response.data.records.forEach(item => {
+										if(item.conversations_replys.length > 0){
+											item.conversations_replys.forEach(function(a){
+												a.reply = JSON.parse(a.reply);
+											});
+											item.updated = new Date(item.updated).toConversationsFormat();
+											if (item.status === 3){ self.count++; }
+											self.records.push(item);
+										}
+									});
+								} else {
+									self.searchBox.errorText = "No hay mensajes";
+								}
+							}
+						}catch(e){
+							console.log(e.response);
+						};
+
+					},
+					getAvatar(user){
+						var self = this;
+						isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
+						if(isAvatar == true){
+							return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
+						}else{
+							return "/crm-content/uploads/avatar001.jpg";
+						}
+					},
+				},
+			}).$mount('#navbartop-notifications-calendar');
+		<?php } ?>
 <?php } else { ?>
 
 <?php } ?>
