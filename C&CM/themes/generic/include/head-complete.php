@@ -346,6 +346,24 @@
 			  }
 			};
 		</script>
+<style>
+	/*////////// SCROLLBAR ////////*/
+	::-webkit-scrollbar {
+	  width: 5px;
+	}
+	::-webkit-scrollbar:hover {
+	  width: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background: #000; 
+	}
+	::-webkit-scrollbar-thumb {
+		background: #D33;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #E44;	
+	}
+</style>
 
 
 <template id="Forms-Create-Diynamic">

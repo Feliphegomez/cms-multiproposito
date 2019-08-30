@@ -7,13 +7,13 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li class="">
 					<a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						Mi Cuenta
+						<?php echo (isset($_SESSION['user']) && isset($_SESSION['user']['username'])) ? $_SESSION['user']['username'] : 'Ingresa'; ?>
 						<i class="fa fa-user"></i>
 						<span class=" fa fa-angle-down"></span>
 					</a>
 					<ul class="dropdown-menu dropdown-usermenu pull-right">
 						<?php if(isUser() == true){ ?>
-							<li><a href="<?php echo $this->linkUrl('Usuarios', 'mi_perfil'); ?>"> Mi Cuenta</a></li>
+							<li><a href="<?php echo $this->linkUrl('Usuarios', 'mi_perfil'); ?>"> Mi Perfil</a></li>
 							<li>
 								<a data-toggle="tooltip" data-placement="top" title="Salir">
 									<form method="POST" action="/logout">

@@ -768,7 +768,15 @@ var ComposeInbox = new Vue({
 												item.created = new Date(item.created).toConversationsFormat();
 												item.updated = new Date(item.updated).toConversationsFormat();
 												self.records.push(item);
-												self.count++;
+												// self.count++;
+												
+												fStart = new Date(item.event.start);
+
+												if (hoy.getDate() == fStart.getDate()
+												&& hoy.getMonth() == fStart.getMonth()
+												&& hoy.getFullYear() == fStart.getFullYear()) {
+													self.count++;
+												}
 										});
 									}
 								}catch(e){
