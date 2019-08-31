@@ -694,8 +694,8 @@ var ComposeInbox = new Vue({
 									self.count = 0;
 									a.data.records.forEach(item => {
 										console.log('item', item);
-											item.created = new Date(item.created).toConversationsFormat();
-											item.updated = new Date(item.updated).toConversationsFormat();
+											item.created = item.created != undefined ? new Date(item.created).toConversationsFormat() : '';
+											item.updated = item.updated != undefined ? new Date(item.updated).toConversationsFormat() : '';
 											self.records.push(item);
 											self.count++;
 									});
@@ -764,19 +764,20 @@ var ComposeInbox = new Vue({
 										self.records = [];
 										self.count = 0;
 										a.data.records.forEach(item => {
-											console.log('item', item);
+											
 												item.created = new Date(item.created).toConversationsFormat();
 												item.updated = new Date(item.updated).toConversationsFormat();
 												self.records.push(item);
 												// self.count++;
-												
-												fStart = new Date(item.event.start);
 
-												if (hoy.getDate() == fStart.getDate()
-												&& hoy.getMonth() == fStart.getMonth()
-												&& hoy.getFullYear() == fStart.getFullYear()) {
-													self.count++;
-												}
+												hoy = new Date();
+												fStart = (item.events[0].start != undefined) ? new Date(item.events[0].start) : new Date() ;
+
+													if (hoy.getDate() == fStart.getDate()
+													&& hoy.getMonth() == fStart.getMonth()
+													&& hoy.getFullYear() == fStart.getFullYear()) {
+														self.count++;
+													}
 										});
 									}
 								}catch(e){

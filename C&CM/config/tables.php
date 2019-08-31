@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* *******************************
  *
  * Developer by FelipheGomez
@@ -18,6 +18,8 @@ define('TBL_REQUESTS', 'requests');
 define('TBL_REQUESTS_USERS', 'requests');
 define('TBL_REQUEST_TYPES', 'requests_types');
 define('TBL_REQUEST_STATUS', 'requests_status');
+define('TBL_MAILS', 'mails');
+define('TBL_USERS_MAILS', 'users_mails');
 /* TABLAS */
 
 

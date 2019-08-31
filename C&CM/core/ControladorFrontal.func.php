@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* *******************************
  *
  * Developer by FelipheGomez
@@ -8,20 +8,20 @@
 //FUNCIONES PARA EL CONTROLADOR FRONTAL
 
 require_once(folder_data . "/core/libs/solvemedia/solvemedialib.php");
- 
+
 function cargarControlador($controller){
     $controller = (LOGIN_REQ === true) ? (isUser() == true ? $controller : 'login') : $controller;
     $controlador = ucwords($controller).'Controller';
 	$folder_system = (folder_data . '/controller/'.$controlador.'.php');
-	
+
 	if(is_file($folder_system)){ $strFileController = $folder_system; }
 	# else if(!is_file($folder_system) && is_file($folder_modules)){ $strFileController = $folder_modules; }
 	else {
 		 exit("Error: problema en el controlador. " . ucwords($controller));
-		
+
 	}
-	
-	if(@file_exists($strFileController)){		
+
+	if(@file_exists($strFileController)){
 		require_once $strFileController;
 		$controllerObj = new $controlador();
 		return $controllerObj;
@@ -32,7 +32,7 @@ function cargarAccion($controllerObj,$action){
     $accion=$action;
     $controllerObj->$accion();
 }
- 
+
 function lanzarAccion($controllerObj){
     if(isset($_GET["action"]) && method_exists($controllerObj, $_GET["action"])){
         cargarAccion($controllerObj, $_GET["action"]);
@@ -55,7 +55,7 @@ function validateSession($simple=false){
 
 function returnParamsUrl($z){
 	$a = '';
-	if(is_object($z) || is_array($z)){ foreach($z as $k => $v){ $a .= $k . '=' . returnParamsUrl($v); } } 
+	if(is_object($z) || is_array($z)){ foreach($z as $k => $v){ $a .= $k . '=' . returnParamsUrl($v); } }
 	else { $a .= $z; }
 	return $a;
 }
@@ -82,7 +82,7 @@ function urlActual($enable_this_file=false){
 	$port = ($protocol === 'https' && $port === 443) || ($protocol === 'http' && $port === 80) ? '' : ':' . $port;
 	$path = @trim(substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '/openapi')), '/');
 	$this_file = substr($_SERVER['SCRIPT_NAME'],1);
-	
+
 	return ($enable_this_file == true) ? "{$protocol}"."://{$host}{$port}{$path}{$this_file}" : "{$protocol}"."://{$host}{$port}{$path}";
 }
 
@@ -129,9 +129,9 @@ function createItemHtmlLink($item_menu){
 	$item_menu->tag_class = (isset($item_menu->tag_class) && $item_menu->tag_class != null && $item_menu->tag_class != "") ? " class=\"{$item_menu->tag_class}\" " : ' ';
 	$item_menu->tag_href = (isset($item_menu->tag_href) && $item_menu->tag_href != null && $item_menu->tag_href != "") ? $item_menu->tag_href : '#';
 	$item_menu->icon = (isset($item_menu->icon) && $item_menu->icon != null && $item_menu->icon != "") ? " <i class=\"{$item_menu->icon}\"></i> " : '';
-	$item_menu->title = 
-		(isset($item_menu->childs) && count($item_menu->childs) > 0) 
-			? " {$item_menu->title} <span class=\"fa fa-chevron-down\"></span> " 
+	$item_menu->title =
+		(isset($item_menu->childs) && count($item_menu->childs) > 0)
+			? " {$item_menu->title} <span class=\"fa fa-chevron-down\"></span> "
 			: " {$item_menu->title} ";
 		$r = "<a id=\"{$item_menu->tag_id}\" href=\"{$item_menu->tag_href}\">{$item_menu->icon} {$item_menu->title} </a>";
 		$r = "<a id=\"{$item_menu->tag_id}\" href=\"{$item_menu->tag_href}\">{$item_menu->icon} {$item_menu->title} </a>";
@@ -157,7 +157,7 @@ function getPermissions($adapter){
 function validatePermission($adapter, $module, $action){
 	$t = getPermissions($adapter);
 	$p = (isset($t->data)) ? $t->data : new stdClass();
-	
+
 	if(isset($p->{"isAdmin"}) && $p->{"isAdmin"} == true){
 		return true;
 	} else {
@@ -172,25 +172,25 @@ function validatePermission($adapter, $module, $action){
 function getPowerBy(){
 	return "Power by <a href=\"https://github.com/Feliphegomez\">Feliphegomez</a>";
 }
-	
+
 class API_CLIENT {
 	public $method;
 	public $data;
 	public $url;
 	public $response;
-	
+
 	public function __construct(){
 		$this->method = 'GET';
 		$this->data = array();
 		$this->url = urlActual();
 	}
-	
+
 	public function setMethod($method){ $this->method = $method; }
-	
+
 	public function setURL($url){ $this->url = $url; }
-	
+
 	public function setData($data){ $this->data = $data; }
-	
+
 	public function Run(){
 		$opts = array('http' => array (
 			'method' => $this->method,
@@ -201,6 +201,28 @@ class API_CLIENT {
 		));
 		$this->response = @json_decode(@file_get_contents($this->url, true, stream_context_create($opts)));
 	}
-	
+
 	public function Response(){ return $this->response; }
+}
+
+
+function imapString($value){
+  if(isset($value) && $value != ''){
+    $senderaddress = imap_mime_header_decode($value);
+    $senderaddress[0]->charset = !isset($senderaddress[0]->charset) ? 'default' : $senderaddress[0]->charset;
+    $senderaddress[0]->text = !isset($senderaddress[0]->text) ? '---' : $senderaddress[0]->text;
+
+    $encode = $senderaddress[0]->charset;
+    switch(strtoupper($encode)){
+      case 'DEFAULT':
+        return $value;
+      break;
+      case '3':
+        return imap_base64($value);
+      break;
+      default:
+        return @iconv($senderaddress[0]->charset, 'UTF-8', $senderaddress[0]->text);
+      break;
+    }
+  }
 }

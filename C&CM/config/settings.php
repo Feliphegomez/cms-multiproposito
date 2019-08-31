@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* *******************************
  *
  * Developer by FelipheGomez
@@ -45,6 +45,6 @@ define('folder_home', dirname($thisFileDirname, 2));
 define('folder_data', folder_home . "/C&CM");
 define('folder_admin', folder_data . "/admin");
 define('folder_public', folder_data . '/public');
+date_default_timezone_set("America/Bogota");
 
 require_once 'tables.php';
-
