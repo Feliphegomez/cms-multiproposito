@@ -44,7 +44,7 @@ $messages = $inboxs->getMessages();
 			<div class="x_panel">
 				<div class="x_content">
 					<div class="row">
-						<div class="col-sm-3 mail_list_column" style="max-height: calc(75vh);overflow-y: auto;overflow-x: hidden;">
+						<div class="col-sm-3 mail_list_column" style="max-height: 100%;overflow-y: auto;overflow-x: hidden;">
 							<!-- // <button id="compose" class="btn btn-sm btn-success btn-block" type="button">COMPOSE</button> -->
 							<hr>
 							<router-link tag="a" :to="{ name: 'Mail-Message-View', params: { message_index: a } }" v-for="(mail, a) in records" :key="a" style="overflow: hidden;">
@@ -87,45 +87,33 @@ $messages = $inboxs->getMessages();
 	<div>
 		<template v-if="record !== null">
 			<div class="inbox-body">
-			  <div class="mail_heading row">
-			    <div class="col-md-8">
-
-			      <div class="btn-group">
-			        <button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> Reply</button>
-			        <button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
-			        <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
-			        <button @click="deletMail(record.bUid, record.mUid)" class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
-			      </div>
-			    </div>
-			    <div class="col-md-4 text-right">
-			      <p class="date">{{ record.date }}</p>
-			    </div>
-			    <div class="col-md-12">
-			      <h4>
-							Asunto: {{ record.subject }}
-						</h4>
-			    </div>
-			  </div>
-			  <div class="sender-info">
-			    <div class="row">
-			      <div class="col-md-12">
-			        <strong>{{ record.from[0].personal }}</strong> Para <strong>{{ record.to[0].personal }}</strong>
-			        <!-- // <a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a> -->
+				<div class="mail_heading row">
+					<div class="col-md-8">
+						<div class="btn-group">
+							<button class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> Reply</button>
+							<button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
+							<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
+							<button disabled="" @click="deletMail(record.bUid, record.mUid)" class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
+						</div>
+					</div>
+					<div class="col-md-4 text-right"><p class="date">{{ record.date }}</p></div>
+					<div class="col-md-12"><h4>Asunto: {{ record.subject }}</h4></div>
+				</div>
+				<div class="sender-info">
+					<div class="row">
+						<div class="col-md-12">
+							<strong>{{ record.from[0].personal }}</strong> Para <strong>{{ record.to[0].mailbox }}@{{ record.to[0].host }}</strong>
+							<!-- // <a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a> -->
 							<br>
 							<hr>
-			      </div>
-			    </div>
-			  </div>
-			  <div class="view-mail" style="overflow:auto;">
-					<div>
-						-{{ record.mUid }}-
-						
+						</div>
 					</div>
+				</div>
+				<div class="view-mail" style="overflow:hidden;calc(100vh)">
 					<!-- <div v-html="$root.getBodyParse(record.message)"></div> -->
-					<object style="height: auto;min-height: calc(65vh);max-height: 100%;" width="100%" :data="'/?controller=Bussines&action=getBody&mail=' + record.bUid + '&message_id=' + record.mUid"></object>
+					<object style="float:left;width:100%;height:auto; min-height: calc(80vh);" width="100%" :data="'/?controller=Bussines&action=getBody&mail=' + record.bUid + '&message_id=' + record.mUid"></object>
 					<hr>
-					<object style="height: auto;min-height: calc(65vh);" width="100%" :data="'/?controller=Bussines&action=getAttach&mail=' + record.bUid + '&message_id=' + record.mUid"></object>
-
+					<object style="height: auto;min-height: calc(25vh);" width="100%" :data="'/?controller=Bussines&action=getAttach&mail=' + record.bUid + '&message_id=' + record.mUid"></object>
 			  </div>
 			  <div class="attachment">
 					<!--

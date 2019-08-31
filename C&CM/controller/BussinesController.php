@@ -78,10 +78,13 @@ class BussinesController extends ControladorBase{
 			}
 			$mailHTML=$html;
 			#$mailId="email.eml";
-			$mailId=$options['message_id'];
+			
+			$mailId = array($options['message_id'], $inbox->buzonSelected);
+			
 			
 			$generatePartURL=function ($messgeId, $cid) {
-				return "https://crm.ltsolucion.com/?controller=Bussines&action=getBody&mail=2&message_id=".$messgeId."#/".$cid; //Adapt this url according to your needs
+				// return "https://crm.ltsolucion.com/?controller=Bussines&action=getBody&mail={$messgeId[1]}&message_id={$messgeId[0]}#/{$cid}"; //Adapt this url according to your needs
+				return "\"><object data=\"https://crm.ltsolucion.com/?controller=Bussines&action=getAttach&mail={$messgeId[1]}&message_id={$messgeId[0]}#/{$cid}\"></object> <depure \"";
 			};
 			$replace=function ($matches) use ($generatePartURL, $mailId) {
 				list($uri, $cid) = $matches;
@@ -123,7 +126,7 @@ class BussinesController extends ControladorBase{
                 switch ($part->encoding) {
                   case '0':
                     // 0	7bit	ENC7BIT
-                    echo 0;
+                   #  echo 0;
                     $msg = (imap_qprint($message));
                     # echo $msg;
                     break;
@@ -137,14 +140,38 @@ class BussinesController extends ControladorBase{
                     break;
                   case '3':
                     // 3	Base64	ENCBASE64
-                    echo 3;
+                    # echo 3;
                     $msg = $this->get_part($message, ENCBASE64);
                     $f = finfo_open();
                     $finfo = finfo_buffer($f, $msg, FILEINFO_MIME_TYPE);
 
                     if($finfo == 'image/png'){
-                      //header("Content-type: image/png");
-                      echo "<img src=\"data:image/png;base64, $message\" alt=\"Red dot\" style=\"width:calc(100vw);height:auto;\" />";
+						echo "<img style=\"float:left;width:230px;height:90%;\" src=\"data:image/png;base64, $message\" alt=\"Red dot\" />";
+						exit();
+						#$data = $this->get_part($message, ENCBASE64);
+						#$data = utf8_decode(utf8_encode(base64_decode($message)));
+						$data = base64_decode((($message)));
+						#$data = imap_qprint($msg);
+						$f = finfo_open();
+						$finfo = finfo_buffer($f, $msg, FILEINFO_MIME);
+						
+
+						$data = strstr($finfo,';',true);
+						
+						
+						echo json_encode($data);
+						exit();
+						$im = imagecreatefromstring($data);
+						  if ($im !== false) {
+								header('Content-Type: image/png');
+								imagepng($im);
+								imagedestroy($im);
+							}
+							else {
+								echo 'Ocurrió un error.';
+							}
+						  exit();
+						  
                     }else if($finfo == 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
                       header("Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                       header("Content-Disposition: attachment; filename=\"file_name.xls\"");
@@ -154,6 +181,9 @@ class BussinesController extends ControladorBase{
                     }else if($finfo == 'aplication/pdf'){
                       header("Content-Type: {$finfo}");
                       echo $msg;
+                    }else if($finfo == 'text/plain'){
+                      header("Content-Type: {$finfo}");
+                      echo $msg;
                     }else{
                       echo $finfo;
                       // echo $msg;
@@ -161,9 +191,9 @@ class BussinesController extends ControladorBase{
                     break;
                   case '4':
                     // 4	Quoted-Printable	ENCQUOTEDPRINTABLE
-                    echo 4;
-                    #$msg = imap_qprint($message);
-                    #echo $msg;
+                    # echo 4;
+                    $msg = imap_qprint($message);
+                    echo utf8_decode($msg);
                     break;
                   case '5':
                     // 5	other	ENCOTHER

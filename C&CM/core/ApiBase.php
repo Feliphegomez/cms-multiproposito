@@ -5183,7 +5183,7 @@ namespace FelipheGomez\PhpCrudApi\Database {
                     return $options + [
                         \PDO::ATTR_EMULATE_PREPARES => false,
                         \PDO::MYSQL_ATTR_FOUND_ROWS => true,
-                        \PDO::ATTR_PERSISTENT => true,
+                        //\PDO::ATTR_PERSISTENT => true,
                     ];
                 case 'pgsql':
                     return $options + [
