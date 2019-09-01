@@ -54,8 +54,7 @@
 					<td>
 						<ul class="list-inline">
 							<li v-for="(member_team, i2) in item.requests_team">
-								<small>{{ member_team.user.username }}</small>
-								<img src="/C&CM/themes/generic/assets/images/default_user.png" class="avatar" alt="Avatar" />
+								<img src="/C&CM/themes/generic/assets/images/default_user.png" class="avatar" data-toggle="tooltip" data-placement="top" :title="member_team.user.username" />
 							</li>
 						</ul>
 					</td>
@@ -771,7 +770,8 @@ var MyRequestsView = Vue.extend({
 				height: 450,
 				plugins: [ 'list', 'timeGrid' ],
 				//defaultView: 'timeGridWeek',
-				defaultView: 'listWeek',
+				// defaultView: 'listWeek',
+				defaultView: 'listYear',
 				events: self.events
 			});
 		},
@@ -940,7 +940,7 @@ var MyRequestsCalendarView = Vue.extend({
 				},
 				plugins: [ 'list', 'timeGrid' ],
 				//defaultView: 'timeGridWeek',
-				defaultView: 'listWeek',
+				defaultView: 'listYear',
 				events: self.events
 			});
 			self.calendar.render();

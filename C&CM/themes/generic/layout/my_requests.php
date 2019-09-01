@@ -49,8 +49,7 @@ $myInfo = $this->myUser;
 						<td>
 							<ul class="list-inline">
 								<li v-for="(member_team, i2) in item.request.requests_team">
-									<small>{{ member_team.user.username }}</small>
-									<img src="/C&CM/themes/generic/assets/images/default_user.png" class="avatar" alt="Avatar" />
+									<img src="/C&CM/themes/generic/assets/images/default_user.png" class="avatar" :alt="member_team.user.username" />
 								</li>
 							</ul>
 						</td>

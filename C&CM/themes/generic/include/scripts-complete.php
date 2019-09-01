@@ -368,6 +368,7 @@ var ComposeInbox = new Vue({
 			},
 		}).$mount('#navbartop-notifications-inbox');
 	<?php } ?>
+	
 	<?php if(validatePermission($this->adapter, 'SAC', 'inbox')){ ?>
 		var NotificationsInboxNavbarTopSAC = new Vue({
 			data(){
@@ -482,348 +483,359 @@ var ComposeInbox = new Vue({
 		}).$mount('#navbartop-notifications-inbox-sac');
 	<?php } ?>
 
-
 	<?php if(validatePermission($this->adapter, 'Usuarios', 'calendar')){ ?>
-			var NotificationsCalendarNavbarTop = new Vue({
-				data(){
-					return {
-						count: 0,
-						records: [],
-						timer: '',
-						selected: null,
-						calendarEl: null,
-						calendar: null,
-						events: [],
-					};
-				},
-				created(){
+		var NotificationsCalendarNavbarTop = new Vue({
+			data(){
+				return {
+					count: 0,
+					records: [],
+					timer: '',
+					selected: null,
+					calendarEl: null,
+					calendar: null,
+					events: [],
+				};
+			},
+			created(){
+				var self = this;
+				self.fetchEventsList();
+				self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
+			},
+			methods: {
+				refreshCalendar(){
 					var self = this;
-					self.fetchEventsList();
-					self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
+					if(self.records.length > 0){
+						self.calendar.render();
+					}
 				},
-				methods: {
-					refreshCalendar(){
-						var self = this;
-						if(self.records.length > 0){
-							self.calendar.render();
-						}
-					},
-					loadCalendar(){
-						var self = this;
-						self.calendarEl = document.getElementById('calendar-navbar');
-						self.calendar = new FullCalendar.Calendar(self.calendarEl, {
-							timeZone: 'UTC',
-							lang: 'es',
-							selectHelper: true,
-							eventClick: function(calEvent, jsEvent, view) {
-								api.get('/records/events/' + calEvent.event.id, {
-									params: {
-									}
-								})
-								.then(response => {
-									if(response.data != undefined && response.data.request > 0){
-										location.replace('/micuenta/calendar#/view/' + response.data.id);
-									}else{
-										console.log("Error encontrando la solicitud.");
-									}
-								});
-							},
-							header: {
-								left: '', // listWeek,timeGridWeek
-								center: 'title',
-								right: '', // today prev,next
-							},
-							height: 250,
-							plugins: [ 'list', 'timeGrid' ],
-							//defaultView: 'timeGridWeek',
-							defaultView: 'listWeek',
-							events: self.records
-						});
-						console.log('Calendario configurado.');
-					},
-					fetchEventsList() {
-						var self = this;
-						self.load();
-					},
-					cancelAutoUpdate(){
-						var self = this;
-						clearInterval(self.timer);
-					},
-					load(){
-						var self = this;
-						api.get('/records/users_events', {
-							params: {
-								filter: [
-									'user,eq,<?php echo ($myInfo['id']); ?>',
-									// 'conversations.status,eq,2'
-								],
-								join: [
-									'events',
-									'events,events_types',
-									'events,requests',
-									'events,requests,identifications_types',
-									'events,requests,geo_departments',
-									'events,requests,geo_citys',
-									'events,requests,requests_status',
-									'events,requests,requests_types'
-									// 'conversations,conversations_replys',
-									// 'conversations,conversations_replys,users',
-								],
-								order: 'id,desc'
-							}
-						})
-						.then(response => { self.validateResult(response); })
-						.catch(e => { self.validateResult(e.response); });
-					},
-					validateResult(a){
-						var self = this;
-						try{
-							if (a.data != undefined && a.data.records != undefined){
-								self.records = [];
-								var hoy = new Date();
-								a.data.records.forEach(item => {
-									fStart = new Date(item.event.start);
-
-									if (hoy.getDate() == fStart.getDate()
-									&& hoy.getMonth() == fStart.getMonth()
-									&& hoy.getFullYear() == fStart.getFullYear()) {
-										self.count++;
-									}
-
-									self.records.push(item.event);
-								});
-								self.loadCalendar();
-							}
-						}catch(e){
-							console.log(e);
-							console.log(e.response);
-						};
-					},
-					validateConversations(response){
-						var self = this;
-						self.records = [];
-						self.count = 0;
-						try{
-							if (response.data != undefined){
-
-								if (response.data.records.length > 0){
-									response.data.records.forEach(item => {
-										if(item.conversations_replys.length > 0){
-											item.conversations_replys.forEach(function(a){
-												a.reply = JSON.parse(a.reply);
-											});
-											item.updated = new Date(item.updated).toConversationsFormat();
-											if (item.status === 3){ self.count++; }
-											self.records.push(item);
-										}
-									});
-								} else {
-									self.searchBox.errorText = "No hay mensajes";
-								}
-							}
-						}catch(e){
-							console.log(e.response);
-						};
-
-					},
-					getAvatar(user){
-						var self = this;
-						isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
-						if(isAvatar == true){
-							return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
-						}else{
-							return "/crm-content/uploads/avatar001.jpg";
-						}
-					},
-				},
-			}).$mount('#navbartop-notifications-calendar');
-		<?php } ?>
-
-		<?php if(validatePermission($this->adapter, 'SAC', 'requests_new')){ ?>
-				var NotificationsRequestsNewNavbarTop = new Vue({
-					data(){
-						return {
-							count: 0,
-							records: [],
-							timer: '',
-						};
-					},
-					created(){
-						var self = this;
-						self.fetchEventsList();
-						self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
-					},
-					methods: {
-						refreshList(){
-							var self = this;
-							self.load();
-						},
-						fetchEventsList() {
-							var self = this;
-							self.load();
-						},
-						cancelAutoUpdate(){
-							var self = this;
-							clearInterval(self.timer);
-						},
-						load(){
-							var self = this;
-							api.get('/records/requests', {
+				loadCalendar(){
+					var self = this;
+					self.calendarEl = document.getElementById('calendar-navbar');
+					self.calendar = new FullCalendar.Calendar(self.calendarEl, {
+						timeZone: 'UTC',
+						lang: 'es',
+						selectHelper: true,
+						eventClick: function(calEvent, jsEvent, view) {
+							api.get('/records/events/' + calEvent.event.id, {
 								params: {
-									filter: [
-										'status,in,0,1'
-									],
-									join: [
-										'identifications_types',
-										'geo_departments',
-										'geo_citys',
-										'requests_status',
-										'requests_types'
-									],
-									order: 'id,desc'
 								}
 							})
-							.then(response => { self.validateResult(response); })
-							.catch(e => { self.validateResult(e.response); });
-						},
-						validateResult(a){
-							var self = this;
-							try{
-								if (a.data != undefined && a.data.records != undefined){
-									self.records = [];
-									self.count = 0;
-									a.data.records.forEach(item => {
-										console.log('item', item);
-											item.created = item.created != undefined ? new Date(item.created).toConversationsFormat() : '';
-											item.updated = item.updated != undefined ? new Date(item.updated).toConversationsFormat() : '';
-											self.records.push(item);
-											self.count++;
-									});
+							.then(response => {
+								if(response.data != undefined && response.data.request > 0){
+									location.replace('/micuenta/calendar#/view/' + response.data.id);
+								}else{
+									console.log("Error encontrando la solicitud.");
 								}
-							}catch(e){
-								console.log(e);
-								console.log(e.response);
-							};
+							});
 						},
-					},
-				}).$mount('#navbartop-notifications-requests-new');
-			<?php } ?>
-
-			<?php if(validatePermission($this->adapter, 'SAC', 'requests_technicals')){ ?>
-					var NotificationsRequestsNewNavbarTop = new Vue({
-						data(){
-							return {
-								count: 0,
-								records: [],
-								timer: '',
-							};
+						header: {
+							left: '', // listWeek,timeGridWeek
+							center: 'title',
+							right: '', // today prev,next
 						},
-						created(){
-							var self = this;
-							self.fetchEventsList();
-							self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
-						},
-						methods: {
-							refreshList(){
-								var self = this;
-								self.load();
-							},
-							fetchEventsList() {
-								var self = this;
-								self.load();
-							},
-							cancelAutoUpdate(){
-								var self = this;
-								clearInterval(self.timer);
-							},
-							load(){
-								var self = this;
-								api.get('/records/requests', {
-									params: {
-										filter: [
-											'status,in,2'
-										],
-										join: [
-											'identifications_types',
-											'geo_departments',
-											'geo_citys',
-											'requests_status',
-											'requests_types',
-											'events'
-										],
-										order: 'id,desc'
-									}
-								})
-								.then(response => { self.validateResult(response); })
-								.catch(e => { self.validateResult(e.response); });
-							},
-							validateResult(a){
-								var self = this;
-								try{
-									if (a.data != undefined && a.data.records != undefined){
-										self.records = [];
-										self.count = 0;
-										a.data.records.forEach(item => {
-											
-												item.created = new Date(item.created).toConversationsFormat();
-												item.updated = new Date(item.updated).toConversationsFormat();
-												self.records.push(item);
-												// self.count++;
+						height: 250,
+						plugins: [ 'list', 'timeGrid' ],
+						//defaultView: 'timeGridWeek',
+						defaultView: 'listWeek',
+						events: self.records
+					});
+					
+				},
+				fetchEventsList() {
+					var self = this;
+					self.load();
+				},
+				cancelAutoUpdate(){
+					var self = this;
+					clearInterval(self.timer);
+				},
+				load(){
+					var self = this;
+					api.get('/records/users_events', {
+						params: {
+							filter: [
+								'user,eq,<?php echo ($myInfo['id']); ?>',
+								// 'conversations.status,eq,2'
+							],
+							join: [
+								'events',
+								'events,events_types',
+								'events,requests',
+								'events,requests,identifications_types',
+								'events,requests,geo_departments',
+								'events,requests,geo_citys',
+								'events,requests,requests_status',
+								'events,requests,requests_types'
+								// 'conversations,conversations_replys',
+								// 'conversations,conversations_replys,users',
+							],
+							order: 'id,desc'
+						}
+					})
+					.then(response => { self.validateResult(response); })
+					.catch(e => { self.validateResult(e.response); });
+				},
+				validateResult(a){
+					var self = this;
+					try{
+						if (a.data != undefined && a.data.records != undefined){
+							self.records = [];
+							var hoy = new Date();
+							a.data.records.forEach(item => {
+								fStart = new Date(item.event.start);
 
-												hoy = new Date();
-												fStart = (item.events[0].start != undefined) ? new Date(item.events[0].start) : new Date() ;
+								if (hoy.getDate() == fStart.getDate()
+								&& hoy.getMonth() == fStart.getMonth()
+								&& hoy.getFullYear() == fStart.getFullYear()) {
+									self.count++;
+								}
 
-													if (hoy.getDate() == fStart.getDate()
-													&& hoy.getMonth() == fStart.getMonth()
-													&& hoy.getFullYear() == fStart.getFullYear()) {
-														self.count++;
-													}
+								self.records.push(item.event);
+							});
+							self.loadCalendar();
+						}
+					}catch(e){
+						console.log(e.response);
+					};
+				},
+				validateConversations(response){
+					var self = this;
+					self.records = [];
+					self.count = 0;
+					try{
+						if (response.data != undefined){
+
+							if (response.data.records.length > 0){
+								response.data.records.forEach(item => {
+									if(item.conversations_replys.length > 0){
+										item.conversations_replys.forEach(function(a){
+											a.reply = JSON.parse(a.reply);
 										});
+										item.updated = new Date(item.updated).toConversationsFormat();
+										if (item.status === 3){ self.count++; }
+										self.records.push(item);
 									}
-								}catch(e){
-									console.log(e);
-									console.log(e.response);
-								};
-							},
-							validateConversations(response){
-								var self = this;
-								self.records = [];
-								self.count = 0;
-								try{
-									if (response.data != undefined){
+								});
+							} else {
+								self.searchBox.errorText = "No hay mensajes";
+							}
+						}
+					}catch(e){
+						console.log(e.response);
+					};
 
-										if (response.data.records.length > 0){
-											response.data.records.forEach(item => {
-												if(item.conversations_replys.length > 0){
-													item.conversations_replys.forEach(function(a){
-														a.reply = JSON.parse(a.reply);
-													});
-													item.updated = new Date(item.updated).toConversationsFormat();
-													if (item.status === 3){ self.count++; }
-													self.records.push(item);
-												}
-											});
-										} else {
-											self.searchBox.errorText = "No hay mensajes";
+				},
+				getAvatar(user){
+					var self = this;
+					isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
+					if(isAvatar == true){
+						return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
+					}else{
+						return "/crm-content/uploads/avatar001.jpg";
+					}
+				},
+			},
+		}).$mount('#navbartop-notifications-calendar');
+	<?php } ?>
+
+	<?php if(validatePermission($this->adapter, 'SAC', 'requests_new')){ ?>
+		var NotificationsRequestsNewNavbarTop = new Vue({
+			data(){
+				return {
+					count: 0,
+					records: [],
+					timer: '',
+				};
+			},
+			created(){
+				var self = this;
+				self.fetchEventsList();
+				self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
+			},
+			methods: {
+				refreshList(){
+					var self = this;
+					self.load();
+				},
+				fetchEventsList() {
+					var self = this;
+					self.load();
+				},
+				cancelAutoUpdate(){
+					var self = this;
+					clearInterval(self.timer);
+				},
+				load(){
+					var self = this;
+					api.get('/records/requests', {
+						params: {
+							filter: [
+								'status,in,0,1'
+							],
+							join: [
+								'identifications_types',
+								'geo_departments',
+								'geo_citys',
+								'requests_status',
+								'requests_types'
+							],
+							order: 'id,desc'
+						}
+					})
+					.then(response => { self.validateResult(response); })
+					.catch(e => { self.validateResult(e.response); });
+				},
+				validateResult(a){
+					var self = this;
+					try{
+						if (a.data != undefined && a.data.records != undefined){
+							self.records = [];
+							self.count = 0;
+							a.data.records.forEach(item => {
+								console.log('item', item);
+									item.created = item.created != undefined ? new Date(item.created).toConversationsFormat() : '';
+									item.updated = item.updated != undefined ? new Date(item.updated).toConversationsFormat() : '';
+									self.records.push(item);
+									self.count++;
+							});
+						}
+					}catch(e){
+						console.log(e);
+						console.log(e.response);
+					};
+				},
+			},
+		}).$mount('#navbartop-notifications-requests-new');
+	<?php } ?>
+
+	<?php if(validatePermission($this->adapter, 'SAC', 'requests_technicals')){ ?>
+		var NotificationsRequestsTechnicalNavbarTop = new Vue({
+			data(){
+				return {
+					count: 0,
+					count_danger: 0,
+					records: [],
+					timer: '',
+				};
+			},
+			created(){
+				var self = this;
+				self.fetchEventsList();
+				self.timer = setInterval(self.fetchEventsList, 30000); // 3000 = 3Sec - 30000 = 30Seg - 300000 = 5 Min
+			},
+			methods: {
+				refreshList(){
+					var self = this;
+					self.load();
+				},
+				fetchEventsList() {
+					var self = this;
+					self.load();
+				},
+				cancelAutoUpdate(){
+					var self = this;
+					clearInterval(self.timer);
+				},
+				load(){
+					var self = this;
+					
+					api.get('/records/requests', {
+						params: {
+							filter: [
+								'status,in,2'
+							],
+							join: [
+								'identifications_types',
+								'geo_departments',
+								'geo_citys',
+								'requests_status',
+								'requests_types',
+								'events',
+								'events,users_events',
+							],
+							order: 'id,desc'
+						}
+					})
+					.then(response => { self.validateResult(response); })
+					.catch(e => { self.validateResult(e.response); });
+					
+				},
+				validateResult(a){
+					var self = this;
+					try{
+						if (a.data != undefined && a.data.records != undefined){
+							self.records = [];
+							self.count = 0;
+							self.count_danger = 0;
+							a.data.records.forEach(item => {
+								item.created = new Date(item.created).toConversationsFormat();
+								item.updated = new Date(item.updated).toConversationsFormat();
+
+								hoy = new Date();
+								fStart = (item.events[0].start != undefined) ? new Date(item.events[0].start) : new Date();
+								users_search = item.events[0];
+								
+								users_search.users_events.forEach(function(user){
+									if(user.user == "<?php echo $_SESSION['user']['id']; ?>"){
+										self.records.push(item);
+										if (hoy.getDate() == fStart.getDate()
+										&& hoy.getMonth() == fStart.getMonth()
+										&& hoy.getFullYear() == fStart.getFullYear()) {
+											self.count++;
+										} else if (hoy.getDate() > fStart.getDate()
+										&& hoy.getMonth() >= fStart.getMonth()
+										&& hoy.getFullYear() >= fStart.getFullYear()) {
+											self.count_danger++;
 										}
 									}
-								}catch(e){
-									console.log(e.response);
-								};
+								});
 
-							},
-							getAvatar(user){
-								var self = this;
-								isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
-								if(isAvatar == true){
-									return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
-								}else{
-									return "/crm-content/uploads/avatar001.jpg";
-								}
-							},
-						},
-					}).$mount('#navbartop-notifications-requests-technicals');
-				<?php } ?>
+							});
+						}
+					}catch(e){
+						console.log(e);
+						console.log(e.response);
+					};
+				},
+				validateConversations(response){
+					var self = this;
+					self.records = [];
+					self.count = 0;
+					try{
+						if (response.data != undefined){
+
+							if (response.data.records.length > 0){
+								response.data.records.forEach(item => {
+									if(item.conversations_replys.length > 0){
+										item.conversations_replys.forEach(function(a){
+											a.reply = JSON.parse(a.reply);
+										});
+										item.updated = new Date(item.updated).toConversationsFormat();
+										if (item.status === 3){ self.count++; }
+										self.records.push(item);
+									}
+								});
+							} else {
+								self.searchBox.errorText = "No hay mensajes";
+							}
+						}
+					}catch(e){
+						console.log(e.response);
+					};
+
+				},
+				getAvatar(user){
+					var self = this;
+					isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
+					if(isAvatar == true){
+						return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
+					}else{
+						return "/crm-content/uploads/avatar001.jpg";
+					}
+				},
+			},
+		}).$mount('#navbartop-notifications-requests-technicals');
+	<?php } ?>
 <?php } else { ?>
 
 <?php } ?>

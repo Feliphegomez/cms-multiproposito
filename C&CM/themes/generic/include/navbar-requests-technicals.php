@@ -3,6 +3,7 @@
 	<a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
 		<i class="fa fa-map-marker"></i>
 		<span class="badge bg-green" v-if="count > 0">{{ count }}</span>
+		<span class="badge bg-red" v-if="count_danger > 0">{{ count_danger }}</span>
 	</a>
 	<ul class="dropdown-menu list-unstyled msg_list" role="menu">
 		<div style="height:auto;overflow-y:scroll;    overflow: auto">

@@ -648,6 +648,8 @@ var MyCalendarHome = Vue.extend({
 				},
 				editable: false,
 				events: self.events,
+				plugins: [ 'list', 'timeGrid' ],
+				defaultView: 'listYear',
 			});
 		},
 		loadReservations(){
