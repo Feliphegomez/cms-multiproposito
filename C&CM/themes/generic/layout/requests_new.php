@@ -16,72 +16,72 @@
 
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="x_panel">
-				<div class="x_content">
-					<div class="row">
-						<div class="col-sm-12 mail_view">
-							<router-view :key="$route.fullPath"></router-view>
-						</div>
-					</div>
-				</div>
-			</div>
+			<router-view :key="$route.fullPath"></router-view>
 		</div>
 	</div>
 </div>
 
 <template id="micuenta-requests-list">
 	<div>
-		<table class="table table-striped projects">
-		  <thead>
-			<tr>
-			  <th style="width: 1%"># Rad.</th>
-			  <th style="width: 20%">Responsable</th>
-			  <th>Team Members</th>
-			  <th>Project Progress</th>
-			  <th>Status</th>
-			  <th>Type</th>
-			  <th style="width: 20%">#Edit</th>
-			</tr>
-		  </thead>
-			<tbody>
-				<tr v-for="(item, i) in records">
-					<td>{{ getRadicado(item) }}</td>
-					<td>
-						<small>{{ item.created }}</small>
-						<br />
-						<a>{{ item.names }} {{ item.surname }}</a>
-					</td>
-					<td>
-						<ul class="list-inline">
-							<li v-for="(member_team, i2) in item.requests_team">
-								<img src="/C&CM/themes/generic/assets/images/default_user.png" class="avatar" data-toggle="tooltip" data-placement="top" :title="member_team.user.username" />
-							</li>
-						</ul>
-					</td>
-					<td class="project_progress">
-						<div class="progress progress_sm">
-							<div class="progress-bar bg-green" role="progressbar" :data-transitiongoal="item.status.progress"></div>
-						</div>
-						<small>{{ item.status.progress }}% Completado</small>
-					</td>
-					<td>
-						<button type="button" class="btn btn-success btn-xs">{{ item.status.name }}</button>
-					</td>
-					<td>
-						<button type="button" class="btn btn-default btn-xs">{{ item.type.title }}</button>
-					</td>
-					<td>
-						<router-link tag="a" :to="{ name: 'MiCuenta-Requests-View', params: { request_id: item.id } }" class="btn btn-primary btn-xs">
-							<i class="fa fa-folder"></i> Ver mas
-						</router-link>
-						<!--
-						<a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-						<a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
-						-->
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="x_panel">
+			<div class="x_content">
+				<div class="row">
+					<div class="col-sm-12 mail_view">
+						<table class="table table-striped projects">
+						  <thead>
+							<tr>
+							  <th style="width: 1%"># Rad.</th>
+							  <th style="width: 20%">Responsable</th>
+							  <th>Team Members</th>
+							  <th>Project Progress</th>
+							  <th>Status</th>
+							  <th>Type</th>
+							  <th style="width: 20%">#Edit</th>
+							</tr>
+						  </thead>
+							<tbody>
+								<tr v-for="(item, i) in records">
+									<td>{{ getRadicado(item) }}</td>
+									<td>
+										<small>{{ item.created }}</small>
+										<br />
+										<a>{{ item.names }} {{ item.surname }}</a>
+									</td>
+									<td>
+										<ul class="list-inline">
+											<li v-for="(member_team, i2) in item.requests_team">
+												<img src="/C&CM/themes/generic/assets/images/default_user.png" class="avatar" data-toggle="tooltip" data-placement="top" :title="member_team.user.username" />
+											</li>
+										</ul>
+									</td>
+									<td class="project_progress">
+										<div class="progress progress_sm">
+											<div class="progress-bar bg-green" role="progressbar" :data-transitiongoal="item.status.progress"></div>
+										</div>
+										<small>{{ item.status.progress }}% Completado</small>
+									</td>
+									<td>
+										<button type="button" class="btn btn-success btn-xs">{{ item.status.name }}</button>
+									</td>
+									<td>
+										<button type="button" class="btn btn-default btn-xs">{{ item.type.title }}</button>
+									</td>
+									<td>
+										<router-link tag="a" :to="{ name: 'MiCuenta-Requests-View', params: { request_id: item.id } }" class="btn btn-primary btn-xs">
+											<i class="fa fa-folder"></i> Ver mas
+										</router-link>
+										<!--
+										<a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+										<a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+										-->
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -327,8 +327,12 @@
 									-->
 								</ul>
 								<br />
-								<div class="text-center mtop20">
-									<a href="#" class="btn btn-sm btn-primary">Gestionar Inventario</a>
+								<div class="text-center mtop20">				
+									<router-link tag="a" :to="{ name: 'MiCuenta-Requests-Technicals', params: { request_id: $route.params.request_id } }" class="btn btn-sm btn-primary">
+										<i class="fa fa-plus"></i>
+										Gestionar Inventario
+									</router-link>
+									
 									<!--
 										<a href="#" class="btn btn-sm btn-primary">Add files</a>
 										<a href="#" class="btn btn-sm btn-warning">Report contact</a>
@@ -342,9 +346,10 @@
 			<template v-else>
 				<p>Para acceder a la solucitud debes ser parte del equipo que esta atendiendo la misma, puedes ingresar al equipo pulsando el botón de abajo.</p>
 				<a class="btn btn-success btn-lg" @click="addMeInTeam">
-						<i class="fa fa-user-plus"></i>
-						Ingresar
+					<i class="fa fa-user-plus"></i>
+					Ingresar
 				</a>
+				
 			</template>
 		</div>
 	</div>
@@ -446,6 +451,341 @@
 				</div>
 			</div>
 		</div>
+	</div>
+</template>
+
+
+<template id="micuenta-requests-technicals-create">
+	<div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Plain Page</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'MiCuenta-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				Add content to the page ...
+			</div>
+		</div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Plain Page</h2>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				Add content to the page ...
+			</div>
+		</div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Plain Page</h2>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				Add content to the page ...
+			</div>
+		</div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Plain Page</h2>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				Add content to the page ...
+			</div>
+		</div>
+		 <div class="x_panel">
+			  <div class="x_title">
+				<h2>Form Wizards <small>Sessions</small></h2>
+				<ul class="nav navbar-right panel_toolbox">
+				  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+				  </li>
+				  <li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+					<ul class="dropdown-menu" role="menu">
+					  <li><a href="#">Settings 1</a>
+					  </li>
+					  <li><a href="#">Settings 2</a>
+					  </li>
+					</ul>
+				  </li>
+				  <li><a class="close-link"><i class="fa fa-close"></i></a>
+				  </li>
+				</ul>
+				<div class="clearfix"></div>
+			  </div>
+			  <div class="x_content">
+
+
+				<!-- Smart Wizard -->
+				<p>This is a basic form wizard example that inherits the colors from the selected scheme.</p>
+				<div id="wizard" class="form_wizard wizard_horizontal">
+				  <ul class="wizard_steps">
+					<li>
+					  <a href="#step-1">
+						<span class="step_no">1</span>
+						<span class="step_descr">
+										  Step 1<br />
+										  <small>Step 1 description</small>
+									  </span>
+					  </a>
+					</li>
+					<li>
+					  <a href="#step-2">
+						<span class="step_no">2</span>
+						<span class="step_descr">
+										  Step 2<br />
+										  <small>Step 2 description</small>
+									  </span>
+					  </a>
+					</li>
+					<li>
+					  <a href="#step-3">
+						<span class="step_no">3</span>
+						<span class="step_descr">
+										  Step 3<br />
+										  <small>Step 3 description</small>
+									  </span>
+					  </a>
+					</li>
+					<li>
+					  <a href="#step-4">
+						<span class="step_no">4</span>
+						<span class="step_descr">
+										  Step 4<br />
+										  <small>Step 4 description</small>
+									  </span>
+					  </a>
+					</li>
+				  </ul>
+				  <div id="step-1">
+					<form class="form-horizontal form-label-left">
+
+					  <div class="form-group">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
+						</label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+						  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
+						</label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+						  <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name / Initial</label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+						  <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+						  <div id="gender" class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+							  <input type="radio" name="gender" value="male"> &nbsp; Male &nbsp;
+							</label>
+							<label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+							  <input type="radio" name="gender" value="female"> Female
+							</label>
+						  </div>
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
+						</label>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+						  <input id="birthday" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+						</div>
+					  </div>
+
+					</form>
+
+				  </div>
+				  <div id="step-2">
+					<h2 class="StepTitle">Step 2 Content</h2>
+					<p>
+					  do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+					  fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				  </div>
+				  <div id="step-3">
+					<h2 class="StepTitle">Step 3 Content</h2>
+					<p>
+					  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
+					  eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				  </div>
+				  <div id="step-4">
+					<h2 class="StepTitle">Step 4 Content</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				  </div>
+
+				</div>
+				<!-- End SmartWizard Content -->
+
+
+
+
+
+				<h2>Example: Vertical Style</h2>
+				<!-- Tabs -->
+				<div id="wizard_verticle" class="form_wizard wizard_verticle">
+				  <ul class="list-unstyled wizard_steps">
+					<li>
+					  <a href="#step-11">
+						<span class="step_no">1</span>
+					  </a>
+					</li>
+					<li>
+					  <a href="#step-22">
+						<span class="step_no">2</span>
+					  </a>
+					</li>
+					<li>
+					  <a href="#step-33">
+						<span class="step_no">3</span>
+					  </a>
+					</li>
+					<li>
+					  <a href="#step-44">
+						<span class="step_no">4</span>
+					  </a>
+					</li>
+				  </ul>
+
+				  <div id="step-11">
+					<h2 class="StepTitle">Step 1 Content</h2>
+					<form class="form-horizontal form-label-left">
+
+					  <span class="section">Personal Info</span>
+
+					  <div class="form-group">
+						<label class="control-label col-md-3 col-sm-3" for="first-name">First Name <span class="required">*</span>
+						</label>
+						<div class="col-md-6 col-sm-6">
+						  <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="control-label col-md-3 col-sm-3" for="last-name">Last Name <span class="required">*</span>
+						</label>
+						<div class="col-md-6 col-sm-6">
+						  <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label for="middle-name" class="control-label col-md-3 col-sm-3">Middle Name / Initial</label>
+						<div class="col-md-6 col-sm-6">
+						  <input id="middle-name2" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="control-label col-md-3 col-sm-3">Gender</label>
+						<div class="col-md-6 col-sm-6">
+						  <div id="gender2" class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+							  <input type="radio" name="gender" value="male"> &nbsp; Male &nbsp;
+							</label>
+							<label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+							  <input type="radio" name="gender" value="female" checked=""> Female
+							</label>
+						  </div>
+						</div>
+					  </div>
+					  <div class="form-group">
+						<label class="control-label col-md-3 col-sm-3">Date Of Birth <span class="required">*</span>
+						</label>
+						<div class="col-md-6 col-sm-6">
+						  <input id="birthday2" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+						</div>
+					  </div>
+
+					</form>
+				  </div>
+				  <div id="step-22">
+					<h2 class="StepTitle">Step 2 Content</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				  </div>
+				  <div id="step-33">
+					<h2 class="StepTitle">Step 3 Content</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				  </div>
+				  <div id="step-44">
+					<h2 class="StepTitle">Step 4 Content</h2>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+					  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				  </div>
+				</div>
+				<!-- End SmartWizard Content -->
+			  </div>
+			</div>
 	</div>
 </template>
 
@@ -1244,6 +1584,14 @@ var MyRequestsCalendarCreate = Vue.extend({
 	}
 });
 
+
+var MyRequestsTechnicalsCreate = Vue.extend({
+	template: '#micuenta-requests-technicals-create',
+	data() {
+		return {};
+	},
+});
+
 var router = new VueRouter({
 	linkActiveClass: 'active',
 	routes:[
@@ -1252,9 +1600,9 @@ var router = new VueRouter({
 		{ path: '/view/:request_id', component: MyRequestsView, name: 'MiCuenta-Requests-View' },
 		{ path: '/view/:request_id/calendar/create', component: MyRequestsCalendarCreate, name: 'MiCuenta-Requests-Calendar-Create' },
 		{ path: '/view/:request_id/calendar/view', component: MyRequestsCalendarView, name: 'MiCuenta-Requests-Calendar-View' },
+		{ path: '/view/:request_id/technicals/create', component: MyRequestsTechnicalsCreate, name: 'MiCuenta-Requests-Technicals' },
 	]
 });
-
 
 var MyRequests = new Vue({
 	router: router,
