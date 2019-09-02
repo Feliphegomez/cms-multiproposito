@@ -39,7 +39,7 @@
 		</div>
 		<li>
 			<div class="text-center">
-				<a href="/SAC/requests_new/#/filter/status/0,1">
+				<a href="/SAC/requests_new/#/filter/status/2">
 					<strong>Nuevas Solicitudes</strong>
 					<i class="fa fa-angle-right"></i>
 				</a>

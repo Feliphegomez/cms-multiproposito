@@ -778,13 +778,11 @@ var ComposeInbox = new Vue({
 								users_search.users_events.forEach(function(user){
 									if(user.user == "<?php echo $_SESSION['user']['id']; ?>"){
 										self.records.push(item);
-										if (hoy.getDate() == fStart.getDate()
-										&& hoy.getMonth() == fStart.getMonth()
-										&& hoy.getFullYear() == fStart.getFullYear()) {
+										if (hoy.getDate() == fStart.getDate() && hoy.getMonth() == fStart.getMonth() && hoy.getFullYear() == fStart.getFullYear()) {
 											self.count++;
-										} else if (hoy.getDate() > fStart.getDate()
-										&& hoy.getMonth() >= fStart.getMonth()
-										&& hoy.getFullYear() >= fStart.getFullYear()) {
+										} else if (hoy.getDate() > fStart.getDate() && hoy.getMonth() == fStart.getMonth() && hoy.getFullYear() == fStart.getFullYear()) {
+											self.count_danger++;
+										} else if (hoy.getMonth() > fStart.getMonth() && hoy.getFullYear() >= fStart.getFullYear()) {
 											self.count_danger++;
 										}
 									}
