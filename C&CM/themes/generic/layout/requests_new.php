@@ -6,7 +6,7 @@
 }
 </style>
 
-<div class="" id="micuenta-requests">
+<div class="" id="RequestsNew-requests">
 	<div class="page-title">
 		<div class="title_left">
 			<h3>SAC <small> Solicitudes Nuevas</small></h3>
@@ -21,7 +21,7 @@
 	</div>
 </div>
 
-<template id="micuenta-requests-list">
+<template id="RequestsNew-requests-list">
 	<div>
 		<div class="x_panel">
 			<div class="x_content">
@@ -67,7 +67,7 @@
 										<button type="button" class="btn btn-default btn-xs">{{ item.type.title }}</button>
 									</td>
 									<td>
-										<router-link tag="a" :to="{ name: 'MiCuenta-Requests-View', params: { request_id: item.id } }" class="btn btn-primary btn-xs">
+										<router-link tag="a" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: item.id } }" class="btn btn-primary btn-xs">
 											<i class="fa fa-folder"></i> Ver mas
 										</router-link>
 										<!--
@@ -85,19 +85,19 @@
 	</div>
 </template>
 
-<style scoped="micuenta-requests-view">
+<style scoped="RequestsNew-requests-view">
 	.panel_toolbox>li>a {
 		color: #666 !important;
 	}
 </style>
-<template id="micuenta-requests-view">
+<template id="RequestsNew-requests-view">
 	<div>
 		<div class="x_panel">
 			<template v-if="in_team == true">
 				<div class="x_title">
 					<h2>{{ record.type.title }}</h2>
 					<ul class="nav navbar-right panel_toolbox">
-						<!-- // <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
+						<!-- // <li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li> -->
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
 								<i class="fa fa-calendar-o"></i>
@@ -105,12 +105,12 @@
 							</a>
 							<ul class="dropdown-menu" role="menu">
 								<li>
-									<router-link tag="a" :to="{ name: 'MiCuenta-Requests-Calendar-View', params: { request_id: $route.params.request_id } }">
+									<router-link tag="a" :to="{ name: 'RequestsNew-Requests-Calendar-View', params: { request_id: $route.params.request_id } }">
 										<i class="fa fa-calendar"></i> Ver agenda de la solicitud
 									</router-link>
 								</li>
 								<li>
-									<router-link tag="a" :to="{ name: 'MiCuenta-Requests-Calendar-Create', params: { request_id: $route.params.request_id } }">
+									<router-link tag="a" :to="{ name: 'RequestsNew-Requests-Calendar-Create', params: { request_id: $route.params.request_id } }">
 										<i class="fa fa-calendar-plus-o"></i> Agendar una visita
 									</router-link>
 								</li>
@@ -132,7 +132,7 @@
 								<i class="fa fa-tree"></i> Enviar a (Ings. Forestales)
 							</a>
 						</li>
-						<router-link tag="li" :to="{ name: 'MiCuenta-Requests' }">
+						<router-link tag="li" :to="{ name: 'RequestsNew-Requests' }">
 							<a class="close-link"><i class="fa fa-close"></i></a>
 						</router-link>
 					</ul>
@@ -171,13 +171,13 @@
 														<li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Actividad Reciente</a></li>
 														<li role="presentation" class=""><a @click="refreshCalendar" href="#tab_calendar" role="tab" id="calendar-tabb" data-toggle="tab" aria-controls="calendar" aria-expanded="false">Calendario</a></li>
 														<li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Propuestas</a></li>
+														<li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Reportes técnicos</a></li>
 													</ul>
 												</div>
 
 												<div class="col-sm-12">
 													<div id="myTabContent2" class="tab-content">
 														<div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
-
 															<ul class="messages">
 																<template v-if="record.requests_activity.length > 0">
 																	<li v-for="activity in record.requests_activity">
@@ -238,22 +238,75 @@
 																</template>
 															</ul>
 														</div>
+														
 														<div role="tabpanel" class="tab-pane fade" id="tab_calendar" aria-labelledby="calendar-tab">
 															<div id="calendar-list"></div>
 															<template v-if="events.length == 0 || events == undefined || events == null">
 																No se a programado agenta.
 																<hr>
-
-																	<router-link class="btn btn-sm btn-success" tag="a" :to="{ name: 'MiCuenta-Requests-Calendar-Create', params: { request_id: $route.params.request_id } }">
-																		<i class="fa fa-calendar-plus-o"></i> Agendar una visita
-																	</router-link>
-
+																<router-link class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-Calendar-Create', params: { request_id: $route.params.request_id } }">
+																	<i class="fa fa-calendar-plus-o"></i> Agendar una visita
+																</router-link>
 															</template>
 														</div>
 
-
-
 														<div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+															<ul class="messages">
+																<template v-if="record.proposals.length > 0">
+																	<li v-for="proposal in record.proposals">
+																		<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																		<div class="message_date">
+																			<h3 class="date text-info">{{ proposal.created }}</h3>
+																			<p class="month">{{ proposal.updated }}</p>
+																		</div>
+																		<div class="message_wrapper">
+																			<h4 class="heading"></h4>
+																			<blockquote class="message">
+																				Propuesta #: {{ getRadicado(proposal) }}
+																				<router-link v-if="proposal.close === 0" class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-Edit', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
+																					<i class="fa fa-calendar-plus-o"></i> Continuar con la propuesta
+																				</router-link>
+																			</blockquote>
+																			<br />
+																			<p class="url" v-if="proposal.close === 1">
+																				<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																				<router-link v-if="proposal.close === 1" class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-View', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
+																					<i class="fa fa-eye"></i> Ver la propuesta
+																				</router-link>
+																			</p>
+																		</div>
+																	</li>
+																</template>
+																<template v-else>
+																	<li>
+																		<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																		<div class="message_date">
+																			<h3 class="date text-info"></h3>
+																			<p class="month"></p>
+																		</div>
+																		<div class="message_wrapper">
+																			<h4 class="heading">Mensaje automatico del sistema</h4>
+																			<blockquote class="message">
+																				Aún no tenemos propuestas...
+																				<hr>
+																				<router-link class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-Create', params: { request_id: $route.params.request_id } }">
+																					<i class="fa fa-calendar-plus-o"></i> Crear una propuesta
+																				</router-link>
+																			</blockquote>
+																			<br />
+																			<!--
+																			<p class="url">
+																				<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																				<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+																			</p>
+																			-->
+																		</div>
+																	</li>
+																</template>
+															</ul>
+														</div>
+														
+														<div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
 															<ul class="messages">
 																<li>
 																	<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
@@ -264,7 +317,12 @@
 																	<div class="message_wrapper">
 																		<h4 class="heading">Mensaje automatico del sistema</h4>
 																		<blockquote class="message">
-																			Aún no tenemos propuestas, espera que nuestros especialistas analicen tu solicitud y realicen el estudio para enviarte tu propuesta.
+																			Aún no tenemos reportes...
+																			<hr>
+																			<router-link tag="a" :to="{ name: 'RequestsNew-Requests-Technicals', params: { request_id: $route.params.request_id } }" class="btn btn-sm btn-primary">
+																				<i class="fa fa-plus"></i>
+																				Gestionar Reporte
+																			</router-link>
 																		</blockquote>
 																		<br />
 																		<!--
@@ -276,10 +334,6 @@
 																	</div>
 																</li>
 															</ul>
-														</div>
-														<div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
-															<p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo
-																booth letterpress, commodo enim craft beer mlkshk </p>
 														</div>
 													</div>
 												</div>
@@ -327,15 +381,11 @@
 									-->
 								</ul>
 								<br />
-								<div class="text-center mtop20">				
-									<router-link tag="a" :to="{ name: 'MiCuenta-Requests-Technicals', params: { request_id: $route.params.request_id } }" class="btn btn-sm btn-primary">
-										<i class="fa fa-plus"></i>
-										Gestionar Inventario
-									</router-link>
+								<div class="text-center mtop20">
 									
+										<a href="#" class="btn btn-sm btn-warning">Report contact</a>
 									<!--
 										<a href="#" class="btn btn-sm btn-primary">Add files</a>
-										<a href="#" class="btn btn-sm btn-warning">Report contact</a>
 									-->
 								</div>
 							</div>
@@ -355,7 +405,7 @@
 	</div>
 </template>
 
-<style scope="micuenta-requests-calendar-create">
+<style scope="RequestsNew-requests-calendar-create">
 	body {
 		margin: 0;
 		padding: 0;
@@ -375,13 +425,13 @@
 		padding: 0 10px;
 	}
 </style>
-<template id="micuenta-requests-calendar-create">
+<template id="RequestsNew-requests-calendar-create">
 	<div>
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Agendar Visita Técnica</h2>
 				<ul class="nav navbar-right panel_toolbox">
-					<!-- // <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
+					<!-- // <li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li> -->
 					<!-- //
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -393,7 +443,7 @@
 						</ul>
 					</li>
 					-->
-					<router-link tag="li" :to="{ name: 'MiCuenta-Requests-View', params: { request_id: $route.params.request_id } }">
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
 						<a class="close-link"><i class="fa fa-close"></i></a>
 					</router-link>
 				</ul>
@@ -419,13 +469,13 @@
 	</div>
 </template>
 
-<template id="micuenta-requests-calendar-view">
+<template id="RequestsNew-requests-calendar-view">
 	<div>
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Agenda de Solicitud</h2>
 				<ul class="nav navbar-right panel_toolbox">
-					<!-- // <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li> -->
+					<!-- // <li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li> -->
 					<!-- //
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -437,7 +487,7 @@
 						</ul>
 					</li>
 					-->
-					<router-link tag="li" :to="{ name: 'MiCuenta-Requests-View', params: { request_id: $route.params.request_id } }">
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
 						<a class="close-link"><i class="fa fa-close"></i></a>
 					</router-link>
 				</ul>
@@ -454,14 +504,14 @@
 	</div>
 </template>
 
-
-<template id="micuenta-requests-technicals-create">
+<template id="RequestsNew-requests-technicals-create">
 	<div>
+		<!-- //
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Plain Page</h2>
 				<ul class="nav navbar-right panel_toolbox">
-					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
 						<ul class="dropdown-menu" role="menu">
@@ -469,7 +519,7 @@
 							<li><a href="#">Settings 2</a></li>
 						</ul>
 					</li>
-					<router-link tag="li" :to="{ name: 'MiCuenta-Requests-View', params: { request_id: $route.params.request_id } }">
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
 						<a class="close-link"><i class="fa fa-close"></i></a>
 					</router-link>
 				</ul>
@@ -479,313 +529,821 @@
 				Add content to the page ...
 			</div>
 		</div>
+		-->
+		
 		<div class="x_panel">
 			<div class="x_title">
-				<h2>Plain Page</h2>
-				<div class="clearfix"></div>
-			</div>
-			<div class="x_content">
-				Add content to the page ...
-			</div>
-		</div>
-		<div class="x_panel">
-			<div class="x_title">
-				<h2>Plain Page</h2>
-				<div class="clearfix"></div>
-			</div>
-			<div class="x_content">
-				Add content to the page ...
-			</div>
-		</div>
-		<div class="x_panel">
-			<div class="x_title">
-				<h2>Plain Page</h2>
-				<div class="clearfix"></div>
-			</div>
-			<div class="x_content">
-				Add content to the page ...
-			</div>
-		</div>
-		 <div class="x_panel">
-			  <div class="x_title">
-				<h2>Form Wizards <small>Sessions</small></h2>
+				<h2>Mantenimiento de Jardines</h2>
 				<ul class="nav navbar-right panel_toolbox">
-				  <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-				  </li>
-				  <li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-					<ul class="dropdown-menu" role="menu">
-					  <li><a href="#">Settings 1</a>
-					  </li>
-					  <li><a href="#">Settings 2</a>
-					  </li>
-					</ul>
-				  </li>
-				  <li><a class="close-link"><i class="fa fa-close"></i></a>
-				  </li>
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
 				</ul>
 				<div class="clearfix"></div>
-			  </div>
-			  <div class="x_content">
-
-
-				<!-- Smart Wizard -->
-				<p>This is a basic form wizard example that inherits the colors from the selected scheme.</p>
-				<div id="wizard" class="form_wizard wizard_horizontal">
-				  <ul class="wizard_steps">
-					<li>
-					  <a href="#step-1">
-						<span class="step_no">1</span>
-						<span class="step_descr">
-										  Step 1<br />
-										  <small>Step 1 description</small>
-									  </span>
-					  </a>
-					</li>
-					<li>
-					  <a href="#step-2">
-						<span class="step_no">2</span>
-						<span class="step_descr">
-										  Step 2<br />
-										  <small>Step 2 description</small>
-									  </span>
-					  </a>
-					</li>
-					<li>
-					  <a href="#step-3">
-						<span class="step_no">3</span>
-						<span class="step_descr">
-										  Step 3<br />
-										  <small>Step 3 description</small>
-									  </span>
-					  </a>
-					</li>
-					<li>
-					  <a href="#step-4">
-						<span class="step_no">4</span>
-						<span class="step_descr">
-										  Step 4<br />
-										  <small>Step 4 description</small>
-									  </span>
-					  </a>
-					</li>
-				  </ul>
-				  <div id="step-1">
-					<form class="form-horizontal form-label-left">
-
-					  <div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span class="required">*</span>
-						</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-						  <input type="text" id="first-name" required="required" class="form-control col-md-7 col-xs-12">
-						</div>
-					  </div>
-					  <div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
-						</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-						  <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
-						</div>
-					  </div>
-					  <div class="form-group">
-						<label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name / Initial</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-						  <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
-						</div>
-					  </div>
-					  <div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-						  <div id="gender" class="btn-group" data-toggle="buttons">
-							<label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-							  <input type="radio" name="gender" value="male"> &nbsp; Male &nbsp;
-							</label>
-							<label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-							  <input type="radio" name="gender" value="female"> Female
-							</label>
-						  </div>
-						</div>
-					  </div>
-					  <div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
-						</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-						  <input id="birthday" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-						</div>
-					  </div>
-
-					</form>
-
-				  </div>
-				  <div id="step-2">
-					<h2 class="StepTitle">Step 2 Content</h2>
-					<p>
-					  do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-					  fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-				  </div>
-				  <div id="step-3">
-					<h2 class="StepTitle">Step 3 Content</h2>
-					<p>
-					  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-					  eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-				  </div>
-				  <div id="step-4">
-					<h2 class="StepTitle">Step 4 Content</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-				  </div>
-
-				</div>
-				<!-- End SmartWizard Content -->
-
-
-
-
-
-				<h2>Example: Vertical Style</h2>
-				<!-- Tabs -->
-				<div id="wizard_verticle" class="form_wizard wizard_verticle">
-				  <ul class="list-unstyled wizard_steps">
-					<li>
-					  <a href="#step-11">
-						<span class="step_no">1</span>
-					  </a>
-					</li>
-					<li>
-					  <a href="#step-22">
-						<span class="step_no">2</span>
-					  </a>
-					</li>
-					<li>
-					  <a href="#step-33">
-						<span class="step_no">3</span>
-					  </a>
-					</li>
-					<li>
-					  <a href="#step-44">
-						<span class="step_no">4</span>
-					  </a>
-					</li>
-				  </ul>
-
-				  <div id="step-11">
-					<h2 class="StepTitle">Step 1 Content</h2>
-					<form class="form-horizontal form-label-left">
-
-					  <span class="section">Personal Info</span>
-
-					  <div class="form-group">
-						<label class="control-label col-md-3 col-sm-3" for="first-name">First Name <span class="required">*</span>
-						</label>
-						<div class="col-md-6 col-sm-6">
-						  <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">
-						</div>
-					  </div>
-					  <div class="form-group">
-						<label class="control-label col-md-3 col-sm-3" for="last-name">Last Name <span class="required">*</span>
-						</label>
-						<div class="col-md-6 col-sm-6">
-						  <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
-						</div>
-					  </div>
-					  <div class="form-group">
-						<label for="middle-name" class="control-label col-md-3 col-sm-3">Middle Name / Initial</label>
-						<div class="col-md-6 col-sm-6">
-						  <input id="middle-name2" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
-						</div>
-					  </div>
-					  <div class="form-group">
-						<label class="control-label col-md-3 col-sm-3">Gender</label>
-						<div class="col-md-6 col-sm-6">
-						  <div id="gender2" class="btn-group" data-toggle="buttons">
-							<label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-							  <input type="radio" name="gender" value="male"> &nbsp; Male &nbsp;
-							</label>
-							<label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-							  <input type="radio" name="gender" value="female" checked=""> Female
-							</label>
-						  </div>
-						</div>
-					  </div>
-					  <div class="form-group">
-						<label class="control-label col-md-3 col-sm-3">Date Of Birth <span class="required">*</span>
-						</label>
-						<div class="col-md-6 col-sm-6">
-						  <input id="birthday2" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-						</div>
-					  </div>
-
-					</form>
-				  </div>
-				  <div id="step-22">
-					<h2 class="StepTitle">Step 2 Content</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-				  </div>
-				  <div id="step-33">
-					<h2 class="StepTitle">Step 3 Content</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-				  </div>
-				  <div id="step-44">
-					<h2 class="StepTitle">Step 4 Content</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-					  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-					<p>
-					  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-					  in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-					</p>
-				  </div>
-				</div>
-				<!-- End SmartWizard Content -->
-			  </div>
 			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="3">Cantidad de área (M2) o Etapas de la urbanizacion:</td>
+						<td colspan="3"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="2">Tiene jardines en area baja:</td>
+						<td colspan="4"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="2">Tiene jardines de altura (# de piso ...):</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="2">Personal en altura:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="2">Limpieza:</td>
+						<td colspan="4"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Roceria de cesped:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Roceria en área baja:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Roceria en altura:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Bordeo:</td>
+						<td colspan="5"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Plateo:</td>
+						<td colspan="5"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Cordoneo:</td>
+						<td colspan="5"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Fertilización:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Radicular:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Foliar: <input class="form-control" /></td>
+						<td colspan="1">EDAFICO - Agrimins: <input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Jardineras:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Concreto:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Materas:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="2" rowspan="4">PODA:</td>
+						<td colspan="1">Setos:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Cantidad de individuos:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Arbustos Jovenes:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Cantidad de individuos:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Poda en área baja: <input class="form-control" /></td>
+						<td colspan="1"># de cortes: <input class="form-control" /></td>
+						<td colspan="1">Poda en altura: <input class="form-control" /></td>
+						<td colspan="1"># de cortes: <input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Personal de altura:</td>
+						<td colspan="3"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="2">Fumigacion contra hongos:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Fumigacion contra plagas:</td>
+						<td colspan="2"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							Observaciones: 
+							<textarea class="form-control"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Siembra</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="1">Arbusto:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Clase:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Cantidad #:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Arboles:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Clase:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Cantidad #:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Plantas de flor:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Clase:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Cantidad #:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Plantas de hoja verde:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Clase:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Cantidad #:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Enrredaderas:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Clase:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Cantidad #:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Tierra abonada:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1"># de bultos: <input class="form-control" /></td>
+						<td colspan="1">Chiper: <input class="form-control" /></td>
+						<td colspan="1"># de bultos: </td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Fertilización:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Radicular: <input class="form-control" /></td>
+						<td colspan="1">Foliar: <input class="form-control" /></td>
+						<td colspan="1">EDAFICO-Agrimins:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							Observaciones: 
+							<textarea class="form-control"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Poda</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="1">Setos:</td>
+						<td colspan="2"><input class="form-control" /></td>
+						<td colspan="1">Cantidad de individuos #:</td>
+						<td colspan="2"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Arbustos Jóvenes:</td>
+						<td colspan="2"><input class="form-control" /></td>
+						<td colspan="1">Cantidad de individuos #:</td>
+						<td colspan="2"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Otros:</td>
+						<td colspan="2"><input class="form-control" /></td>
+						<td colspan="1">Cantidad de individuos #:</td>
+						<td colspan="2"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Poda en área baja:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1"># de cortes: <input class="form-control" /></td>
+						<td colspan="1">Podas en altura: <input class="form-control" /></td>
+						<td colspan="1"># de cortes: <input class="form-control" /></td>
+						<td colspan="1">Personal de altura: <input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Tiene Permiso:</td>
+						<td colspan="2"><input class="form-control" /></td>
+						<td colspan="2">Desea gestionar el permiso por medio de MONTEVERDE LTDA?:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							Observaciones: 
+							<textarea class="form-control"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Tala</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="2">Cantidad de individuos #: <input class="form-control" /></td>
+						<td colspan="1">Clase <input class="form-control" /></td>
+						<td colspan="1">Tala en área baja: <input class="form-control" /></td>
+						<td colspan="1">Tala en altura: <input class="form-control" /></td>
+						<td colspan="1">Personal en altura: <input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Tiene permiso:</td>
+						<td colspan="2"><input class="form-control" /></td>
+						<td colspan="2">Desea gestionar el permiso por medio de MONTEVERDE LTDA?:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							Observaciones: 
+							<textarea class="form-control"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Transplante</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="2">Cantidad de individuos #: <input class="form-control" /></td>
+						<td colspan="1">Clase: <input class="form-control" /></td>
+						<td colspan="1">Transplante en área baja: <input class="form-control" /></td>
+						<td colspan="1">Transplante en altura: <input class="form-control" /></td>
+						<td colspan="1">Personal en altura: <input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Tiene permiso:</td>
+						<td colspan="2"><input class="form-control" /></td>
+						<td colspan="2">Desea gestionar el permiso por medio de MONTEVERDE LTDA?:</td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							Observaciones: 
+							<textarea class="form-control"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Diseño de jardines</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="1">Diseño de interiores:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Clase de plantas: <input class="form-control" /></td>
+						<td colspan="1">Diseño en área baja: <input class="form-control" /></td>
+						<td colspan="1">Diseño en altura: <input class="form-control" /></td>
+						<td colspan="1">Permiso en altura: <input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Diseño de exteriores:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Clase de plantas: <input class="form-control" /></td>
+						<td colspan="1">Diseño en área baja: <input class="form-control" /></td>
+						<td colspan="1">Diseño en altura: <input class="form-control" /></td>
+						<td colspan="1">Permiso en altura: <input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="1">Diseño sugerido por el cliente:</td>
+						<td colspan="1"><input class="form-control" /></td>
+						<td colspan="1">Clase de plantas: <input class="form-control" /></td>
+						<td colspan="1">Diseño en área baja: <input class="form-control" /></td>
+						<td colspan="1">Diseño en altura: <input class="form-control" /></td>
+						<td colspan="1">Permiso en altura: <input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="3">Cantidad de plantas sugeridas para el jardin: </td>
+						<td colspan="3"><textarea class="form-control"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							Observaciones: 
+							<textarea class="form-control"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Roceria de cesped</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="1">Roceria en área baja:</td>
+						<td colspan="2"><input class="form-control" /></td>
+						<td colspan="1">Roceria en altura: <input class="form-control" /></td>
+						<td colspan="1">Personal en altura: </td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Roceria de cesped en taludes</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="1">Roceria en área baja:</td>
+						<td colspan="2"><input class="form-control" /></td>
+						<td colspan="1">Roceria en altura: <input class="form-control" /></td>
+						<td colspan="1">Personal en altura: </td>
+						<td colspan="1"><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							Observaciones: 
+							<textarea class="form-control"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<div class="x_panel">
+			<div class="x_title">
+				<h2></h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<table width="100%" class="table table-bordered">
+					<tr>
+						<td colspan="6">
+							Anotaciones Finales:: 
+							<textarea class="form-control"></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template id="RequestsNew-requests-proposals-create">
+	<div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h2>Crear una nueva propuesta</h2>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<li><a @click="saveproposal" class="#"><i class="fa fa-save"></i></a></li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<section class="content invoice">
+					<div class="row">
+						<div class="col-xs-12 invoice-header">
+							<h1><i class="fa fa-globe"></i> PROPUESTA DE PRESTACION DE SERVICIOS. <small class="pull-right">Fecha: {{ record.created }}</small></h1>
+						</div>
+					</div>
+					
+					<div class="row invoice-info">
+						<div class="col-sm-4 invoice-col">
+							Creada por: 
+							<address>
+								<strong>{{ record.create_by.names }} {{ record.create_by.surname }}</strong>
+								<br>Teléfono Fijo: {{ record.create_by.phone }}
+								<br>Teléfono Movil: {{ record.create_by.mobile }}
+								<br>Email: {{ record.create_by.email }}
+							</address>
+						</div>
+						<div class="col-sm-4 invoice-col">
+							Para: 
+							<address>
+								<strong>{{ request.names }} {{ request.surname }}</strong>
+								<br>{{ request.identification_type.code }} {{ request.identification_number }}
+								<br>{{ request.address }} {{ request.city.name }} - {{ request.department.name }}
+								<br>Teléfono Fijo: {{ request.phone }}
+								<br>Teléfono Movil: {{ request.mobile }}
+								<br>Email: {{ request.email }}
+							</address>
+						</div>
+						<div class="col-sm-4 invoice-col">
+							<b>Propuesta # {{ getRadicado(record) }}</b>
+							<br><br><b>Solicitud #:</b> {{ getRadicado(request) }}
+							<br><b>Fecha limite:</b> <input style="width: 45%;display: inline;" v-model="record.payment_due" type='text' class="form-control" data-toggle="tooltip" data-placement="top" title="Formato: AÑO-MES-DIA HORA:MINUTOS:SEGUNDOS 2019-12-31 23:59:00" />
+							<br><b># Cliente:</b> 
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-xs-12 table">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Cantidad</th>
+										<th style="width: 22%">Producto o Servicio</th>
+										<th>Valor Unitario</th>
+										<th style="width: 22%">Descripcion</th>
+										<th>Tipo de Medición</th>
+										<th style="width: 14%">Subtotal</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="form-group multiple-form-group input-group-" v-for="(item, index) in record.items">
+										<div>
+											<td>
+												<input @change="calc" v-model="item.qty" type="text" class="form-control">
+											</td>
+											<td>
+												<input v-model="item.name" type="text" class="form-control">
+											</td>
+											<td>
+												<input @change="calc" v-model="item.vu" type="number" step="0.01" class="form-control">
+											</td>
+											<td>
+												<input v-model="item.description" type="text" class="form-control">
+											</td>
+											<td>
+												<div class="input-group-btn input-group-select">
+													<select v-model="item.medition" class="form-control">
+														<option value="">Ninguno</option>
+														<option value='{"name":"Metros Líneales", "code":"M", "value":"m"}'>M - Metros Líneales</option>
+														<option value='{"name":"Metros Cuadrados", "code":"M2", "value":"m2"}'>M2 - Metros Cuadrados</option>
+														<option value='{"name":"Metros Cúbicos", "code":"M3", "value":"m3"}'>M2 - Metros Cúbicos</option>
+													</select>
+												</div>
+											</td>
+											<td>$ {{ $root.formatMoney(item.subtotal) }}</td>
+											<td>
+												<span class="input-group-btn">
+													
+													<button v-if="index === (record.items.length-1)" @click="addItem" type="button" class="btn btn-success btn-add">+</button>
+													<button @click="removeItem(index)" type="button" class="btn btn-danger btn-add">-</button>
+												</span>
+											</td>
+										</div>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+					<div class="row">
+						<!-- accepted payments column -->
+						<div class="col-xs-6">
+							<p class="lead">Metodos de pago:</p>
+							<img src="/C&CM/themes/generic/assets/images/visa.png" alt="Visa">
+							<img src="/C&CM/themes/generic/assets/images/mastercard.png" alt="Mastercard">
+							<img src="/C&CM/themes/generic/assets/images/american-express.png" alt="American Express">
+							<img src="/C&CM/themes/generic/assets/images/paypal.png" alt="Paypal">
+							<p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+								Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+							</p>
+						</div>
+						<!-- /.col -->
+						<div class="col-xs-6">
+							<p class="lead">Monto adeudado </p>
+							<div class="table-responsive">
+								<table class="table">
+									<tbody>
+										<tr>
+											<th style="width:50%">Subtotal:</th>
+											<td>$ {{ $root.formatMoney(subtotal) }}</td>
+										</tr>
+										<tr>
+											<th>Impuestos:</th>
+											<td><input v-model="record.tax" type="number" step="0.01" class="form-control"></td>
+										</tr>
+										<tr>
+											<th>Envío:</th>
+											<td><input v-model="record.shipping" type="number" step="0.01" class="form-control"></td>
+										</tr>
+										<tr>
+											<th>Total:</th>
+											<td>$ {{ $root.formatMoney(record.total) }}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+					<!-- this row will not appear when printing -->
+					<div class="row no-print">
+						<div class="col-xs-12">
+							<button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
+							<!-- // <button class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Enviar Propuesta</button> -->
+							<button @click="closed" class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Cerrar & Publicar</button>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</template>
+
+<template id="RequestsNew-requests-proposals-view">
+	<div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h1><i class="fa fa-globe"></i> PROPUESTA DE PRESTACION DE SERVICIOS. <small class="pull-right">Fecha: {{ record.created }}</small></h1>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'RequestsNew-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<section class="content invoice">
+					<div class="row">
+						<div class="col-xs-12 invoice-header">
+							
+						</div>
+					</div>
+					
+					<div class="row invoice-info">
+						<div class="col-sm-4 invoice-col">
+							Creada por: 
+							<address>
+								<strong>{{ record.create_by.names }} {{ record.create_by.surname }}</strong>
+								<br>Teléfono Fijo: {{ record.create_by.phone }}
+								<br>Teléfono Movil: {{ record.create_by.mobile }}
+								<br>Email: {{ record.create_by.email }}
+							</address>
+						</div>
+						<div class="col-sm-4 invoice-col">
+							Para: 
+							<address>
+								<strong>{{ record.request.names }} {{ record.request.surname }}</strong>
+								<br>{{ record.request.identification_type.code }} {{ record.request.identification_number }}
+								<br>{{ record.request.address }} {{ record.request.city.name }} - {{ record.request.department.name }}
+								<br>Teléfono Fijo: {{ record.request.phone }}
+								<br>Teléfono Movil: {{ record.request.mobile }}
+								<br>Email: {{ record.request.email }}
+							</address>
+						</div>
+						<div class="col-sm-4 invoice-col">
+							<b>Propuesta # {{ getRadicado(record) }}</b>
+							<br><br><b>Solicitud #:</b> {{ getRadicado( record.request) }}
+							<br><b>Fecha limite:</b> {{ new Date(record.payment_due).toMysqlFormat() }} 
+							<br><b># Cliente:</b> 
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-xs-12 table">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Cantidad</th>
+										<th style="width: 22%">Producto o Servicio</th>
+										<th>Valor Unitario</th>
+										<th style="width: 22%">Descripcion</th>
+										<th>Tipo de Medición</th>
+										<th style="width: 14%">Subtotal</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="form-group multiple-form-group input-group-" v-for="(item, index) in record.items">
+										<div>
+											<td>{{ item.qty }}</td>
+											<td>{{ item.name }}</td>
+											<td>{{ item.vu }}</td>
+											<td>{{ item.description }}</td>
+											<td>{{ item.medition.name }}</td>
+											<td>$ {{ $root.formatMoney(item.subtotal) }}</td>
+										</div>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+					<div class="row">
+						<!-- accepted payments column -->
+						<div class="col-xs-6">
+							<p class="lead">Metodos de pago:</p>
+							<img src="/C&CM/themes/generic/assets/images/visa.png" alt="Visa">
+							<img src="/C&CM/themes/generic/assets/images/mastercard.png" alt="Mastercard">
+							<img src="/C&CM/themes/generic/assets/images/american-express.png" alt="American Express">
+							<img src="/C&CM/themes/generic/assets/images/paypal.png" alt="Paypal">
+							<p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+								Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+							</p>
+						</div>
+						<!-- /.col -->
+						<div class="col-xs-6">
+							<p class="lead">Monto adeudado </p>
+							<div class="table-responsive">
+								<table class="table">
+									<tbody>
+										<tr>
+											<th style="width:50%">Subtotal:</th>
+											<td>$ {{ record.subtotal }}</td>
+										</tr>
+										<tr>
+											<th>Impuestos:</th>
+											<td>{{ record.tax }}</td>
+										</tr>
+										<tr>
+											<th>Envío:</th>
+											<td>{{ record.shipping }}</td>
+										</tr>
+										<tr>
+											<th>Total:</th>
+											<td>$ {{ $root.formatMoney(record.total) }}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+					<!-- this row will not appear when printing -->
+					<div class="row no-print">
+						<div class="col-xs-12">
+							<button class="btn btn-warning"><i class="fa fa-thumbs-o-down"></i> Declinar Propuesta</button>
+						
+							<button class="btn btn-default pull-right" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
+							<button class="btn btn-info pull-right"><i class="fa fa-send"></i> Enviar Propuesta</button>
+							<button class="btn btn-success pull-right"><i class="fa fa-thumbs-o-up"></i> Aceptar Propuesta</button>
+							
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -985,7 +1543,7 @@ Vue.component('scheduler', {
 });
 
 var MyRequestsList = Vue.extend({
-	template: '#micuenta-requests-list',
+	template: '#RequestsNew-requests-list',
 	data: function () {
 		return {
 			records: []
@@ -1043,7 +1601,7 @@ var MyRequestsList = Vue.extend({
 });
 
 var MyRequestsView = Vue.extend({
-	template: '#micuenta-requests-view',
+	template: '#RequestsNew-requests-view',
 	data: function () {
 		return {
 			in_team: false,
@@ -1163,7 +1721,7 @@ var MyRequestsView = Vue.extend({
 									if(activityResult.data != undefined){
 										console.log('Gracias por  tu gestión.');
 										self.load();
-										router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
+										router.push({ name: 'RequestsNew-Requests-View', params: { request_id: self.$route.params.request_id} })
 									}
 								});
 
@@ -1198,6 +1756,7 @@ var MyRequestsView = Vue.extend({
 						'requests_team,users',
 						'requests_activity',
 						'requests_activity,users',
+						'proposals,users',
 					]
 				}
 			})
@@ -1259,7 +1818,7 @@ var MyRequestsView = Vue.extend({
 });
 
 var MyRequestsCalendarView = Vue.extend({
-	template: '#micuenta-requests-calendar-view',
+	template: '#RequestsNew-requests-calendar-view',
 	data: function () {
 		return {
 			calendarEl: null,
@@ -1313,7 +1872,7 @@ var MyRequestsCalendarView = Vue.extend({
 });
 
 var MyRequestsCalendarCreate = Vue.extend({
-	template: '#micuenta-requests-calendar-create',
+	template: '#RequestsNew-requests-calendar-create',
 	data: function () {
 		return {
 			tecnichals_ids: [],
@@ -1584,23 +2143,390 @@ var MyRequestsCalendarCreate = Vue.extend({
 	}
 });
 
-
 var MyRequestsTechnicalsCreate = Vue.extend({
-	template: '#micuenta-requests-technicals-create',
+	template: '#RequestsNew-requests-technicals-create',
 	data() {
 		return {};
 	},
+	mounted(){
+		var self = this;
+		self.$root.loadScripts();
+	},
+});
+
+var MyRequestsproposalsCreate = Vue.extend({
+	template: '#RequestsNew-requests-proposals-create',
+	data() {
+		return {
+			proposal_id: this.$route.params.proposal_id,
+			request_id: this.$route.params.request_id,
+			request: {
+			  "id": 0,
+			  "type": {
+				"id": 0,
+				"title": "",
+				"subtitle": "",
+				"description": "",
+				"highlight": 0
+			  },
+			  "identification_type": 0,
+			  "identification_number": "",
+			  "names": "",
+			  "surname": "",
+			  "department": 0,
+			  "city": 0,
+			  "address": "",
+			  "points_reference": "",
+			  "email": "",
+			  "phone": "",
+			  "mobile": "",
+			  "request": "",
+			  "status": {
+				"id": 0,
+				"name": "",
+				"progress": 0,
+				"close": 0
+			  },
+			  "created": "2018-01-01 01:00:00",
+			  "updated": "",
+			  "requests_team": [],
+			  "requests_activity": [],
+			},
+			record: {
+				subtotal: 0,
+				total: 0,
+				items: [],
+				create_by: {
+					names: '',
+					surname: '',
+				},
+			}
+		};
+	},
+	mounted(){
+		var self = this;
+		self.$root.loadScripts();
+		self.loadForms();
+		self.load();
+	},
+	computed: {
+		subtotal(){
+			var self = this;
+			self.calc();
+			return self.record.subtotal;
+		},
+	},
+	methods: {
+		closed(){
+			var self = this;
+			api.put('/records/proposals/' + self.proposal_id, {
+				id: self.proposal_id,
+				items: JSON.stringify(self.record.items),
+				subtotal: self.record.subtotal,
+				shipping: self.record.shipping,
+				tax: self.record.tax,
+				total: self.record.total,
+				close: 1,
+				closed: new Date().toMysqlFormat(),
+				payment_due: self.record.payment_due,
+			})
+			.then(b => {
+				if(b != undefined){
+					$.notify("Cerrada con éxito", "success");
+					router.push({ name: 'RequestsNew-Requests-proposals-View', params: { request_id: self.request_id, proposal_id: self.proposal_id } });
+				}
+			})
+			.catch(e => {
+				console.error(e.response);
+			});
+		},
+		calc(){
+			var self = this;
+			self.record.subtotal = 0;
+			if(self.record.items != undefined && self.record.items.length > 0){
+				self.record.items.forEach(function(a){
+					a.subtotal = (parseFloat(a.vu) * parseFloat(a.qty));
+					self.record.subtotal += a.subtotal;
+				});
+			}
+			self.record.total = (parseFloat(self.record.subtotal) + parseFloat(self.record.shipping) + parseFloat(self.record.tax));
+		},
+		zfill: zfill,
+		itemDefault(){
+			return {
+				qty: 0,
+				name: '',
+				vu: 0,
+				description: '',
+				medition: '',
+				subtotal: 0
+			};
+		},
+		addItem(){
+			var self = this;
+			self.record.items.push(self.itemDefault());
+		},
+		removeItem(index){
+			var self = this;
+			self.record.items.splice(index, 1);
+			
+		},
+		loadForms(){
+			var self = this;
+			self.record.items.push(self.itemDefault());
+		},
+		returnMouthText(mouth){
+			array = [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ];
+			return array[mouth-1];
+		},
+		getRadicado(item){
+			var self = this;
+			if(item.created != undefined){
+				radSeparate = item.created.split(" ");
+				radFecha = radSeparate[0].split("-");
+				return radFecha[0] + radFecha[1] + radFecha[2] + self.zfill(item.id, 5);
+			}else{
+				return "#NA#";
+			}
+		},
+		load(){
+			var self = this;
+			if(self.$route.name == "RequestsNew-Requests-proposals-Create"){
+				// validar que no exista una propuesta abierta
+				api.get('/records/proposals/', {
+					params: {
+						filter: [
+							'request,eq,' + self.request_id,
+							'close,eq,0'
+						],
+						join: [
+							'requests,identifications_types',
+							'requests,geo_departments',
+							'requests,geo_citys',
+							'requests,requests_types',
+							'requests,requests_status',
+						]
+					}
+				})
+				.then(a => {
+					if(a.data.records != undefined && a.data.records.length == 0){
+						api.post('/records/proposals', {
+							request: self.request_id,
+							create_by: <?php echo $_SESSION['user']['id']; ?>
+						})
+						.then(b => {
+							if(b != undefined){
+								if(b.data != undefined && b.data > 0){
+									self.proposal_id = b.data;
+									self.loadproposal();
+								}
+							}
+						})
+						.catch(e => {
+							console.error(e.response);
+						});
+					}else{
+						// en caso de haaber una propuesta abierta, se abre está
+						if(a.data != undefined && a.data.records != undefined && a.data.records[0] != undefined && a.data.records[0].id != undefined && a.data.records[0].id > 0){
+							self.proposal_id = a.data.records[0].id;
+							self.loadproposal();
+						}
+					}
+				});
+			}else{
+				self.loadproposal();
+				// en caso de haaber una propuesta existente, se abre está
+			}			
+		},
+		loadproposal(){
+			var self = this;
+			api.get('/records/proposals/' + self.proposal_id, {
+				params: {
+					filter: [
+						'request,eq,' + self.request_id,
+						'close,eq,0'
+					],
+					join: [
+						'users',
+						'requests',
+						'requests,identifications_types',
+						'requests,geo_departments',
+						'requests,geo_citys',
+						'requests,requests_types',
+						'requests,requests_status',
+					]
+				}
+			})
+			.then(r => { self.validateResult(r); })
+			.catch(e => { self.validateResult(e.response); });			
+		},
+		validateResult(r){
+			var self = this;
+			if (r.data != undefined){
+				if(r.data != undefined){
+					if(r.data.items != null){
+						r.data.items = JSON.parse(r.data.items);
+					}else{
+						r.data.items = [];
+						r.data.items.push(self.itemDefault());
+					}
+				}
+				self.request = r.data.request;
+				r.data.request = r.data.request.id;
+				self.record = r.data;
+				console.log('r.data', r.data);
+			} else {
+				 console.log('Error: consulta validateResult');
+				 //console.log(response
+			}
+		},
+		saveproposal(){
+			var self = this;
+			api.put('/records/proposals/' + self.proposal_id, {
+				id: self.proposal_id,
+				items: JSON.stringify(self.record.items),
+				subtotal: self.record.subtotal,
+				shipping: self.record.shipping,
+				tax: self.record.tax,
+				total: self.record.total,
+				payment_due: self.record.payment_due,
+			})
+			.then(b => {
+				if(b != undefined){
+					$.notify("Guardada con éxito", "success");
+				}
+			})
+			.catch(e => {
+				console.error(e.response);
+			});
+		},
+	}
+});
+
+var MyRequestsproposalsView = Vue.extend({
+	template: '#RequestsNew-requests-proposals-view',
+	data() {
+		return {
+			proposal_id: this.$route.params.proposal_id,
+			request_id: this.$route.params.request_id,
+			record: {
+				subtotal: 0,
+				total: 0,
+				items: [],
+				create_by: {
+					names: '',
+					surname: '',
+				},
+				request: {
+				  "id": 0,
+				  "type": {
+					"id": 0,
+					"title": "",
+					"subtitle": "",
+					"description": "",
+					"highlight": 0
+				  },
+				  "identification_type": 0,
+				  "identification_number": "",
+				  "names": "",
+				  "surname": "",
+				  "department": 0,
+				  "city": 0,
+				  "address": "",
+				  "points_reference": "",
+				  "email": "",
+				  "phone": "",
+				  "mobile": "",
+				  "request": "",
+				  "status": {
+					"id": 0,
+					"name": "",
+					"progress": 0,
+					"close": 0
+				  },
+				  "created": "2018-01-01 01:00:00",
+				  "updated": "",
+				  "requests_team": [],
+				  "requests_activity": [],
+				},
+			}
+		};
+	},
+	mounted(){
+		var self = this;
+		self.$root.loadScripts();
+		self.load();
+	},
+	methods: {
+		zfill: zfill,
+		returnMouthText(mouth){
+			array = [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ];
+			return array[mouth-1];
+		},
+		getRadicado(item){
+			var self = this;
+			if(item.created != undefined){
+				radSeparate = item.created.split(" ");
+				radFecha = radSeparate[0].split("-");
+				return radFecha[0] + radFecha[1] + radFecha[2] + self.zfill(item.id, 5);
+			}else{
+				return "#NA#";
+			}
+		},
+		load(){
+			var self = this;
+			api.get('/records/proposals/' + self.proposal_id, {
+				params: {
+					filter: [
+						'request,eq,' + self.request_id,
+						'close,eq,1'
+					],
+					join: [
+						'users',
+						'requests',
+						'requests,identifications_types',
+						'requests,geo_departments',
+						'requests,geo_citys',
+						'requests,requests_types',
+						'requests,requests_status',
+					]
+				}
+			})
+			.then(r => { self.validateResult(r); })
+			.catch(e => { self.validateResult(e.response); });
+		},
+		validateResult(r){
+			var self = this;
+			if (r.data != undefined){
+				if(r.data.items != null){
+					r.data.items = JSON.parse(r.data.items);
+					r.data.items.forEach(function(a){
+						if(a.medition != undefined && a.medition != null && a.medition != ""){
+							a.medition = JSON.parse(a.medition);
+						}
+					});
+				}
+				self.record = r.data;
+			} else {
+				 console.log('Error: consulta validateResult');
+				 //console.log(response
+			}
+		},
+	}
 });
 
 var router = new VueRouter({
 	linkActiveClass: 'active',
 	routes:[
-		{ path: '/', component: MyRequestsList, name: 'MiCuenta-Requests' },
-		{ path: '/filter/status/:filterStatus', component: MyRequestsList, name: 'MiCuenta-filterStatus' },
-		{ path: '/view/:request_id', component: MyRequestsView, name: 'MiCuenta-Requests-View' },
-		{ path: '/view/:request_id/calendar/create', component: MyRequestsCalendarCreate, name: 'MiCuenta-Requests-Calendar-Create' },
-		{ path: '/view/:request_id/calendar/view', component: MyRequestsCalendarView, name: 'MiCuenta-Requests-Calendar-View' },
-		{ path: '/view/:request_id/technicals/create', component: MyRequestsTechnicalsCreate, name: 'MiCuenta-Requests-Technicals' },
+		{ path: '/', component: MyRequestsList, name: 'RequestsNew-Requests' },
+		{ path: '/filter/status/:filterStatus', component: MyRequestsList, name: 'RequestsNew-filterStatus' },
+		{ path: '/view/:request_id', component: MyRequestsView, name: 'RequestsNew-Requests-View' },
+		{ path: '/view/:request_id/calendar/create', component: MyRequestsCalendarCreate, name: 'RequestsNew-Requests-Calendar-Create' },
+		{ path: '/view/:request_id/calendar/view', component: MyRequestsCalendarView, name: 'RequestsNew-Requests-Calendar-View' },
+		{ path: '/view/:request_id/technicals/create', component: MyRequestsTechnicalsCreate, name: 'RequestsNew-Requests-Technicals' },
+		{ path: '/view/:request_id/proposals/create', component: MyRequestsproposalsCreate, name: 'RequestsNew-Requests-proposals-Create' },
+		{ path: '/view/:request_id/proposals/edit/:proposal_id', component: MyRequestsproposalsCreate, name: 'RequestsNew-Requests-proposals-Edit' },
+		{ path: '/view/:request_id/proposals/view/:proposal_id', component: MyRequestsproposalsView, name: 'RequestsNew-Requests-proposals-View' },
 	]
 });
 
@@ -1614,9 +2540,45 @@ var MyRequests = new Vue({
 	},
 	mounted(){
 		var self = this;
+		
 	},
 	methods: {
+		formatMoney(n, c, d, t){
+			var c = isNaN(c = Math.abs(c)) ? 2 : c,
+				d = d == undefined ? "." : d,
+				t = t == undefined ? "," : t,
+				s = n < 0 ? "-" : "",
+				i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+				j = (j = i.length) > 3 ? j % 3 : 0;
+			return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+		},
+		loadScripts(){
+			var self = this;
+			$('.collapse-link-2').on('click', function() {
+				var $BOX_PANEL = $(this).closest('.x_panel'),
+					$ICON = $(this).find('i'),
+					$BOX_CONTENT = $BOX_PANEL.find('.x_content');
+				
+				// fix for some div with hardcoded fix class
+				if ($BOX_PANEL.attr('style')) {
+					$BOX_CONTENT.slideToggle(200, function(){
+						$BOX_PANEL.removeAttr('style');
+					});
+				} else {
+					$BOX_CONTENT.slideToggle(200); 
+					$BOX_PANEL.css('height', 'auto');  
+				}
+
+				$ICON.toggleClass('fa-chevron-up fa-chevron-down');
+			});
+
+			$('.close-link-2').click(function () {
+				var $BOX_PANEL = $(this).closest('.x_panel');
+
+				$BOX_PANEL.remove();
+			});
+		}
 	},
-}).$mount('#micuenta-requests');
+}).$mount('#RequestsNew-requests');
 
 </script>
