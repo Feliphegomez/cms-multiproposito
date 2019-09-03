@@ -104,21 +104,6 @@ $myInfo = $this->myUser;
 				<div class="col-md-8 col-sm-8 col-xs-12">
 					<ul class="stats-overview">
 						<li>
-							<span class="name"> Estimated budget </span>
-							<span class="value text-success"> 2300 </span>
-						</li>
-						<li>
-							<span class="name"> Total amount spent </span>
-							<span class="value text-success"> 2000 </span>
-						</li>
-						<li class="hidden-phone">
-							<span class="name"> Estimated project duration </span>
-							<span class="value text-success"> 20 </span>
-						</li>
-					</ul>
-					<br />
-					<ul class="stats-overview">
-						<li>
 							<span class="name">
 								Departamento / Ciudad
 							</span>
@@ -149,7 +134,6 @@ $myInfo = $this->myUser;
 												<li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Propuestas</a></li>
 											</ul>
 										</div>
-
 										<div class="col-sm-12">
 											<div id="myTabContent2" class="tab-content">
 												<div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
@@ -225,26 +209,44 @@ $myInfo = $this->myUser;
 
 												<div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
 													<ul class="messages">
-														<li>
-															<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-															<div class="message_date">
-																<h3 class="date text-info"></h3>
-																<p class="month"></p>
-															</div>
-															<div class="message_wrapper">
-																<h4 class="heading">Mensaje automatico del sistema</h4>
-																<blockquote class="message">
-																	Aún no tenemos propuestas, espera que nuestros especialistas analicen tu solicitud y realicen el estudio para enviarte tu propuesta.
-																</blockquote>
-																<br />
-																<!--
-																<p class="url">
-																	<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-																	<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-																</p>
-																-->
-															</div>
-														</li>
+														<template v-if="record.proposals.length > 0">
+															<li v-for="proposal in record.proposals" v-if="proposal.close === 1" :Key="proposal.id">
+																<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																<div class="message_date">
+																	<h3 class="date text-info">{{ proposal.created }}</h3>
+																	<p class="month">{{ proposal.updated }}</p>
+																</div>
+																<div class="message_wrapper">
+																	<h4 class="heading"></h4>
+																	<blockquote class="message">
+																		Propuesta #: {{ getRadicado(proposal) }}
+																	</blockquote>
+																	<br />
+																	<p class="url">
+																		<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																		<router-link v-if="proposal.close === 1" class="btn btn-sm btn-success" tag="a" :to="{ name: 'MiCuenta-Requests-proposals-View', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
+																			<i class="fa fa-eye"></i> Ver la propuesta
+																		</router-link>
+																	</p>
+																</div>
+															</li>
+														</template>
+														<template v-else>
+															<li>
+																<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																<div class="message_date">
+																	<h3 class="date text-info"></h3>
+																	<p class="month"></p>
+																</div>
+																<div class="message_wrapper">
+																	<h4 class="heading">Mensaje automatico del sistema</h4>
+																	<blockquote class="message">
+																		Aún no tenemos propuestas...
+																	</blockquote>
+																	<br />
+																</div>
+															</li>
+														</template>
 													</ul>
 												</div>
 												<div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
@@ -312,6 +314,152 @@ $myInfo = $this->myUser;
 		</div>
 	</div>
 </template>
+
+<template id="micuenta-requests-proposals-view">
+	<div>
+		<div class="x_panel">
+			<div class="x_title">
+				<h1><i class="fa fa-globe"></i> PROPUESTA DE PRESTACION DE SERVICIOS. <small class="pull-right">Fecha: {{ record.created }}</small></h1>
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link-2"><i class="fa fa-chevron-up"></i></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Settings 1</a></li>
+							<li><a href="#">Settings 2</a></li>
+						</ul>
+					</li>
+					<router-link tag="li" :to="{ name: 'MiCuenta-Requests-View', params: { request_id: $route.params.request_id } }">
+						<a class="close-link"><i class="fa fa-close"></i></a>
+					</router-link>
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+			<div class="x_content">
+				<section class="content invoice">
+					<div class="row">
+						<div class="col-xs-12 invoice-header">
+
+						</div>
+					</div>
+
+					<div class="row invoice-info">
+						<div class="col-sm-4 invoice-col">
+							Creada por:
+							<address>
+								<strong>{{ record.create_by.names }} {{ record.create_by.surname }}</strong>
+								<br>Teléfono Fijo: {{ record.create_by.phone }}
+								<br>Teléfono Movil: {{ record.create_by.mobile }}
+								<br>Email: {{ record.create_by.email }}
+							</address>
+						</div>
+						<div class="col-sm-4 invoice-col">
+							Para:
+							<address>
+								<strong>{{ record.request.names }} {{ record.request.surname }}</strong>
+								<br>{{ record.request.identification_type.code }} {{ record.request.identification_number }}
+								<br>{{ record.request.address }} {{ record.request.city.name }} - {{ record.request.department.name }}
+								<br>Teléfono Fijo: {{ record.request.phone }}
+								<br>Teléfono Movil: {{ record.request.mobile }}
+								<br>Email: {{ record.request.email }}
+							</address>
+						</div>
+						<div class="col-sm-4 invoice-col">
+							<b>Propuesta # {{ getRadicado(record) }}</b>
+							<br><br><b>Solicitud #:</b> {{ getRadicado( record.request) }}
+							<br><b>Fecha limite:</b> {{ new Date(record.payment_due).toMysqlFormat() }}
+							<br><b># Cliente:</b>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12 table">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Cantidad</th>
+										<th style="width: 22%">Producto o Servicio</th>
+										<th>Valor Unitario</th>
+										<th style="width: 22%">Descripcion</th>
+										<th>Tipo de Medición</th>
+										<th style="width: 14%">Subtotal</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="form-group multiple-form-group input-group-" v-for="(item, index) in record.items">
+										<div>
+											<td>{{ item.qty }}</td>
+											<td>{{ item.name }}</td>
+											<td>{{ item.vu }}</td>
+											<td>{{ item.description }}</td>
+											<td>{{ item.medition.name }}</td>
+											<td>$ {{ $root.formatMoney(item.subtotal) }}</td>
+										</div>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+					<div class="row">
+						<!-- accepted payments column -->
+						<div class="col-xs-6">
+							<p class="lead">Metodos de pago:</p>
+							<img src="/C&CM/themes/generic/assets/images/visa.png" alt="Visa">
+							<img src="/C&CM/themes/generic/assets/images/mastercard.png" alt="Mastercard">
+							<img src="/C&CM/themes/generic/assets/images/american-express.png" alt="American Express">
+							<img src="/C&CM/themes/generic/assets/images/paypal.png" alt="Paypal">
+							<p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+								Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+							</p>
+						</div>
+						<!-- /.col -->
+						<div class="col-xs-6">
+							<p class="lead">Monto adeudado </p>
+							<div class="table-responsive">
+								<table class="table">
+									<tbody>
+										<tr>
+											<th style="width:50%">Subtotal:</th>
+											<td>$ {{ record.subtotal }}</td>
+										</tr>
+										<tr>
+											<th>Impuestos:</th>
+											<td>{{ record.tax }}</td>
+										</tr>
+										<tr>
+											<th>Envío:</th>
+											<td>{{ record.shipping }}</td>
+										</tr>
+										<tr>
+											<th>Total:</th>
+											<td>$ {{ $root.formatMoney(record.total) }}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<!-- /.col -->
+					</div>
+					<!-- /.row -->
+					<!-- this row will not appear when printing -->
+					<div class="row no-print">
+						<div class="col-xs-12">
+							<button class="btn btn-warning"><i class="fa fa-thumbs-o-down"></i> Declinar Propuesta</button>
+
+							<button class="btn btn-default pull-right" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
+							<button class="btn btn-info pull-right"><i class="fa fa-send"></i> Enviar Propuesta</button>
+							<button class="btn btn-success pull-right"><i class="fa fa-thumbs-o-up"></i> Aceptar Propuesta</button>
+
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+</template>
+
 
 <script>
 var MyRequestsList = Vue.extend({
@@ -407,7 +555,8 @@ var MyRequestsView = Vue.extend({
 			  "created": "",
 			  "updated": "",
 			  "requests_team": [],
-				"requests_activity": []
+				"requests_activity": [],
+				"proposals": []
 			},
 			calendarEl: null,
 			calendar: null,
@@ -494,6 +643,7 @@ var MyRequestsView = Vue.extend({
 						'requests,requests_team,users',
 						'requests,requests_activity',
 						'requests,requests_activity,users',
+						'requests,proposals',
 					]
 				}
 			})
@@ -503,7 +653,9 @@ var MyRequestsView = Vue.extend({
 		validateResult(r){
 			var self = this;
 			if (r.data.records[0] != undefined){
-				// console.log(r.data);
+				console.log('r.data', r.data.records[0].request);
+
+
 				r.data.records[0].request.requests_activity.forEach(function(x){
 					x.info = JSON.parse(x.info);
 				});
@@ -517,11 +669,127 @@ var MyRequestsView = Vue.extend({
 	}
 });
 
+
+var MyRequestsProposalsView = Vue.extend({
+	template: '#micuenta-requests-proposals-view',
+	data() {
+		return {
+			proposal_id: this.$route.params.proposal_id,
+			request_id: this.$route.params.request_id,
+			record: {
+				subtotal: 0,
+				total: 0,
+				items: [],
+				create_by: {
+					names: '',
+					surname: '',
+				},
+				request: {
+				  "id": 0,
+				  "type": {
+					"id": 0,
+					"title": "",
+					"subtitle": "",
+					"description": "",
+					"highlight": 0
+				  },
+				  "identification_type": 0,
+				  "identification_number": "",
+				  "names": "",
+				  "surname": "",
+				  "department": 0,
+				  "city": 0,
+				  "address": "",
+				  "points_reference": "",
+				  "email": "",
+				  "phone": "",
+				  "mobile": "",
+				  "request": "",
+				  "status": {
+					"id": 0,
+					"name": "",
+					"progress": 0,
+					"close": 0
+				  },
+				  "created": "2018-01-01 01:00:00",
+				  "updated": "",
+				  "requests_team": [],
+				  "requests_activity": [],
+				},
+			}
+		};
+	},
+	mounted(){
+		var self = this;
+		self.$root.loadScripts();
+		self.load();
+	},
+	methods: {
+		zfill: zfill,
+		returnMouthText(mouth){
+			array = [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ];
+			return array[mouth-1];
+		},
+		getRadicado(item){
+			var self = this;
+			if(item.created != undefined){
+				radSeparate = item.created.split(" ");
+				radFecha = radSeparate[0].split("-");
+				return radFecha[0] + radFecha[1] + radFecha[2] + self.zfill(item.id, 5);
+			}else{
+				return "#NA#";
+			}
+		},
+		load(){
+			var self = this;
+			api.get('/records/proposals/' + self.proposal_id, {
+				params: {
+					filter: [
+						'request,eq,' + self.request_id,
+						'close,eq,1'
+					],
+					join: [
+						'users',
+						'requests',
+						'requests,identifications_types',
+						'requests,geo_departments',
+						'requests,geo_citys',
+						'requests,requests_types',
+						'requests,requests_status',
+					]
+				}
+			})
+			.then(r => { self.validateResult(r); })
+			.catch(e => { self.validateResult(e.response); });
+		},
+		validateResult(r){
+			var self = this;
+			if (r.data != undefined){
+				if(r.data.items != null){
+					r.data.items = JSON.parse(r.data.items);
+					r.data.items.forEach(function(a){
+						if(a.medition != undefined && a.medition != null && a.medition != ""){
+							a.medition = JSON.parse(a.medition);
+						}
+					});
+				}
+				self.record = r.data;
+			} else {
+				 console.log('Error: consulta validateResult');
+				 //console.log(response
+			}
+		},
+	}
+});
+
+
 var router = new VueRouter({
 	linkActiveClass: 'active',
 	routes:[
 		{ path: '/', component: MyRequestsList, name: 'MiCuenta-Requests' },
 		{ path: '/view/:request_id', component: MyRequestsView, name: 'MiCuenta-Requests-View' },
+		{ path: '/view/:request_id/proposals/view/:proposal_id', component: MyRequestsProposalsView, name: 'MiCuenta-Requests-proposals-View' },
+
 	]
 });
 
@@ -538,6 +806,41 @@ var MyRequests = new Vue({
 		var self = this;
 	},
 	methods: {
+		formatMoney(n, c, d, t){
+			var c = isNaN(c = Math.abs(c)) ? 2 : c,
+				d = d == undefined ? "." : d,
+				t = t == undefined ? "," : t,
+				s = n < 0 ? "-" : "",
+				i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+				j = (j = i.length) > 3 ? j % 3 : 0;
+			return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+		},
+		loadScripts(){
+			var self = this;
+			$('.collapse-link-2').on('click', function() {
+				var $BOX_PANEL = $(this).closest('.x_panel'),
+					$ICON = $(this).find('i'),
+					$BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+				// fix for some div with hardcoded fix class
+				if ($BOX_PANEL.attr('style')) {
+					$BOX_CONTENT.slideToggle(200, function(){
+						$BOX_PANEL.removeAttr('style');
+					});
+				} else {
+					$BOX_CONTENT.slideToggle(200);
+					$BOX_PANEL.css('height', 'auto');
+				}
+
+				$ICON.toggleClass('fa-chevron-up fa-chevron-down');
+			});
+
+			$('.close-link-2').click(function () {
+				var $BOX_PANEL = $(this).closest('.x_panel');
+
+				$BOX_PANEL.remove();
+			});
+		}
 	},
 }).$mount('#micuenta-requests');
 
