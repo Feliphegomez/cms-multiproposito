@@ -238,7 +238,7 @@
 																</template>
 															</ul>
 														</div>
-														
+
 														<div role="tabpanel" class="tab-pane fade" id="tab_calendar" aria-labelledby="calendar-tab">
 															<div id="calendar-list"></div>
 															<template v-if="events.length == 0 || events == undefined || events == null">
@@ -305,7 +305,7 @@
 																</template>
 															</ul>
 														</div>
-														
+
 														<div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
 															<ul class="messages">
 																<li>
@@ -382,7 +382,7 @@
 								</ul>
 								<br />
 								<div class="text-center mtop20">
-									
+
 										<a href="#" class="btn btn-sm btn-warning">Report contact</a>
 									<!--
 										<a href="#" class="btn btn-sm btn-primary">Add files</a>
@@ -399,7 +399,7 @@
 					<i class="fa fa-user-plus"></i>
 					Ingresar
 				</a>
-				
+
 			</template>
 		</div>
 	</div>
@@ -530,7 +530,7 @@
 			</div>
 		</div>
 		-->
-		
+
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Mantenimiento de Jardines</h2>
@@ -636,7 +636,7 @@
 					</tr>
 					<tr>
 						<td colspan="6">
-							Observaciones: 
+							Observaciones:
 							<textarea class="form-control"></textarea>
 						</td>
 					</tr>
@@ -721,7 +721,7 @@
 					</tr>
 					<tr>
 						<td colspan="6">
-							Observaciones: 
+							Observaciones:
 							<textarea class="form-control"></textarea>
 						</td>
 					</tr>
@@ -782,14 +782,14 @@
 					</tr>
 					<tr>
 						<td colspan="6">
-							Observaciones: 
+							Observaciones:
 							<textarea class="form-control"></textarea>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		
+
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Tala</h2>
@@ -825,14 +825,14 @@
 					</tr>
 					<tr>
 						<td colspan="6">
-							Observaciones: 
+							Observaciones:
 							<textarea class="form-control"></textarea>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		
+
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Transplante</h2>
@@ -868,14 +868,14 @@
 					</tr>
 					<tr>
 						<td colspan="6">
-							Observaciones: 
+							Observaciones:
 							<textarea class="form-control"></textarea>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		
+
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Diseño de jardines</h2>
@@ -926,14 +926,14 @@
 					</tr>
 					<tr>
 						<td colspan="6">
-							Observaciones: 
+							Observaciones:
 							<textarea class="form-control"></textarea>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		
+
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Roceria de cesped</h2>
@@ -964,7 +964,7 @@
 				</table>
 			</div>
 		</div>
-		
+
 		<div class="x_panel">
 			<div class="x_title">
 				<h2>Roceria de cesped en taludes</h2>
@@ -994,14 +994,14 @@
 					</tr>
 					<tr>
 						<td colspan="6">
-							Observaciones: 
+							Observaciones:
 							<textarea class="form-control"></textarea>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		
+
 		<div class="x_panel">
 			<div class="x_title">
 				<h2></h2>
@@ -1024,7 +1024,7 @@
 				<table width="100%" class="table table-bordered">
 					<tr>
 						<td colspan="6">
-							Anotaciones Finales:: 
+							Anotaciones Finales::
 							<textarea class="form-control"></textarea>
 						</td>
 					</tr>
@@ -1062,10 +1062,10 @@
 							<h1><i class="fa fa-globe"></i> PROPUESTA DE PRESTACION DE SERVICIOS. <small class="pull-right">Fecha: {{ record.created }}</small></h1>
 						</div>
 					</div>
-					
+
 					<div class="row invoice-info">
 						<div class="col-sm-4 invoice-col">
-							Creada por: 
+							Creada por:
 							<address>
 								<strong>{{ record.create_by.names }} {{ record.create_by.surname }}</strong>
 								<br>Teléfono Fijo: {{ record.create_by.phone }}
@@ -1074,7 +1074,7 @@
 							</address>
 						</div>
 						<div class="col-sm-4 invoice-col">
-							Para: 
+							Para:
 							<address>
 								<strong>{{ request.names }} {{ request.surname }}</strong>
 								<br>{{ request.identification_type.code }} {{ request.identification_number }}
@@ -1088,10 +1088,10 @@
 							<b>Propuesta # {{ getRadicado(record) }}</b>
 							<br><br><b>Solicitud #:</b> {{ getRadicado(request) }}
 							<br><b>Fecha limite:</b> <input style="width: 45%;display: inline;" v-model="record.payment_due" type='text' class="form-control" data-toggle="tooltip" data-placement="top" title="Formato: AÑO-MES-DIA HORA:MINUTOS:SEGUNDOS 2019-12-31 23:59:00" />
-							<br><b># Cliente:</b> 
+							<br><b># Cliente:</b>
 						</div>
 					</div>
-					
+
 					<div class="row">
 						<div class="col-xs-12 table">
 							<table class="table table-striped">
@@ -1134,7 +1134,7 @@
 											<td>$ {{ $root.formatMoney(item.subtotal) }}</td>
 											<td>
 												<span class="input-group-btn">
-													
+
 													<button v-if="index === (record.items.length-1)" @click="addItem" type="button" class="btn btn-success btn-add">+</button>
 													<button @click="removeItem(index)" type="button" class="btn btn-danger btn-add">-</button>
 												</span>
@@ -1226,13 +1226,13 @@
 				<section class="content invoice">
 					<div class="row">
 						<div class="col-xs-12 invoice-header">
-							
+
 						</div>
 					</div>
-					
+
 					<div class="row invoice-info">
 						<div class="col-sm-4 invoice-col">
-							Creada por: 
+							Creada por:
 							<address>
 								<strong>{{ record.create_by.names }} {{ record.create_by.surname }}</strong>
 								<br>Teléfono Fijo: {{ record.create_by.phone }}
@@ -1241,7 +1241,7 @@
 							</address>
 						</div>
 						<div class="col-sm-4 invoice-col">
-							Para: 
+							Para:
 							<address>
 								<strong>{{ record.request.names }} {{ record.request.surname }}</strong>
 								<br>{{ record.request.identification_type.code }} {{ record.request.identification_number }}
@@ -1254,11 +1254,11 @@
 						<div class="col-sm-4 invoice-col">
 							<b>Propuesta # {{ getRadicado(record) }}</b>
 							<br><br><b>Solicitud #:</b> {{ getRadicado( record.request) }}
-							<br><b>Fecha limite:</b> {{ new Date(record.payment_due).toMysqlFormat() }} 
-							<br><b># Cliente:</b> 
+							<br><b>Fecha limite:</b> {{ new Date(record.payment_due).toMysqlFormat() }}
+							<br><b># Cliente:</b>
 						</div>
 					</div>
-					
+
 					<div class="row">
 						<div class="col-xs-12 table">
 							<table class="table table-striped">
@@ -1333,12 +1333,12 @@
 					<!-- this row will not appear when printing -->
 					<div class="row no-print">
 						<div class="col-xs-12">
-							<button class="btn btn-warning"><i class="fa fa-thumbs-o-down"></i> Declinar Propuesta</button>
-						
+							<button v-if="record.response == null" @click="declineProposal" class="btn btn-warning"><i class="fa fa-thumbs-o-down"></i> Declinar Propuesta</button>
+
 							<button class="btn btn-default pull-right" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
 							<button class="btn btn-info pull-right"><i class="fa fa-send"></i> Enviar Propuesta</button>
-							<button class="btn btn-success pull-right"><i class="fa fa-thumbs-o-up"></i> Aceptar Propuesta</button>
-							
+							<button v-if="record.response == null" @click="acceptedProposal" class="btn btn-success pull-right"><i class="fa fa-thumbs-o-up"></i> Aceptar Propuesta</button>
+
 						</div>
 					</div>
 				</section>
@@ -2269,7 +2269,7 @@ var MyRequestsproposalsCreate = Vue.extend({
 		removeItem(index){
 			var self = this;
 			self.record.items.splice(index, 1);
-			
+
 		},
 		loadForms(){
 			var self = this;
@@ -2336,7 +2336,7 @@ var MyRequestsproposalsCreate = Vue.extend({
 			}else{
 				self.loadproposal();
 				// en caso de haaber una propuesta existente, se abre está
-			}			
+			}
 		},
 		loadproposal(){
 			var self = this;
@@ -2358,7 +2358,7 @@ var MyRequestsproposalsCreate = Vue.extend({
 				}
 			})
 			.then(r => { self.validateResult(r); })
-			.catch(e => { self.validateResult(e.response); });			
+			.catch(e => { self.validateResult(e.response); });
 		},
 		validateResult(r){
 			var self = this;
@@ -2512,6 +2512,80 @@ var MyRequestsproposalsView = Vue.extend({
 				 //console.log(response
 			}
 		},
+		acceptedProposal(){
+			var self = this;
+			bootbox.confirm({
+			    message: "Confirmas que aceptas esta propuesta.",
+			    locale: 'es',
+			    callback: function (a) {
+			        if(a == true){
+								api.put('/records/proposals/' + self.proposal_id, {
+									id: self.proposal_id,
+									response: 1,
+									response_date: new Date().toMysqlFormat(),
+									response_by: <?php echo $_SESSION['user']['id']; ?>
+								})
+								.then(rd => {
+									if(rd.data != undefined && rd.data > 0){
+										api.post('/records/requests_activity', {
+											request: self.$route.params.request_id,
+											user: <?php echo $_SESSION['user']['id']; ?>,
+											type: 'status',
+											info: JSON.stringify({
+												"text": "Se aprobó una propuesta."
+											}),
+										})
+										.then(activityResult => {
+											if(activityResult.data != undefined){
+												console.log('Gracias por  tu gestión.');
+												self.load();
+												router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
+											}
+										});
+									}
+								});
+							}
+			    }
+			});
+		},
+		declineProposal(){
+				bootbox.prompt({
+						locale: 'es',
+				    title: "Cuentanos el motivo, Así nuestro equipo intentara solucionarlo.",
+				    inputType: 'textarea',
+				    callback: function (result) {
+							console.log(result);
+								// if(result != ""){
+									api.put('/records/proposals/' + self.proposal_id, {
+										id: self.proposal_id,
+										response: 0,
+										response_date: new Date().toMysqlFormat(),
+										response_by: <?php echo $_SESSION['user']['id']; ?>,
+										response_notes: result
+									})
+									.then(rd => {
+										if(rd.data != undefined && rd.data > 0){
+											api.post('/records/requests_activity', {
+												request: self.$route.params.request_id,
+												user: <?php echo $_SESSION['user']['id']; ?>,
+												type: 'status',
+												info: JSON.stringify({
+													"text": "Se rechazó una propuesta. \n Motivo: " + result
+												}),
+											})
+											.then(activityResult => {
+												if(activityResult.data != undefined){
+													console.log('Gracias por  tu gestión.');
+													self.load();
+													router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
+												}
+											});
+										}
+									});
+								// }
+				    }
+				});
+		}
 	}
 });
 
@@ -2540,7 +2614,7 @@ var MyRequests = new Vue({
 	},
 	mounted(){
 		var self = this;
-		
+
 	},
 	methods: {
 		formatMoney(n, c, d, t){
@@ -2558,15 +2632,15 @@ var MyRequests = new Vue({
 				var $BOX_PANEL = $(this).closest('.x_panel'),
 					$ICON = $(this).find('i'),
 					$BOX_CONTENT = $BOX_PANEL.find('.x_content');
-				
+
 				// fix for some div with hardcoded fix class
 				if ($BOX_PANEL.attr('style')) {
 					$BOX_CONTENT.slideToggle(200, function(){
 						$BOX_PANEL.removeAttr('style');
 					});
 				} else {
-					$BOX_CONTENT.slideToggle(200); 
-					$BOX_PANEL.css('height', 'auto');  
+					$BOX_CONTENT.slideToggle(200);
+					$BOX_PANEL.css('height', 'auto');
 				}
 
 				$ICON.toggleClass('fa-chevron-up fa-chevron-down');

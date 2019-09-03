@@ -446,11 +446,11 @@ $myInfo = $this->myUser;
 					<!-- this row will not appear when printing -->
 					<div class="row no-print">
 						<div class="col-xs-12">
-							<button class="btn btn-warning"><i class="fa fa-thumbs-o-down"></i> Declinar Propuesta</button>
+							<button v-if="record.response == null" @click="declineProposal" class="btn btn-warning"><i class="fa fa-thumbs-o-down"></i> Declinar Propuesta</button>
 
 							<button class="btn btn-default pull-right" onclick="window.print();"><i class="fa fa-print"></i> Imprimir</button>
 							<button class="btn btn-info pull-right"><i class="fa fa-send"></i> Enviar Propuesta</button>
-							<button class="btn btn-success pull-right"><i class="fa fa-thumbs-o-up"></i> Aceptar Propuesta</button>
+							<button v-if="record.response == null" @click="acceptedProposal" class="btn btn-success pull-right"><i class="fa fa-thumbs-o-up"></i> Aceptar Propuesta</button>
 
 						</div>
 					</div>
@@ -779,6 +779,80 @@ var MyRequestsProposalsView = Vue.extend({
 				 //console.log(response
 			}
 		},
+		acceptedProposal(){
+			var self = this;
+			bootbox.confirm({
+			    message: "Confirmas que aceptas esta propuesta.",
+			    locale: 'es',
+			    callback: function (a) {
+			        if(a == true){
+								api.put('/records/proposals/' + self.proposal_id, {
+									id: self.proposal_id,
+									response: 1,
+									response_date: new Date().toMysqlFormat(),
+									response_by: <?php echo $_SESSION['user']['id']; ?>
+								})
+								.then(rd => {
+									if(rd.data != undefined && rd.data > 0){
+										api.post('/records/requests_activity', {
+											request: self.$route.params.request_id,
+											user: <?php echo $_SESSION['user']['id']; ?>,
+											type: 'status',
+											info: JSON.stringify({
+												"text": "Se aprobó una propuesta."
+											}),
+										})
+										.then(activityResult => {
+											if(activityResult.data != undefined){
+												console.log('Gracias por  tu gestión.');
+												self.load();
+												router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
+											}
+										});
+									}
+								});
+							}
+			    }
+			});
+		},
+		declineProposal(){
+				bootbox.prompt({
+						locale: 'es',
+				    title: "Cuentanos el motivo, Así nuestro equipo intentara solucionarlo.",
+				    inputType: 'textarea',
+				    callback: function (result) {
+							console.log(result);
+								if(result != undefined && result != ""){
+									api.put('/records/proposals/' + self.proposal_id, {
+										id: self.proposal_id,
+										response: 0,
+										response_date: new Date().toMysqlFormat(),
+										response_by: <?php echo $_SESSION['user']['id']; ?>,
+										response_notes: result
+									})
+									.then(rd => {
+										if(rd.data != undefined && rd.data > 0){
+											api.post('/records/requests_activity', {
+												request: self.$route.params.request_id,
+												user: <?php echo $_SESSION['user']['id']; ?>,
+												type: 'status',
+												info: JSON.stringify({
+													"text": "Se rechazó una propuesta. \n Motivo: " + result
+												}),
+											})
+											.then(activityResult => {
+												if(activityResult.data != undefined){
+													console.log('Gracias por  tu gestión.');
+													self.load();
+													router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
+												}
+											});
+										}
+									});
+								}
+				    }
+				});
+		}
 	}
 });
 
