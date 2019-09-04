@@ -155,13 +155,13 @@ var Create = Vue.extend({
 						required: true,
 						typeInput: "select",
 						options: "identifications_types",
-						value: ""
+						value: "<?php echo $myInfo->identification_type; ?>"
 					},
 					identification_number: {
 						label: "Documento de identidad",
 						required: true,
 						typeInput: "text",
-						value: ""
+						value: "<?php echo $myInfo->identification_number; ?>"
 					},
 					names: {
 						label: "Nombres o Razón social",
@@ -191,7 +191,7 @@ var Create = Vue.extend({
 						label: "Teléfono Móvil",
 						required: true,
 						typeInput: "text",
-						value: "<?php echo $myInfo->mobile	; ?>"
+						value: "<?php echo $myInfo->mobile; ?>"
 					},
 					spanTitle003: {
 						label: "Infomacion del servicio",
@@ -201,18 +201,21 @@ var Create = Vue.extend({
 						label: "Departamento",
 						required: true,
 						typeInput: "select",
-						options: "geo_departments"
+						options: "geo_departments",
+						value: "<?php echo $myInfo->department; ?>"
 					},
 					city: {
 						label: "Ciudad",
 						required: true,
 						typeInput: "select",
-						options: "geo_citys"
+						options: "geo_citys",
+						value: "<?php echo $myInfo->city; ?>"
 					},
 					address:{
 						label: "Dirección",
 						required: true,
-						typeInput: "textarea"
+						typeInput: "textarea",
+						value: "<?php echo $myInfo->address; ?>"
 					},
 					points_reference: {
 						label: "Puntos de referencia (Dirección)",

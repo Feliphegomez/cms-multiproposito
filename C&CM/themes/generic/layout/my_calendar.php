@@ -5,7 +5,6 @@
 		</div>
 	</div>
 	<div class="clearfix"></div>
-
 	<div class="row">
 		<div class="col-sm-12">
 			<div class="x_panel">
@@ -123,7 +122,6 @@
 	</div>
 </template>
 
-
 <style scoped="micuenta-calendar-view">
 	.main {
 	  width: 80%;
@@ -134,7 +132,7 @@
 	.content{
 	  display: inline-block;
 	  width: 69%;
-	  
+
 	}
 	.sticky.stuck{
 	  border-bottom: thin solid rgba(0,0,0,.2);
@@ -200,7 +198,7 @@
 	  right: 0px;
 	  background: #FAFAFA;
 	  color: #AAA;
-	  
+
 	}
 
 	article.info:before{
@@ -211,12 +209,15 @@
 	article.video:before{
 	  content: "\f03d";
 	  background: #82F;
+		background: darkred;
 	}
-	  
+
 	article.announcement:before{
 	  font-family: FontAwesome;
 	  content: "\f0a1";
-	  background-color: #E32;
+	  /* background-color: #E32; */
+		background-color: darkred;
+		font-size: small;
 	}
 
 	aside {
@@ -232,10 +233,10 @@
 	}
 
 	.ui-datepicker-header {
-		color: #333;  
+		color: #333;
 		font-weight: bold;
 		line-height: 30px;
-	}  
+	}
 
 	.ui-datepicker {
 	  text-align: center;
@@ -245,11 +246,11 @@
 
 	.date-block{
 	  text-align: center;
-	  background: #D32;
+	  background: darkred;
 	  color: #F4F4F4;
 	  font-size: 18pt;
 	  padding: 10px;
-	  
+		border-radius: 0% 0% 13% 13%;
 	}
 
 	.date-day{
@@ -259,26 +260,26 @@
 	  font-size: 48pt;
 	}
 
-	.ui-datepicker-prev, .ui-datepicker-next {  
-		display: inline-block;  
-		width: 52px;  
-		height: 30px;  
-		text-align: center;  
-		cursor: pointer;  
-		background-color:none;  
+	.ui-datepicker-prev, .ui-datepicker-next {
+		display: inline-block;
+		width: 52px;
+		height: 30px;
+		text-align: center;
+		cursor: pointer;
+		background-color:none;
 		background-repeat: no-repeat;
 		overflow: hidden;
 		position: absolute;
 		color: #D54;
 	}
-	.ui-datepicker-prev {  
-		left: 0;  
+	.ui-datepicker-prev {
+		left: 0;
 		border-radius:0 0 30px 0;
-	}  
-	.ui-datepicker-next {  
-		right: 0;  
-		border-radius:0 0 0 30px; 
-	}  
+	}
+	.ui-datepicker-next {
+		right: 0;
+		border-radius:0 0 0 30px;
+	}
 
 	.ui-datepicker-prev:before {
 	  content: "\f053";
@@ -288,7 +289,7 @@
 	.ui-datepicker-next:before {
 	  content: "\f054";
 	  display: block;
-	  
+
 	}
 
 	.ui-datepicker-year{
@@ -346,11 +347,12 @@
 	  font-size: 24pt;
 	  width: 15%;
 	  text-align: center;
-	  
+		padding: 0px 18px;
 	}
 
 	.social-buttons a:hover{
-	  color: #D43 ;
+	  /* color: #D43 ; */
+		color: darkred;
 	  color: attr(data-color);
 	}
 
@@ -367,31 +369,30 @@
 
 	@media screen and (max-width:600px){
 	  .main, aside, .container, .content, article{
-		margin-left: 0;
-		margin-right:0;
-		padding: 0;
-		display: block;
-		width: auto;
-		min-width: 0;
+			margin-left: 0;
+			margin-right:0;
+			padding: 0;
+			display: block;
+			width: auto;
+			min-width: 0;
 	  }
-	  
+
 	  .calendar {
-		width: 100%;
-		max-width: none;
+			width: 100%;
+			max-width: none;
 	  }
-	  
-	  
+
+
 	  .ui-datepicker td a, .ui-datepicker td span{
-		border-radius:0;
+			border-radius:0;
 	  }
-	  
-	  
+
+
 	  .twitter-feed{
-		margin: 20px;
+			margin: 20px;
 	  }
 	}
 </style>
-
 <template id="micuenta-calendar-view">
 	<div>
 		<div class="x_panel">
@@ -410,114 +411,126 @@
 			<div class="x_content">
 				<div class="main">
 					<div class="container">
-					
-					<aside >
-					  <div class="calendar">
-						<div class="date-block">
-							<div class="date-day">{{ getDayTextDate(new Date(record.start).getDay()) }}</div>
-							<div class="date-date">{{ new Date(record.start).getDate() }}</div>
-							<span class="date-month">{{ getDayTextMonth(new Date(record.start).getMonth()) }}</span>,
-							<span class="date-year">{{ new Date(record.start).getFullYear() }}</span>
-						</div>
-						<div id="datepicker"></div>
-					  </div>
-					  <hr />
-					  <span id="debug"></span>
-					  <div class="social-buttons">
-						<a href="#" data-color="#53F"><i class="fa fa-comment"></i></a>
-						<a href="#"><i class="fa fa-photo"></i></a>
-					  </div>
-					  <hr />
-						<h3 class="green"><i class="fa fa-paint-brush"></i> {{ record.type.name }}</h3>
-						<p>{{ record.request.request }}</p>
-						
-						<ul class="list-unstyled project_files">
-							<li><i class="fa fa-marker"></i> Dirección</li>
-							<li><i class="fa fa-plus"></i> {{ record.request.address }}</li>
-							<li><i class="fa fa-marker"></i> Puntos de referencia</li>
-							<li><i class="fa fa-plus"></i> {{ record.request.points_reference }}</li>
-						</ul>
-						
-						<br />
+						<aside>
+						  <div class="calendar">
+							<div class="date-block">
+								<div class="date-day">{{ getDayTextDate(new Date(record.start).getDay()) }}</div>
+								<div class="date-date">{{ new Date(record.start).getDate() }}</div>
+								<span class="date-month">{{ getDayTextMonth(new Date(record.start).getMonth()) }}</span>,
+								<span class="date-year">{{ new Date(record.start).getFullYear() }}</span>
+							</div>
+							<div id="datepicker"></div>
+						  </div>
+						  <hr />
+						  <span id="debug"></span>
+						  <div class="social-buttons">
+							<a href="#" data-color="#53F"><i class="fa fa-comment"></i></a>
+							<a href="#"><i class="fa fa-photo"></i></a>
+						  </div>
+						  <hr />
+							<h3 class="green"><i class="fa fa-paint-brush"></i> {{ record.type.name }}</h3>
+							<p>{{ record.request.request }}</p>
 
-						<div class="project_detail">
-							<h5>Información de Contacto</h5>
-							
-							<p class="title">Nombres o Razón social</p>
-							<p>{{ record.request.names }}</p>
-							<p class="title">Apellidos</p>
-							<p>{{ record.request.surname }}</p>
-							<p class="title">Correo Electronico</p>
-							<p>{{ record.request.email }}</p>
-							<p class="title">Teléfono Fijo</p>
-							<p>{{ record.request.phone }}</p>
-							<p class="title">Teléfono Móvil</p>
-							<p>{{ record.request.mobile }}</p>
-						</div>
+							<ul class="list-unstyled project_files">
+								<li><i class="fa fa-marker"></i> Dirección</li>
+								<li><i class="fa fa-plus"></i> {{ record.request.address }}</li>
+								<li><i class="fa fa-marker"></i> Puntos de referencia</li>
+								<li><i class="fa fa-plus"></i> {{ record.request.points_reference }}</li>
+							</ul>
 
-						<br />
-						<div class="text-center mtop20">
-							<a href="#" class="btn btn-sm btn-primary">Add files</a>
-							<a href="#" class="btn btn-sm btn-warning">Report contact</a>
-						</div>
-					</aside>
+							<br />
+
+							<div class="project_detail">
+								<h5>Información de Contacto</h5>
+
+								<p class="title">Nombres o Razón social</p>
+								<p>{{ record.request.names }}</p>
+								<p class="title">Apellidos</p>
+								<p>{{ record.request.surname }}</p>
+								<p class="title">Correo Electronico</p>
+								<p>{{ record.request.email }}</p>
+								<p class="title">Teléfono Fijo</p>
+								<p>{{ record.request.phone }}</p>
+								<p class="title">Teléfono Móvil</p>
+								<p>{{ record.request.mobile }}</p>
+							</div>
+
+							<br />
+							<div class="text-center mtop20">
+								<template v-if="record.request.id != undefined && record.request.id > 0">
+										<a :href="'/SAC/requests_new/#/view/' + record.request.id" class="btn btn-sm btn-primary">Abrir Solicitud</a>
+								</template>
+								<!-- // <a href="#" class="btn btn-sm btn-warning">Report contact</a> -->
+							</div>
+						</aside>
 						<div class="content">
-							<article class="announcement"  :data-post-date="new Date(record.request.created).toConversationsFormat()">
-								<div class="sticky">
-									<h2>{{ record.title }}</h2>
-								</div>
-								<div class="art-text">
-									<p>Solicitud: </p>
-									<p>{{ record.request.request }}</p>
-								</div>
-								
+							<!-- // <article class="announcement"  :data-post-date="new Date(record.request.created).toConversationsFormat()"> -->
+							<article class="announcement"  :data-post-date="record.request.created">
+									<div class="sticky">
+										<h2>{{ record.title }}</h2>
+									</div>
+									<div class="art-text">
+										<p>Solicitud: </p>
+										<p>{{ record.request.request }}</p>
+									</div>
 							</article>
+
 							<article class="announcement"  data-post-date="April 8">
 								<div class="sticky">
-									<img src="http://webapps.jhu.edu/jhuniverse/images/site/campuslife/campuslife.jpg" alt="RPI" class="header-img"/>
-									<h2>This is an Announcement</h2>
+									<!-- <img src="https://www.jhu.edu/assets/themes/machado/assets/images/logos/university-logo-small-horizontal-white-156eae9527.svg" alt="RPI" class="header-img"/>-->
+									<h2>Participantes</h2>
 								</div>
-								<div class="art-text">
-									<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  
-									<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+								<div class="art-text row">
+									<p>
+									</p>
+									<div class="col-sm-4">
+										<div class="profile_details" v-for="(userInEvent, a) in record.users_events">
+											<div class="col-sm-12">
+												<p style="overflow:hidden" class="brief"><i>{{ userInEvent.user.username }}</i></p>
+												<div class="right col-xs-12 text-center">
+													<!-- // <img :src="urlPictureById(conversation.user.avatar)" alt="" class="img-circle img-responsive"> -->
+													<img src="https://d2ln1xbi067hum.cloudfront.net/assets/default_user-951af10295a22e5f7fa2fa6165613c14.png" :title="userInEvent.user.names + ' ' + userInEvent.user.surname" alt="" class="img-circle img-responsive">
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
-								
 							</article>
-							
-						<!-- // 
+
+						<!-- //
 					  <article class="info" data-post-date="April 6">
-						
+
 						<h2 class="sticky">This is an Info Article</h2>
 						<div class="art-text">
 						<img src="https://www.stanford.edu/~dritchie/img/portrait_small.jpg" alt="guy" width="200" />
-						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  
-						
+						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+
 						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  </div>
 					   </article>
 					  <article class="info" data-post-date="April 6">
 						<h2 class="sticky">This is a long Info Article</h2>
-						
-						<div class="art-text">         
-						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  
-						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  
-						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  
+
+						<div class="art-text">
+						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
 						<img src="https://d2d3qesrx8xj6s.cloudfront.net/img/screenshots/nofeat-082ad0d329107b782f65a06faa2804ac4c905e3f.jpg" alt="school" />
-						<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  
+						<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
 						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  </div>
 					   </article>
-					  
+
 					  <article class="video" data-post-date="April 6"><iframe class="embedded-video" height="315" width="100%" src="//www.youtube.com/embed/GLkbcsNJIv0" frameborder="0" allowfullscreen></iframe>
 					  <h2 class="sticky">This is a Video Article</h2>
 						<div class="art-text">
-						
-						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  
+
+						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
 						 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>  </div>
 					   </article>
 					   -->
 					</div>
-					
+
 				  </div>
-				  
+
 				</div>
 			</div>
 
@@ -700,14 +713,17 @@ var MyCalendarView = Vue.extend({
 				barColor: "",
 				end: ",",
 				id: this.$route.params.event_id,
-				request: 0,
+				request: {
+					created: '1990-01-01 00:00:00'
+				},
 				resource: "",
 				start: "",
 				title: "",
 				type: {
 					id: 0,
 					name: ""
-				}
+				},
+				users_events: []
 			}
 		};
 	},
@@ -718,6 +734,8 @@ var MyCalendarView = Vue.extend({
 				join: [
 					'events_types',
 					'requests',
+					'users_events',
+					'users_events,users',
 				],
 			}
 		})

@@ -162,152 +162,59 @@
 						<!-- // <div id="mainb" style="height:350px;"></div> -->
 						<div>
 
-								<div class="row">
-									<div class="col-sm-12">
-										<div class="x_content">
-											<div class="row" role="tabpanel" data-example-id="togglable-tabs">
-												<div class="col-sm-12">
-													<ul id="myTab1" class="nav nav-tabs bar_tabs_ " role="tablist">
-														<li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Actividad Reciente</a></li>
-														<li role="presentation" class=""><a @click="refreshCalendar" href="#tab_calendar" role="tab" id="calendar-tabb" data-toggle="tab" aria-controls="calendar" aria-expanded="false">Calendario</a></li>
-														<li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Propuestas</a></li>
-														<li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Reportes técnicos</a></li>
-													</ul>
-												</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="x_content">
+										<div class="row" role="tabpanel" data-example-id="togglable-tabs">
+											<div class="col-sm-12">
+												<ul id="myTab1" class="nav nav-tabs bar_tabs_ " role="tablist">
+													<li role="presentation" class="active"><a href="#tab_content11" id="home-tabb" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Actividad Reciente</a></li>
+													<li role="presentation" class=""><a @click="refreshCalendar" href="#tab_calendar" role="tab" id="calendar-tabb" data-toggle="tab" aria-controls="calendar" aria-expanded="false">Calendario</a></li>
+													<li role="presentation" class=""><a href="#tab_content22" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Propuestas</a></li>
+													<li role="presentation" class=""><a href="#tab_content33" role="tab" id="profile-tabb" data-toggle="tab" aria-controls="profile" aria-expanded="false">Reportes técnicos</a></li>
+												</ul>
+											</div>
 
-												<div class="col-sm-12">
-													<div id="myTabContent2" class="tab-content">
-														<div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
-															<ul class="messages">
-																<template v-if="record.requests_activity.length > 0">
-																	<li v-for="activity in record.requests_activity">
-																		<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-																		<div class="message_date">
-																		<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
-																		<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
-																		</div>
-																		<div class="message_wrapper">
-																			<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
-																			<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
-																			<br />
-																			<template v-if="activity.type == 'attachment'">
-																				<p class="url" v-for="attachment in activity.info.attachment">
-																					<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-																					<!-- //
-																					<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
-																					<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
-																					<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
-																					-->
-																					<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
-																				</p>
-																			</template>
-																			<template v-else-if="activity.type == 'events'">
-																				<ul>
-																					<li  v-for="event in activity.info.events">
-																						<span class="fs1 text-info fa fa-calendar-o" aria-hidden="true"></span>
-																							{{ event.title }}
-																							<br>Inicio: {{ event.start }}
-																							<br>Fin: {{ event.end }}
-																					</li>
-																				</ul>
-																			</template>
-																		</div>
-																	</li>
-																</template>
-																<template v-else>
-																	<li>
-																		<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-																		<div class="message_date">
-																			<h3 class="date text-info"></h3>
-																			<p class="month"></p>
-																		</div>
-																		<div class="message_wrapper">
-																			<h4 class="heading">Mensaje automatico del sistema</h4>
-																			<blockquote class="message">
-																				Esta solicitud necesita de tu gestión, Comencemos!
-																			</blockquote>
-																			<br />
-																			<!--
-																			<p class="url">
+											<div class="col-sm-12">
+												<div id="myTabContent2" class="tab-content">
+													<div role="tabpanel" class="tab-pane fade active in" id="tab_content11" aria-labelledby="home-tab">
+														<ul class="messages">
+															<template v-if="record.requests_activity.length > 0">
+																<li v-for="activity in record.requests_activity">
+																	<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																	<div class="message_date">
+																	<h3 class="date text-info">{{ record.created.split(" ")[0].split("-")[2] }}</h3>
+																	<p class="month">{{ returnMouthText(record.created.split(" ")[0].split("-")[1]) }}</p>
+																	</div>
+																	<div class="message_wrapper">
+																		<h4 class="heading">(@{{ activity.user.username }}) - {{ activity.user.names }}  {{ activity.user.surname }}</h4>
+																		<blockquote class="message" v-if="activity.info.text != undefined">{{ activity.info.text }}</blockquote>
+																		<br />
+																		<template v-if="activity.type == 'attachment'">
+																			<p class="url" v-for="attachment in activity.info.attachment">
 																				<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-																				<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+																				<!-- //
+																				<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
+																				<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
+																				<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
+																				-->
+																				<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
 																			</p>
-																			-->
-																		</div>
-																	</li>
-																</template>
-															</ul>
-														</div>
-
-														<div role="tabpanel" class="tab-pane fade" id="tab_calendar" aria-labelledby="calendar-tab">
-															<div id="calendar-list"></div>
-															<template v-if="events.length == 0 || events == undefined || events == null">
-																No se a programado agenta.
-																<hr>
-																<router-link class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-Calendar-Create', params: { request_id: $route.params.request_id } }">
-																	<i class="fa fa-calendar-plus-o"></i> Agendar una visita
-																</router-link>
+																		</template>
+																		<template v-else-if="activity.type == 'events'">
+																			<ul>
+																				<li  v-for="event in activity.info.events">
+																					<span class="fs1 text-info fa fa-calendar-o" aria-hidden="true"></span>
+																						{{ event.title }}
+																						<br>Inicio: {{ event.start }}
+																						<br>Fin: {{ event.end }}
+																				</li>
+																			</ul>
+																		</template>
+																	</div>
+																</li>
 															</template>
-														</div>
-
-														<div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
-															<ul class="messages">
-																<template v-if="record.proposals.length > 0">
-																	<li v-for="proposal in record.proposals">
-																		<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-																		<div class="message_date">
-																			<h3 class="date text-info">{{ proposal.created }}</h3>
-																			<p class="month">{{ proposal.updated }}</p>
-																		</div>
-																		<div class="message_wrapper">
-																			<h4 class="heading"></h4>
-																			<blockquote class="message">
-																				Propuesta #: {{ getRadicado(proposal) }}
-																				<router-link v-if="proposal.close === 0" class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-Edit', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
-																					<i class="fa fa-calendar-plus-o"></i> Continuar con la propuesta
-																				</router-link>
-																			</blockquote>
-																			<br />
-																			<p class="url" v-if="proposal.close === 1">
-																				<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-																				<router-link v-if="proposal.close === 1" class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-View', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
-																					<i class="fa fa-eye"></i> Ver la propuesta
-																				</router-link>
-																			</p>
-																		</div>
-																	</li>
-																</template>
-																<template v-else>
-																	<li>
-																		<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-																		<div class="message_date">
-																			<h3 class="date text-info"></h3>
-																			<p class="month"></p>
-																		</div>
-																		<div class="message_wrapper">
-																			<h4 class="heading">Mensaje automatico del sistema</h4>
-																			<blockquote class="message">
-																				Aún no tenemos propuestas...
-																				<hr>
-																				<router-link class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-Create', params: { request_id: $route.params.request_id } }">
-																					<i class="fa fa-calendar-plus-o"></i> Crear una propuesta
-																				</router-link>
-																			</blockquote>
-																			<br />
-																			<!--
-																			<p class="url">
-																				<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-																				<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-																			</p>
-																			-->
-																		</div>
-																	</li>
-																</template>
-															</ul>
-														</div>
-
-														<div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
-															<ul class="messages">
+															<template v-else>
 																<li>
 																	<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
 																	<div class="message_date">
@@ -317,11 +224,97 @@
 																	<div class="message_wrapper">
 																		<h4 class="heading">Mensaje automatico del sistema</h4>
 																		<blockquote class="message">
-																			Aún no tenemos reportes...
+																			Esta solicitud necesita de tu gestión, Comencemos!
+																		</blockquote>
+																		<br />
+																		<!--
+																		<p class="url">
+																			<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																			<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+																		</p>
+																		-->
+																	</div>
+																</li>
+															</template>
+														</ul>
+													</div>
+
+													<div role="tabpanel" class="tab-pane fade" id="tab_calendar" aria-labelledby="calendar-tab">
+														<div id="calendar-list"></div>
+														<template v-if="events.length == 0 || events == undefined || events == null">
+															No se a programado agenta.
+															<hr>
+															<router-link class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-Calendar-Create', params: { request_id: $route.params.request_id } }">
+																<i class="fa fa-calendar-plus-o"></i> Agendar una visita
+															</router-link>
+														</template>
+													</div>
+
+													<div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
+														<ul class="messages">
+
+															<template v-if="record.proposals.length > 0">
+																<li v-for="(proposal, indexProposal) in record.proposals"  :Key="proposal.id">
+																	<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																	<template>
+																		<div class="message_date">
+																			<template v-if="proposal.close === 1">
+																				<template v-if="proposal.response != null">
+																					<h3 class="date text-info" v-if="proposal.response == 1">APROBADA</h3>
+																					<h3 class="date text-info" v-else>DECLINADA</h3>
+																				</template>
+																				<template v-else>
+																					<h3 class="date text-info">Esp. Respuesta</h3>
+																				</template>
+																			</template>
+																			<template v-else>
+																				<h3 class="date text-info">Sin terminar</h3>
+																			</template>
+																			<p class="month">
+																				Propuesta #: {{ getRadicado(proposal) }}
+																			</p>
+																		</div>
+																		<div class="message_wrapper">
+																			<h4 class="heading"></h4>
+																			<blockquote class="message">
+																				{{ proposal.created }}
+																			</blockquote>
+																			<br />
+																			<p class="url">
+																				<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+
+																				<router-link v-if="proposal.close === 1" class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-View', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
+																					<i class="fa fa-eye"></i> Ver la propuesta
+																				</router-link>
+
+																				<router-link v-if="proposal.close === 0" class="btn btn-sm btn-primary" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-Edit', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
+																					<i class="fa fa-calendar-plus-o"></i> Continuar con la propuesta
+																				</router-link>
+
+																				<template v-if="indexProposal == (record.proposals.length-1) && proposal.response != null && proposal.response == 0">
+																					<router-link v-if="proposal.close === 1" class="btn btn-sm btn-primary" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-Create', params: { request_id: $route.params.request_id } }">
+																						<i class="fa fa-calendar-plus-o"></i> Nueva propuesta
+																					</router-link>
+																				</template>
+																			</p>
+																		</div>
+																	</template>
+																</li>
+															</template>
+															<template v-else>
+																<li>
+																	<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																	<div class="message_date">
+																		<h3 class="date text-info"></h3>
+																		<p class="month"></p>
+																	</div>
+																	<div class="message_wrapper">
+																		<h4 class="heading">Mensaje automatico del sistema</h4>
+																		<blockquote class="message">
+																			Aún no tenemos propuestas...
 																			<hr>
-																			<router-link tag="a" :to="{ name: 'RequestsNew-Requests-Technicals', params: { request_id: $route.params.request_id } }" class="btn btn-sm btn-primary">
-																				<i class="fa fa-plus"></i>
-																				Gestionar Reporte
+																			<router-link class="btn btn-sm btn-success" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-Create', params: { request_id: $route.params.request_id } }">
+																				<i class="fa fa-calendar-plus-o"></i> Crear una propuesta
 																			</router-link>
 																		</blockquote>
 																		<br />
@@ -333,14 +326,45 @@
 																		-->
 																	</div>
 																</li>
-															</ul>
-														</div>
+															</template>
+														</ul>
+													</div>
+
+													<div role="tabpanel" class="tab-pane fade" id="tab_content33" aria-labelledby="profile-tab">
+														<ul class="messages">
+															<li>
+																<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
+																<div class="message_date">
+																	<h3 class="date text-info"></h3>
+																	<p class="month"></p>
+																</div>
+																<div class="message_wrapper">
+																	<h4 class="heading">Mensaje automatico del sistema</h4>
+																	<blockquote class="message">
+																		Aún no tenemos reportes...
+																		<hr>
+																		<router-link tag="a" :to="{ name: 'RequestsNew-Requests-Technicals', params: { request_id: $route.params.request_id } }" class="btn btn-sm btn-primary">
+																			<i class="fa fa-plus"></i>
+																			Gestionar Reporte
+																		</router-link>
+																	</blockquote>
+																	<br />
+																	<!--
+																	<p class="url">
+																		<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																		<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+																	</p>
+																	-->
+																</div>
+															</li>
+														</ul>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+							</div>
 						</div>
 					</div>
 					<div class="col-md-4 col-sm-4 col-xs-12">
@@ -2519,32 +2543,32 @@ var MyRequestsproposalsView = Vue.extend({
 			    locale: 'es',
 			    callback: function (a) {
 			        if(a == true){
-								api.put('/records/proposals/' + self.proposal_id, {
-									id: self.proposal_id,
-									response: 1,
-									response_date: new Date().toMysqlFormat(),
-									response_by: <?php echo $_SESSION['user']['id']; ?>
+						api.put('/records/proposals/' + self.proposal_id, {
+							id: self.proposal_id,
+							response: 1,
+							response_date: new Date().toMysqlFormat(),
+							response_by: <?php echo $_SESSION['user']['id']; ?>
+						})
+						.then(rd => {
+							if(rd.data != undefined && rd.data > 0){
+								api.post('/records/requests_activity', {
+									request: self.$route.params.request_id,
+									user: <?php echo $_SESSION['user']['id']; ?>,
+									type: 'status',
+									info: JSON.stringify({
+										"text": "Se aprobó una propuesta."
+									}),
 								})
-								.then(rd => {
-									if(rd.data != undefined && rd.data > 0){
-										api.post('/records/requests_activity', {
-											request: self.$route.params.request_id,
-											user: <?php echo $_SESSION['user']['id']; ?>,
-											type: 'status',
-											info: JSON.stringify({
-												"text": "Se aprobó una propuesta."
-											}),
-										})
-										.then(activityResult => {
-											if(activityResult.data != undefined){
-												console.log('Gracias por  tu gestión.');
-												self.load();
-												router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
-											}
-										});
+								.then(activityResult => {
+									if(activityResult.data != undefined){
+										console.log('Gracias por  tu gestión.');
+										self.load();
+										router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
 									}
 								});
 							}
+						});
+					}
 			    }
 			});
 		},

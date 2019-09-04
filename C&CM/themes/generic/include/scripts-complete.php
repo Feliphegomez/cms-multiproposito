@@ -368,7 +368,7 @@ var ComposeInbox = new Vue({
 			},
 		}).$mount('#navbartop-notifications-inbox');
 	<?php } ?>
-	
+
 	<?php if(validatePermission($this->adapter, 'SAC', 'inbox')){ ?>
 		var NotificationsInboxNavbarTopSAC = new Vue({
 			data(){
@@ -539,7 +539,7 @@ var ComposeInbox = new Vue({
 						defaultView: 'listWeek',
 						events: self.records
 					});
-					
+
 				},
 				fetchEventsList() {
 					var self = this;
@@ -580,6 +580,7 @@ var ComposeInbox = new Vue({
 					try{
 						if (a.data != undefined && a.data.records != undefined){
 							self.records = [];
+							self.count = 0;
 							var hoy = new Date();
 							a.data.records.forEach(item => {
 								fStart = new Date(item.event.start);
@@ -692,7 +693,7 @@ var ComposeInbox = new Vue({
 							self.records = [];
 							self.count = 0;
 							a.data.records.forEach(item => {
-								console.log('item', item);
+
 									item.created = item.created != undefined ? new Date(item.created).toConversationsFormat() : '';
 									item.updated = item.updated != undefined ? new Date(item.updated).toConversationsFormat() : '';
 									self.records.push(item);
@@ -736,9 +737,9 @@ var ComposeInbox = new Vue({
 					var self = this;
 					clearInterval(self.timer);
 				},
-				load(){
+				loadB(){
 					var self = this;
-					
+
 					api.get('/records/requests', {
 						params: {
 							filter: [
@@ -758,7 +759,30 @@ var ComposeInbox = new Vue({
 					})
 					.then(response => { self.validateResult(response); })
 					.catch(e => { self.validateResult(e.response); });
-					
+
+				},
+				load(){
+					var self = this;
+
+					api.get('/records/requests', {
+						params: {
+							filter: [
+								'status,in,2'
+							],
+							join: [
+								'identifications_types',
+								'geo_departments',
+								'geo_citys',
+								'requests_status',
+								'requests_types',
+								'events',
+								'events,users_events',
+							],
+							order: 'id,desc'
+						}
+					})
+					.then(response => { self.validateResult(response); })
+					.catch(e => { self.validateResult(e.response); });
 				},
 				validateResult(a){
 					var self = this;
@@ -768,26 +792,30 @@ var ComposeInbox = new Vue({
 							self.count = 0;
 							self.count_danger = 0;
 							a.data.records.forEach(item => {
-								item.created = new Date(item.created).toConversationsFormat();
-								item.updated = new Date(item.updated).toConversationsFormat();
+									item.created = new Date(item.created).toConversationsFormat();
+									item.updated = new Date(item.updated).toConversationsFormat();
 
-								hoy = new Date();
-								fStart = (item.events[0].start != undefined) ? new Date(item.events[0].start) : new Date();
-								users_search = item.events[0];
-								
-								users_search.users_events.forEach(function(user){
-									if(user.user == "<?php echo $_SESSION['user']['id']; ?>"){
-										self.records.push(item);
-										if (hoy.getDate() == fStart.getDate() && hoy.getMonth() == fStart.getMonth() && hoy.getFullYear() == fStart.getFullYear()) {
-											self.count++;
-										} else if (hoy.getDate() > fStart.getDate() && hoy.getMonth() == fStart.getMonth() && hoy.getFullYear() == fStart.getFullYear()) {
-											self.count_danger++;
-										} else if (hoy.getMonth() > fStart.getMonth() && hoy.getFullYear() >= fStart.getFullYear()) {
-											self.count_danger++;
+									hoy = new Date();
+									fStart = (item.events[0].start != undefined) ? new Date(item.events[0].start) : new Date();
+
+									item.events.forEach(function(event){
+
+										if(event.complete == null || event.complete == 0){
+											event.users_events.forEach(function(user){
+												if(user.user == "<?php echo $_SESSION['user']['id']; ?>"){
+													self.records.push(item);
+													if (hoy.getDate() == fStart.getDate() && hoy.getMonth() == fStart.getMonth() && hoy.getFullYear() == fStart.getFullYear()) {
+														self.count++;
+													} else if (hoy.getDate() > fStart.getDate() && hoy.getMonth() == fStart.getMonth() && hoy.getFullYear() == fStart.getFullYear()) {
+														self.count_danger++;
+													} else if (hoy.getMonth() > fStart.getMonth() && hoy.getFullYear() >= fStart.getFullYear()) {
+														self.count_danger++;
+													}
+												}
+											});
 										}
-									}
-								});
 
+									});
 							});
 						}
 					}catch(e){

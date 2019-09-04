@@ -6,7 +6,7 @@
 		</div>
 	</div>
 	<div class="clearfix"></div>
-	
+
 	<div class="row">
 		<div class="col-md-12">
 			<div class="x_panel">
@@ -14,12 +14,11 @@
 					<div class="row">
 						<div class="col-sm-3 mail_list_column">
 							<!-- // <button id="compose" class="btn btn-sm btn-success btn-block" type="button">Redactar</button> -->
-							
 							<template v-if="records.length == 0">
 								<a href="#">
 									<div class="mail_list">
 										<div class="left">
-											
+
 										</div>
 										<div class="right">
 											<h3> <small></small></h3>
@@ -33,8 +32,8 @@
 									<router-link tag="a" :to="{ name: 'MiCuenta-Inbox-Conversation-View', params: { conversation_id: inbox.id }}">
 										<div class="mail_list">
 											<div class="left">
-												<i class="fa fa-circle" v-if="inbox.status.id == 1 || inbox.status.id == 0"></i> 
-												<i class="fa fa-circle-o" v-else></i> 
+												<i class="fa fa-circle" v-if="inbox.status.id == 1 || inbox.status.id == 0"></i>
+												<i class="fa fa-circle-o" v-else></i>
 												<!-- // <i class="fa fa-edit"></i> -->
 											</div>
 											<div class="right">
@@ -46,7 +45,7 @@
 												</h3>
 												<!--
 													{{ inbox }}
-												<p v-html="inbox.conversations_replys[0].reply.text.replace(/<\/?[^>]+(>|$)/g, '').slice(0,50) + '...'"></p> 
+												<p v-html="inbox.conversations_replys[0].reply.text.replace(/<\/?[^>]+(>|$)/g, '').slice(0,50) + '...'"></p>
 												-->
 											</div>
 										</div>
@@ -54,7 +53,7 @@
 								</template>
 							</template>
 						</div>
-						
+
 						<div class="col-sm-9 mail_view">
 							<router-view :key="$route.fullPath"></router-view>
 						</div>
@@ -67,10 +66,10 @@
 
 <template id="micuenta-inbox-home">
 	<div>
-		
+
 	</div>
 </template>
-		
+
 
 <template id="micuenta-inbox-conversations-view">
 	<div>
@@ -83,7 +82,7 @@
 						</button>
 						<!-- //
 						<button disabled="" class="btn btn-sm btn-primary" type="button">
-							<i class="fa fa-reply"></i> 
+							<i class="fa fa-reply"></i>
 							Terminar Conversacion
 						</button>
 						-->
@@ -116,7 +115,7 @@
 							</div>
 							<div class="col-xs-12 bottom text-center">
 								<div class="col-xs-12 col-sm-6 emphasis">
-									
+
 								<!--
 									<p class="ratings">
 										<a>4.0</a>
@@ -125,7 +124,7 @@
 										<a href="#"><span class="fa fa-star"></span></a>
 										<a href="#"><span class="fa fa-star"></span></a>
 										<a href="#"><span class="fa fa-star-o"></span></a>
-									</p>	
+									</p>
 								-->
 								</div>
 								<div class="col-xs-12 col-sm-12 emphasis">
@@ -142,23 +141,23 @@
 					</div>
 				</div>
 			</div>
-		
-			
-					
-			
-				
+
+
+
+
+
 			<template>
 				<div class="x_content">
 					<!-- start accordion  in -->
 					<div class="accordion" id="accordion_" role="tablist" aria-multiselectable="true">
 						<div class="panel" v-for="(item, a) in conversation.replys" :key="item.id">
 							<template v-if="item.user.id === user_id">
-								<a class="panel-heading" role="tab" 
-									:id="'headingOne' + item.id" 
-									data-toggle="collapse" 
-									data-parent="#accordion" 
-									:data-target="'#collapseOne' + item.id" 
-									aria-expanded="false" 
+								<a class="panel-heading" role="tab"
+									:id="'headingOne' + item.id"
+									data-toggle="collapse"
+									data-parent="#accordion"
+									:data-target="'#collapseOne' + item.id"
+									aria-expanded="false"
 									:aria-controls="'collapseOne' + item.id">
 										<h4 class="panel-title text-right">
 											Tú ({{ $root.convertDate(item.created) }})
@@ -167,12 +166,12 @@
 								</a>
 							</template>
 							<template v-else>
-								<a class="panel-heading bg-green" role="tab" 
-									:id="'headingOne' + item.id" 
-									data-toggle="collapse" 
-									data-parent="#accordion" 
-									:data-target="'#collapseOne' + item.id" 
-									aria-expanded="false" 
+								<a class="panel-heading bg-green" role="tab"
+									:id="'headingOne' + item.id"
+									data-toggle="collapse"
+									data-parent="#accordion"
+									:data-target="'#collapseOne' + item.id"
+									aria-expanded="false"
 									:aria-controls="'collapseOne' + item.id">
 										<h4 class="panel-title text-left">
 											<i class="fa fa-chevron-down"></i>
@@ -193,7 +192,7 @@
 											<hr>
 										</div>
 									</div>
-									
+
 									<template v-if="item.reply.text">
 										<div class="view-mail">
 											<div v-html="item.reply.text"></div>
@@ -217,49 +216,49 @@
 											</ul>
 										</div>
 									</template>
-									
+
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- end of accordion -->
 				</div>
-			
+
 				<div class="btn-group">
 					<button @click="toggleMessage()" class="btn btn-sm btn-primary" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Responder"><i class="fa fa-reply"></i> </button>
-					
-					
+
+
 					<!-- //
 					<button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
 					<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
 					<button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button>
 					-->
 				</div>
-				
+
 				<!-- // {{ conversation }} -->
 				<div class="ln_solid"></div>
-				
+
 				<div class="x_content" v-if="enableMessage == true">
 					<textarea rows="6" v-model="me.compose.text" class="form-control"></textarea>
-						
+
 					<div class="btn-group pull-right">
 						<!-- // <button v-if="conversation.status.id == 0 || conversation.status.id == 2" class="btn btn-sm btn-primary" type="button"><i class="fa fa-reply"></i> </button> -->
-						
+
 							<template v-if="enableMessage == true">
 								<button @click="toggleMessage()" class="btn btn-sm btn-default" type="button">
 									<i class="fa fa-times"></i> Cerrar
 								</button>
 							</template>
-							
-							
+
+
 						<button @click="sendMessage" class="btn btn-sm btn-success" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i> Enviar Mensaje</button>
 						<!-- // <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button> -->
 					</div>
 				</div>
 			</template>
 		</div>
-		
-		
+
+
 		<div>
 		</div>
 	</div>
@@ -292,7 +291,7 @@ var InboxConversationsView = Vue.extend({
 				replys: [],
 			},
 			me: {
-				avatar: "https://lh6.googleusercontent.com/-lr2nyjhhjXw/AAAAAAAAAAI/AAAAAAAARmE/MdtfUmC0M4s/photo.jpg?sz=48",				
+				avatar: "https://lh6.googleusercontent.com/-lr2nyjhhjXw/AAAAAAAAAAI/AAAAAAAARmE/MdtfUmC0M4s/photo.jpg?sz=48",
 				compose: {
 					text: '',
 				},
@@ -309,7 +308,7 @@ var InboxConversationsView = Vue.extend({
 		},
 		validateResultConversation(r){
 			// console.log('validateResultConversation', r)
-			
+
 			var self = this;
 			if (r.data != undefined){
 				// console.log(r.data);
@@ -323,8 +322,8 @@ var InboxConversationsView = Vue.extend({
 				});
 				self.conversation.replys = r.data.conversations_replys;
 			} else {
-				 // console.log('Error: consulta validateResultConversation'); 
-				 // console.log(response); 
+				 // console.log('Error: consulta validateResultConversation');
+				 // console.log(response);
 			}
 		},
 		showErrorAlert(reason, detail){
@@ -340,7 +339,7 @@ var InboxConversationsView = Vue.extend({
 		sendMessage(){
 			var self = this;
 			obj_message = {};
-			
+
 			if(self.me.compose.text != ''){
 				// console.log('enviar');
 				obj_message.reply = JSON.stringify({ "text": self.me.compose.text });
@@ -386,7 +385,7 @@ var InboxConversationsView = Vue.extend({
 					.catch(e => {
 						// console.log("Error actualizando la conversacion.");
 					})
-					
+
 				})
 				.catch(e => {
 					// console.log("Error");
@@ -397,7 +396,7 @@ var InboxConversationsView = Vue.extend({
 		load(){
 			var self = this;
 			conversation_id = (!self.$route.params.conversation_id) ? 0 : self.$route.params.conversation_id;
-			
+
 			api.get('/records/conversations/' + conversation_id, {
 				params: {
 					filter: [],
@@ -514,7 +513,7 @@ var Inbox = new Vue({
 				}
 			}catch(e){
 				// console.log(e);
-				// console.log(e.response);	
+				// console.log(e.response);
 			};
 		},
 		validateConversations(response){
@@ -540,19 +539,19 @@ var Inbox = new Vue({
 					} else {
 						self.searchBox.errorText = "No hay mensajes";
 					}
-				} 
+				}
 			}catch(e){
 				// console.log(response);
 				// console.log(e);
-				// console.log(e.response);	
+				// console.log(e.response);
 			};
-			
+
 		},
 		validateMessages(response){
 			var self = this;
 			self.records = [];
 			self.count = 0;
-			
+
 			if (response.data != undefined){
 				if(response.data.records.length > 0){
 					response.data.records.forEach(item => {
@@ -565,8 +564,8 @@ var Inbox = new Vue({
 					});
 				}
 			} else {
-				 // console.log('Error: consulta'); 
-				 // console.log(response.data); 
+				 // console.log('Error: consulta');
+				 // console.log(response.data);
 			}
 		},
 		convertDate(date){
@@ -576,4 +575,3 @@ var Inbox = new Vue({
 }).$mount('#micuenta-inbox');
 
 </script>
-

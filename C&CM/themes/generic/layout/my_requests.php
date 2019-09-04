@@ -205,30 +205,64 @@ $myInfo = $this->myUser;
 													</template>
 												</div>
 
-
-
 												<div role="tabpanel" class="tab-pane fade" id="tab_content22" aria-labelledby="profile-tab">
 													<ul class="messages">
 														<template v-if="record.proposals.length > 0">
-															<li v-for="proposal in record.proposals" v-if="proposal.close === 1" :Key="proposal.id">
+															<li v-for="(proposal, indexProposal) in record.proposals" v-if="proposal.close === 1" :Key="proposal.id">
 																<!-- // <img src="images/img.jpg" class="avatar" alt="Avatar"> -->
-																<div class="message_date">
-																	<h3 class="date text-info">{{ proposal.created }}</h3>
-																	<p class="month">{{ proposal.updated }}</p>
-																</div>
-																<div class="message_wrapper">
-																	<h4 class="heading"></h4>
-																	<blockquote class="message">
-																		Propuesta #: {{ getRadicado(proposal) }}
-																	</blockquote>
-																	<br />
-																	<p class="url">
-																		<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-																		<router-link v-if="proposal.close === 1" class="btn btn-sm btn-success" tag="a" :to="{ name: 'MiCuenta-Requests-proposals-View', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
-																			<i class="fa fa-eye"></i> Ver la propuesta
-																		</router-link>
-																	</p>
-																</div>
+																	<template v-if="proposal.response != null">
+																		<template v-if="proposal.response == 1">
+																			<div class="message_date">
+																				<h3 class="date text-info">APROBADA</h3>
+																				<p class="month">
+
+																					Propuesta #: {{ getRadicado(proposal) }}
+																				</p>
+																			</div>
+																			<div class="message_wrapper">
+																				<h4 class="heading"></h4>
+																				<blockquote class="message">
+																					{{ proposal.created }}
+																				</blockquote>
+																				<br />
+																				<p class="url">
+																					<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																					<router-link v-if="proposal.close === 1" class="btn btn-sm btn-success" tag="a" :to="{ name: 'MiCuenta-Requests-proposals-View', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
+																						<i class="fa fa-eye"></i> Ver la propuesta
+																					</router-link>
+																				</p>
+																			</div>
+																		</template>
+																		<template v-else>
+																		<div class="message_date">
+																			<h3 class="date text-info">
+																				DECLINADA
+																			</h3>
+																			<p>
+																				{{ proposal.created.split(' ')[0] }}
+																			</p>
+
+																			<p class="month">
+																				{{ proposal.created.split(' ')[1] }}
+																			</p>
+																		</div>
+																		<div class="message_wrapper">
+																			<h4 class="heading">
+																				{{ getRadicado(proposal) }}
+																			</h4>
+																			<blockquote class="message">
+																				{{ proposal.response_notes }}
+																			</blockquote>
+																			<br />
+																			<p class="url">
+																				<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+																				<router-link v-if="proposal.close === 1" class="btn btn-sm btn-success" tag="a" :to="{ name: 'MiCuenta-Requests-proposals-View', params: { request_id: $route.params.request_id, proposal_id: proposal.id } }">
+																					<i class="fa fa-eye"></i> Ver la propuesta
+																				</router-link>
+																			</p>
+																		</div>
+																		</template>
+																	</template>
 															</li>
 														</template>
 														<template v-else>
@@ -460,7 +494,6 @@ $myInfo = $this->myUser;
 	</div>
 </template>
 
-
 <script>
 var MyRequestsList = Vue.extend({
 	template: '#micuenta-requests-list',
@@ -669,7 +702,6 @@ var MyRequestsView = Vue.extend({
 	}
 });
 
-
 var MyRequestsProposalsView = Vue.extend({
 	template: '#micuenta-requests-proposals-view',
 	data() {
@@ -816,46 +848,54 @@ var MyRequestsProposalsView = Vue.extend({
 			});
 		},
 		declineProposal(){
+			var self = this;
 				bootbox.prompt({
 						locale: 'es',
 				    title: "Cuentanos el motivo, Así nuestro equipo intentara solucionarlo.",
-				    inputType: 'textarea',
-				    callback: function (result) {
-							console.log(result);
-								if(result != undefined && result != ""){
+				    inputType: 'text',
+				    callback: function (rD) {
+							console.log(rD);
+							console.log('self.proposal_id', self.proposal_id)
+							if(rD != null){
 									api.put('/records/proposals/' + self.proposal_id, {
 										id: self.proposal_id,
 										response: 0,
 										response_date: new Date().toMysqlFormat(),
 										response_by: <?php echo $_SESSION['user']['id']; ?>,
-										response_notes: result
+										response_notes: rD
 									})
-									.then(rd => {
-										if(rd.data != undefined && rd.data > 0){
-											api.post('/records/requests_activity', {
-												request: self.$route.params.request_id,
-												user: <?php echo $_SESSION['user']['id']; ?>,
-												type: 'status',
-												info: JSON.stringify({
-													"text": "Se rechazó una propuesta. \n Motivo: " + result
-												}),
-											})
-											.then(activityResult => {
-												if(activityResult.data != undefined){
-													console.log('Gracias por  tu gestión.');
-													self.load();
-													router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
-												}
-											});
-										}
-									});
-								}
+										.then(rd => {
+											if(rd.data != undefined && rd.data > 0){
+												api.post('/records/requests_activity', {
+													request: self.$route.params.request_id,
+													user: <?php echo $_SESSION['user']['id']; ?>,
+													type: 'status',
+													info: JSON.stringify({
+														"text": "Se rechazó una propuesta. "
+													}),
+												})
+												.then(activityResult => {
+													if(activityResult.data != undefined){
+														console.log('Gracias por  tu gestión.');
+														self.load();
+														router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
+													}
+												})
+												.catch(e => { self.showErrorSQL(e); });;
+											}
+										})
+										.catch(e => { self.showErrorSQL(e); });;
+							} else {
+								console.log('No existe respuesta');
+							}
 				    }
 				});
-		}
+		},
+		showErrorSQL(error){
+			console.log(error.response);
+		},
 	}
 });
-
 
 var router = new VueRouter({
 	linkActiveClass: 'active',
