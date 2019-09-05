@@ -1,4 +1,4 @@
-<style>
+onyxDropzone<style>
 .scheduler_default_corner div {
 	color: rgb(243, 243, 243) !important;
 	background: rgb(243, 243, 243) !important;
@@ -28,17 +28,17 @@
 				<div class="row">
 					<div class="col-sm-12 mail_view">
 						<table class="table table-striped projects">
-						  <thead>
-							<tr>
-							  <th style="width: 1%"># Rad.</th>
-							  <th style="width: 20%">Responsable</th>
-							  <th>Team Members</th>
-							  <th>Project Progress</th>
-							  <th>Status</th>
-							  <th>Type</th>
-							  <th style="width: 20%">#Edit</th>
-							</tr>
-						  </thead>
+							<thead>
+								<tr>
+									<th style="width: 1%"># Rad.</th>
+									<th style="width: 20%">Responsable</th>
+									<th>Team Members</th>
+									<th>Project Progress</th>
+									<th>Status</th>
+									<th>Type</th>
+									<th style="width: 20%">#Edit</th>
+								</tr>
+							</thead>
 							<tbody>
 								<tr v-for="(item, i) in records">
 									<td>{{ getRadicado(item) }}</td>
@@ -278,6 +278,9 @@
 																			<h4 class="heading"></h4>
 																			<blockquote class="message">
 																				{{ proposal.created }}
+																				<template v-if="proposal.response != null">
+																					<p v-if="proposal.response == 0">{{ proposal.response_notes }}</p>
+																				</template>
 																			</blockquote>
 																			<br />
 																			<p class="url">
@@ -295,6 +298,13 @@
 																					<router-link v-if="proposal.close === 1" class="btn btn-sm btn-primary" tag="a" :to="{ name: 'RequestsNew-Requests-proposals-Create', params: { request_id: $route.params.request_id } }">
 																						<i class="fa fa-calendar-plus-o"></i> Nueva propuesta
 																					</router-link>
+																				</template>
+
+
+																				<template v-if="indexProposal == (record.proposals.length-1) && proposal.response != null && proposal.response == 1">
+																					<a class="btn btn-lg btn-success">
+																						Terminar Proceso
+																					</a>
 																				</template>
 																			</p>
 																		</div>
@@ -396,21 +406,97 @@
 								<br />
 								<h5>Archivos en la solicitud</h5>
 								<ul class="list-unstyled project_files">
-									<li><a href=""><i class="fa fa-file-word-o"></i> Functional-requirements.docx</a></li>
-									<!-- //
-									<li><a href=""><i class="fa fa-file-pdf-o"></i> UAT.pdf</a></li>
-									<li><a href=""><i class="fa fa-mail-forward"></i> Email-from-flatbal.mln</a></li>
-									<li><a href=""><i class="fa fa-picture-o"></i> Logo.png</a></li>
-									<li><a href=""><i class="fa fa-file-word-o"></i> Contract-10_12_2014.docx</a></li>
-									-->
+									<template v-if="record.requests_media.length > 0">
+										<li v-for="(media, m) in record.requests_media">
+											<a @click="window.open(media.media.path_short, 'viewPop-' + media.media.id, 'menubar=no,location=no,resizable=yes,scrollbars=no,status=yes,navbar=false,height=500,width=550')">
+												<template v-if="media.media.type.split('/')[1] == 'png' || media.media.type.split('/')[1] == 'jpge' || media.media.type.split('/')[1] == 'jpg'">
+													<i class="fa fa-picture-o"></i>
+												</template>
+												<template v-else-if="media.media.type.split('/')[1] == 'text'">
+													<i class="fa fa-file-text-o"></i>
+												</template>
+												<template v-else-if="media.media.type.split('/')[1] == 'pdf'">
+													<i class="fa fa-file-pdf-o"></i>
+												</template>
+												<template v-else-if="media.media.type.split('/')[1] == 'mln'">
+													<i class="fa fa-mail-forward"></i>
+												</template>
+												<template v-else-if="media.media.type.split('/')[1] == 'docx' || media.media.type.split('/')[1] == 'doc'">
+													<i class="fa fa-file-word-o"></i>
+												</template>
+												<template v-else-if="media.media.type.split('/')[1] == 'xlsx'">
+													<i class="fa fa-file-excel-o"></i>
+												</template>
+												<template v-else-if="media.media.type.split('/')[0] == 'audio'">
+													<i class="fa fa-file-audio-o"></i>
+												</template>
+												<template v-else>
+													<i class="fa fa-file-o"></i>
+												</template>
+												{{ media.media.name }}
+											</a>
+										</li>
+									</template>
+
 								</ul>
 								<br />
-								<div class="text-center mtop20">
+								<div class="text-center mtop20" v-if="upf_enable != null && upf_enable != false">
+										<h2>Haga clic y seleccione los archivos o simplemente arrastrelos hasta el recuadro.</h2>
+										<div class="clearfix"></div>
+									<div class="row full-dark-bg">
+										<div class="col-md-6">
+											<form action="/?controller=Media&action=upload_file" class="dropzone files-container" method="POST">
+												<div class="fallback">
+													<input name="file" type="file" multiple />
+												</div>
+												<input name="request_id" type="hidden" :value="$route.params.request_id" />
+											</form>
+										</div>
+										<div class="col-md-6">
+											<h4 class="section-sub-title"><span></span></h4>
+											<span>Solo se admiten los tipos de archivos JPG, PNG, PDF, DOC (Word), XLS (Excel), PPT, ODT y RTF.</span>
+											<span>El tamaño maximo permitido es de 25MB.</span>
+										</div>
+											<!-- Uploaded files section - ->
+										<div class="col-md-12">
+											<h4 class="section-sub-title"><span>Archivos</span> Subidos (<span class="uploaded-files-count">0</span>)</h4>
+											<span class="no-files-uploaded">No has subido nada aún..</span>
+											<div class="preview-container dz-preview uploaded-files">
+												<div id="previews">
+													<div id="onyx-dropzone-template">
+														<div class="onyx-dropzone-info">
+															<div class="thumb-container">
+																<img data-dz-thumbnail />
+															</div>
+															<div class="details">
+																<div>
+																	<span data-dz-name></span> <span data-dz-size></span>
+																</div>
+																<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+																<div class="dz-error-message"><span data-dz-errormessage></span></div>
+																<div class="actions">
+																	<a href="#!" data-dz-remove><i class="fa fa-times"></i></a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										-->
+									</div>
+								</div>
+								<br />
 
-										<a href="#" class="btn btn-sm btn-warning">Report contact</a>
-									<!--
-										<a href="#" class="btn btn-sm btn-primary">Add files</a>
-									-->
+								<div class="text-center mtop20">
+									<a v-if="upf_enable == null || upf_enable == false" class="btn btn-sm btn-warning" @click="getUploads">
+										<!-- // <i class="fa fa-calendar-plus-o"></i> -->
+										Subir Archivos
+									</a>
+									<a class="btn btn-sm btn-primary" @click="finishUploads" v-else>
+										<!-- // <i class="fa fa-calendar-plus-o"></i> -->
+										Finalizar
+									</a>
 								</div>
 							</div>
 						</section>
@@ -1627,51 +1713,199 @@ var MyRequestsList = Vue.extend({
 var MyRequestsView = Vue.extend({
 	template: '#RequestsNew-requests-view',
 	data: function () {
-		return {
-			in_team: false,
-			request_id: 0,
-			record: {
-			  "id": 0,
-			  "type": {
-				"id": 0,
-				"title": "",
-				"subtitle": "",
-				"description": "",
-				"highlight": 0
-			  },
-			  "identification_type": 0,
-			  "identification_number": "",
-			  "names": "",
-			  "surname": "",
-			  "department": 0,
-			  "city": 0,
-			  "address": "",
-			  "points_reference": "",
-			  "email": "",
-			  "phone": "",
-			  "mobile": "",
-			  "request": "",
-			  "status": {
-				"id": 0,
-				"name": "",
-				"progress": 0,
-				"close": 0
-			  },
-			  "created": "",
-			  "updated": "",
-			  "requests_team": [],
-			  "requests_activity": [],
-			},
-			calendarEl: null,
-			calendar: null,
-			events: [],
-		};
+			var self = this;
+			return {
+				upf_enable: this.$route.params.upf_enable,
+				window: window,
+				in_team: false,
+				request_id: this.$route.params.request_id,
+				record: {
+				  "id": 0,
+				  "type": {
+					"id": 0,
+					"title": "",
+					"subtitle": "",
+					"description": "",
+					"highlight": 0
+				  },
+				  "identification_type": 0,
+				  "identification_number": "",
+				  "names": "",
+				  "surname": "",
+				  "department": 0,
+				  "city": 0,
+				  "address": "",
+				  "points_reference": "",
+				  "email": "",
+				  "phone": "",
+				  "mobile": "",
+				  "request": "",
+				  "status": {
+					"id": 0,
+					"name": "",
+					"progress": 0,
+					"close": 0
+				  },
+				  "created": "",
+				  "updated": "",
+				  "requests_team": [],
+				  "requests_activity": [],
+				  "requests_media": []
+				},
+				calendarEl: null,
+				calendar: null,
+				events: [],
+				onyxDropzone: null
+			};
 	},
 	mounted(){
 		var self = this;
+
+		var Onyx = Onyx || {};
+		Onyx = {
+			init: function() {
+				var self = this, obj;
+				for (obj in self) {
+					if ( self.hasOwnProperty(obj)) {
+						var _method =  self[obj];
+						if ( _method.selector !== undefined && _method.init !== undefined ) {
+							if ( $(_method.selector).length > 0 ) { _method.init(); }
+						}
+					}
+				}
+			},
+			userFilesDropzone: {
+				selector: 'form.dropzone',
+				init: function() {
+					var base = this,
+						container = $(base.selector);
+					base.initFileUploader(base, 'form.dropzone');
+				},
+				initFileUploader: function(base, target) {
+					var previewNode = document.querySelector("#onyx-dropzone-template");
+					previewNode.id = "";
+					var previewTemplate = previewNode.parentNode.innerHTML;
+					previewNode.parentNode.removeChild(previewNode);
+					var onyxDropzone = new Dropzone(target, {
+						url: ($(target).attr("action")) ? $(target).attr("action") : "/?controller=Media&action=upload_file", // Check that our form has an action attr and if not, set one here
+						maxFiles: 5,
+						maxFilesize: 8,
+						acceptedFiles: "image/*,application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf",
+						previewTemplate: previewTemplate,
+						previewsContainer: "#previews",
+						clickable: true,
+						createImageThumbnails: true,
+						dictDefaultMessage: "Arrastra los archivos aquí para subirlos.", // Default: Drop files here to upload
+						dictFallbackMessage: "Su navegador no admite la carga de archivos de arrastrar y soltar.", // Default: Your browser does not support drag'n'drop file uploads.
+						dictFileTooBig: "El archivo es demasiado grande ({{filesize}} MiB). Tamaño máximo de archivo: {{maxFilesize}} MiB.", // Default: File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.
+						dictInvalidFileType: "No puedes subir archivos de este tipo.", // Default: You can't upload files of this type.
+						dictResponseError: "El servidor respondió con el código {{statusCode}}.", // Default: Server responded with {{statusCode}} code.
+						dictCancelUpload: "Cancelar carga.", // Default: Cancel upload
+						dictUploadCanceled: "Subida cancelada.", // Default: Upload canceled.
+						dictCancelUploadConfirmation: "¿Estás seguro de que deseas cancelar esta carga?", // Default: Are you sure you want to cancel this upload?
+						dictRemoveFile: "Remover archivo", // Default: Remove file
+						dictRemoveFileConfirmation: null, // Default: null
+						dictMaxFilesExceeded: "No puedes subir más archivos.", // Default: You can not upload any more files.
+						dictFileSizeUnits: {
+							tb: "TB",
+							gb: "GB",
+							mb: "MB",
+							kb: "KB",
+							b: "b"
+						},
+						on: {
+							success: function(file, response) {
+								console.log('file', file);
+								console.log('response', response);
+								// self.load();
+								let parsedResponse = JSON.parse(response);
+								file.upload_ticket = parsedResponse.response.id;
+								// Make it wait a little bit to take the new element
+
+								console.log('parsedResponse', parsedResponse);
+								console.log('upload_ticket', upload_ticket);
+
+								setTimeout(function(){
+									$(".uploaded-files-count").html(base.dropzoneCount());
+									console.log('Files count: ' + base.dropzoneCount());
+								}, 350);
+								// Something to happen when file is uploaded
+							}
+						}
+					});
+					Dropzone.autoDiscover = false;
+					onyxDropzone.on("addedfile", function(file) {
+						console.log('file', file);
+						$('.preview-container').css('visibility', 'visible');
+						file.previewElement.classList.add('type-' + base.fileType(file.name)); // Add type class for this element's preview
+					});
+					onyxDropzone.on("totaluploadprogress", function (progress) {
+						var progr = document.querySelector(".progress .determinate");
+						if (progr === undefined || progr === null) return;
+						progr.style.width = progress + "%";
+					});
+					onyxDropzone.on('dragenter', function () {
+						$(target).addClass("hover");
+					});
+					onyxDropzone.on('dragleave', function () {
+						$(target).removeClass("hover");
+					});
+					onyxDropzone.on('drop', function () {
+						$(target).removeClass("hover");
+					});
+					onyxDropzone.on('addedfile', function () {
+						// Remove no files notice
+						$(".no-files-uploaded").slideUp("easeInExpo");
+					});
+					onyxDropzone.on('removedfile', function (file) {
+						console.log('target_file', file.upload_ticket);
+						$.ajax({
+							type: "POST",
+							url: ($(target).attr("action")) ? $(target).attr("action") : "/?controller=Media&action=upload_file",
+							data: {
+								target_file: file.upload_ticket,
+								delete_file: 1
+							},
+							success: function (r) {
+								console.log('Response: ', r);
+							},
+						});
+						// Show no files notice
+						if ( base.dropzoneCount() == 0 ) {
+							$(".no-files-uploaded").slideDown("easeInExpo");
+							$(".uploaded-files-count").html(base.dropzoneCount());
+						}
+					});
+
+				},
+				dropzoneCount: function() {
+					var filesCount = $("#previews > .dz-success.dz-complete").length;
+					return filesCount;
+				},
+				fileType: function(fileName) {
+					var fileType = (/[.]/.exec(fileName)) ? /[^.]+$/.exec(fileName) : undefined;
+					return fileType[0];
+				}
+			}
+		};
+
 		self.load();
 	},
 	methods: {
+		getUploads(){
+			var self = this;
+			router.push({ name: 'RequestsNew-Requests-Uploads', params: { request_id: self.$route.params.request_id, upf_enable: true } });
+			location.reload();
+		},
+		finishUploads(){
+			var self = this;
+			router.push({ name: 'RequestsNew-Requests-View', params: { request_id: self.$route.params.request_id } });
+		},
+		loadScriptsOnyx(){
+		},
+		loadOnyx(){
+			var self = this;
+		},
 		refreshCalendar(){
 			var self = this;
 			if(self.events.length > 0){
@@ -1711,7 +1945,6 @@ var MyRequestsView = Vue.extend({
 		},
 		validateResultCalendar(r){
 			var self = this;
-			console.log('r', r);
 			if(r.data != undefined && r.data.records != undefined){
 				self.events = r.data.records;
 				self.loadCalendar();
@@ -1731,8 +1964,6 @@ var MyRequestsView = Vue.extend({
 						})
 						.then(rd => {
 							if(rd.data != undefined && rd.data > 0){
-
-
 								api.post('/records/requests_activity', {
 									request: self.$route.params.request_id,
 									user: <?php echo $_SESSION['user']['id']; ?>,
@@ -1748,7 +1979,6 @@ var MyRequestsView = Vue.extend({
 										router.push({ name: 'RequestsNew-Requests-View', params: { request_id: self.$route.params.request_id} })
 									}
 								});
-
 							}
 						});
 					}
@@ -1781,6 +2011,8 @@ var MyRequestsView = Vue.extend({
 						'requests_activity',
 						'requests_activity,users',
 						'proposals,users',
+						'requests_media',
+						'requests_media,media',
 					]
 				}
 			})
@@ -2573,43 +2805,52 @@ var MyRequestsproposalsView = Vue.extend({
 			});
 		},
 		declineProposal(){
-				bootbox.prompt({
-						locale: 'es',
-				    title: "Cuentanos el motivo, Así nuestro equipo intentara solucionarlo.",
-				    inputType: 'textarea',
-				    callback: function (result) {
-							console.log(result);
-								// if(result != ""){
-									api.put('/records/proposals/' + self.proposal_id, {
-										id: self.proposal_id,
-										response: 0,
-										response_date: new Date().toMysqlFormat(),
-										response_by: <?php echo $_SESSION['user']['id']; ?>,
-										response_notes: result
-									})
-									.then(rd => {
-										if(rd.data != undefined && rd.data > 0){
-											api.post('/records/requests_activity', {
-												request: self.$route.params.request_id,
-												user: <?php echo $_SESSION['user']['id']; ?>,
-												type: 'status',
-												info: JSON.stringify({
-													"text": "Se rechazó una propuesta. \n Motivo: " + result
-												}),
-											})
-											.then(activityResult => {
-												if(activityResult.data != undefined){
-													console.log('Gracias por  tu gestión.');
-													self.load();
-													router.push({ name: 'MiCuenta-Requests-View', params: { request_id: self.$route.params.request_id} })
-												}
-											});
-										}
-									});
-								// }
-				    }
-				});
-		}
+			var self = this;
+
+			bootbox.prompt({
+					locale: 'es',
+					title: "Cuentanos el motivo, Así nuestro equipo intentara solucionarlo.",
+					inputType: 'text',
+					callback(rD) {
+						if(rD != null){
+							console.log('proposal_id ', self.$route.params.proposal_id);
+							console.log('response ', rD);
+
+							api.put('/records/proposals/' + self.$route.params.proposal_id, {
+							  id: self.$route.params.proposal_id,
+							  response: 0,
+							  response_date: new Date().toMysqlFormat(),
+							  response_by: '<?= $_SESSION['user']['id']; ?>',
+							  response_notes: rD
+							})
+							.then(rd => {
+							  if(rd.data != undefined && rd.data > 0){
+							    api.post('/records/requests_activity', {
+							      request: self.$route.params.request_id,
+							      user: <?= $_SESSION['user']['id']; ?>,
+							      type: 'status',
+							      info: JSON.stringify({
+							        "text": "Se rechazó una propuesta. "
+							      }),
+							    })
+							    .then(activityResult => {
+							      if(activityResult.data != undefined){
+							        console.log('Gracias por  tu gestión.');
+							        self.load();
+							        router.push({ name: 'RequestsNew-Requests-View', params: { request_id: self.$route.params.request_id} })
+							      }
+							    })
+							    .catch(e => { self.showErrorSQL(e); });
+							  }
+							})
+							.catch(e => { self.showErrorSQL(e); });
+
+						} else {
+							console.log('No existe respuesta');
+						}
+					}
+			});
+		},
 	}
 });
 
@@ -2619,6 +2860,7 @@ var router = new VueRouter({
 		{ path: '/', component: MyRequestsList, name: 'RequestsNew-Requests' },
 		{ path: '/filter/status/:filterStatus', component: MyRequestsList, name: 'RequestsNew-filterStatus' },
 		{ path: '/view/:request_id', component: MyRequestsView, name: 'RequestsNew-Requests-View' },
+		{ path: '/view/:request_id/:upf_enable', component: MyRequestsView, name: 'RequestsNew-Requests-Uploads' },
 		{ path: '/view/:request_id/calendar/create', component: MyRequestsCalendarCreate, name: 'RequestsNew-Requests-Calendar-Create' },
 		{ path: '/view/:request_id/calendar/view', component: MyRequestsCalendarView, name: 'RequestsNew-Requests-Calendar-View' },
 		{ path: '/view/:request_id/technicals/create', component: MyRequestsTechnicalsCreate, name: 'RequestsNew-Requests-Technicals' },

@@ -436,8 +436,10 @@
 								<li><i class="fa fa-plus"></i> {{ record.request.address }}</li>
 								<li><i class="fa fa-marker"></i> Puntos de referencia</li>
 								<li><i class="fa fa-plus"></i> {{ record.request.points_reference }}</li>
+								<li><i class="fa fa-marker"></i> <i class="fa fa-clock-o"></i> <b>Fecha y Hora de inicio</b>: {{ record.start }}</li>
+								<li><i class="fa fa-marker"></i> <i class="fa fa-clock-o"></i> <b>Fecha y Fecha y Hora de termino</b>: {{ record.end }}</li>
+								<li v-if="record.completed != null"><i class="fa fa-marker"></i> <i class="fa fa-clock-o"></i> <b>Completado</b>: {{ record.completed }}</li>
 							</ul>
-
 							<br />
 
 							<div class="project_detail">
@@ -460,7 +462,8 @@
 								<template v-if="record.request.id != undefined && record.request.id > 0">
 										<a :href="'/SAC/requests_new/#/view/' + record.request.id" class="btn btn-sm btn-primary">Abrir Solicitud</a>
 								</template>
-								<!-- // <a href="#" class="btn btn-sm btn-warning">Report contact</a> -->
+
+								<a v-if="record.complete == 0" @click="completeEvent" class="btn btn-sm btn-warning">Termine!</a>
 							</div>
 						</aside>
 						<div class="content">
@@ -729,20 +732,24 @@ var MyCalendarView = Vue.extend({
 	},
 	mounted(){
 		var self = this;
-		api.get('/records/events/' + self.event_id, {
-			params: {
-				join: [
-					'events_types',
-					'requests',
-					'users_events',
-					'users_events,users',
-				],
-			}
-		})
-		.then(response => { self.validateResult(response); })
-		.catch(e => { self.validateResult(e.response); });
+		self.load();
 	},
 	methods: {
+		load(){
+			var self = this;
+			api.get('/records/events/' + self.event_id, {
+				params: {
+					join: [
+						'events_types',
+						'requests',
+						'users_events',
+						'users_events,users',
+					],
+				}
+			})
+			.then(response => { self.validateResult(response); })
+			.catch(e => { self.validateResult(e.response); });
+		},
 		getDayTextDate(day){
 			array = [
 				'Domingo',
@@ -779,7 +786,48 @@ var MyCalendarView = Vue.extend({
 				//a.data.end = new Date(a.data.end);
 				self.record = a.data;
 			}
-		}
+		},
+		completeEvent(){
+				var self = this;
+				bootbox.confirm({
+				    message: "has terminado todo tu trabajo en este evento/cita?, al cerrar no podras realizar algunas modificaciones al inventario.",
+				    locale: "es",
+				    callback: function (result) {
+				        if(result === true){
+									api.put('/records/events/' + self.event_id, {
+										id: self.event_id,
+										complete: 1,
+										completed: new Date().toMysqlFormat(),
+										// end: new Date().toMysqlFormat(),
+									})
+									.then(response => {
+										console.log('response', response);
+
+										// Agregar Actividad del evento en la solicitud
+										api.post('/records/requests_activity', {
+											request: self.record.request.id,
+											user: <?= $_SESSION['user']['id']; ?>,
+											type: 'events',
+											info: JSON.stringify({
+												"text": "Se completó una visita tecnica.",
+												"events": [ self.record ]
+											}),
+										})
+										.then(activityResult => {
+											self.load();
+										});
+
+
+
+									})
+									.catch(e => {
+										console.log(e.response);
+									});
+								}
+				    }
+				});
+
+		},
 	}
 });
 

@@ -355,13 +355,13 @@
 	  width: 10px;
 	}
 	::-webkit-scrollbar-track {
-		background: #000; 
+		background: #000;
 	}
 	::-webkit-scrollbar-thumb {
 		background: #D33;
 	}
 	::-webkit-scrollbar-thumb:hover {
-		background: #E44;	
+		background: #E44;
 	}
 </style>
 
@@ -370,26 +370,12 @@
 	<div>
 		<div class="x_title">
 			<h2>{{ title }} <small>{{ subtitle }} </small></h2>
-			<!-- //
-				<ul class="nav navbar-right panel_toolbox">
-					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">Settings 1</a></li>
-							<li><a href="#">Settings 2</a></li>
-						</ul>
-					</li>
-					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-				</ul>
-			-->
 			<div class="clearfix"></div>
 		</div>
 		<form id="jvalidate" role="form" class="form-horizontal-" action="javascript:false;">
 			<p v-html="contentDescription"></p>
 			<div class="clearfix"></div>
 			<br />
-			<!-- // -->
 
 			<template v-if="inputs !== null">
 				<div class="col-sm-12">
@@ -397,14 +383,12 @@
 						<template v-for="(item, i) in inputs">
 							<template class="item form-group" v-if="item.show === true">
 								<template v-if="item.tag === 'span'">
-									<!-- // Titulo -->
 									<div class="col-sm-12">
 										<span class="section" v-if="item.type === 'section'">{{ item.title }}</span>
 										<div class="clearfix"></div>
 									</div>
 								</template>
 								<template v-else="">
-									<!-- // Input -->
 									<div :class="'col-sm-' + options_form.style.columns_size + ' col-xs-12'">
 										<label :class="'control-label col-sm-' + options_form.style.label_size + ' col-xs-12'" v-bind:for="'id-' + item.name">
 											{{ item.label }} <span class="required" v-if="item.required === true">*</span>
@@ -578,18 +562,11 @@
 				</div>
 			</div>
 		</form>
-		<!-- // -->
 		<div>
-			<!-- //
-			<div class="alert alert-danger alert-dismissible fade in" role="alert">
-				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-			</div>
-			-->
 			<div class="clearfix"></div>
 			<br />
 			<div id="messageBox"></div>
-			<!-- // -->
-			<p> {{ record }}</p>
+			<p class="hide"> {{ record }}</p>
 		</div>
 	</div>
 </template>

@@ -15,6 +15,7 @@ define('TBL_MENUS', 'menus');
 define('TBL_MENUS_ITEMS', 'menus_items');
 define('TBL_MEDIA_FILES', 'media');
 define('TBL_REQUESTS', 'requests');
+define('TBL_REQUESTS_MEDIA', 'requests_media');
 define('TBL_REQUESTS_USERS', 'requests');
 define('TBL_REQUEST_TYPES', 'requests_types');
 define('TBL_REQUEST_STATUS', 'requests_status');
