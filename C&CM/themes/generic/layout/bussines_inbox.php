@@ -1,28 +1,15 @@
 <?php
-// nxZA1Xgc4E	andres.gomez@monteverdeltda.com
-// 2gdH2whLlT	soporte@monteverdeltda.com
-// -------------------------------------------------------------------------
-/*
-$buzonPruebas = new stdClass();
-$buzonPruebas->host = 'mail.monteverdeltda.com';
-$buzonPruebas->port = '143';
-$buzonPruebas->user = 'soporte@monteverdeltda.com';
-$buzonPruebas->pass = '2gdH2whLlT';
-$buzonPruebas2 = new stdClass();
-$buzonPruebas2->host = 'mail.monteverdeltda.com';
-$buzonPruebas2->port = '143';
-$buzonPruebas2->user = 'andres.gomez@monteverdeltda.com';
-$buzonPruebas2->pass = 'nxZA1Xgc4E';
-$buzones = array($buzonPruebas, $buzonPruebas2);
-*/
+
 $inboxs = new EmailBussines($this->adapter);
 $inboxs->getAllByUser($_SESSION['user']['id']);
 $buzones = $inboxs->buzones;
 $accountSelected = (!isset($this->post['accountSelected']) || !isset($buzones[$this->post['accountSelected']])) ? 0 : $this->post['accountSelected'];
+
+	
 if(!isset($buzones[$accountSelected])){
 	echo "No existe correo.";
-	exit();
-}
+}else{
+	
 $inboxs->setBuzon($accountSelected);
 $messages = $inboxs->getMessages();
 
@@ -302,3 +289,5 @@ var MyMail = new Vue({
 }).$mount('#my-mail');
 
 </script>
+
+<?php } ?>

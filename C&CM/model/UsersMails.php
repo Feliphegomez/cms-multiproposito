@@ -14,46 +14,45 @@ class UsersMails extends EntidadBase{
         parent::__construct($table, $adapter);
     }
 
-		public function getById($id){
-			$id = (isset($id) && $id > 0) ? $id : 0;
-			$items = parent::getById($id);
-			if(isset($items[0])){
-				$this->setAllData($items[0]);
-			}
+	public function getById($id){
+		$id = (isset($id) && $id > 0) ? $id : 0;
+		$items = parent::getById($id);
+		if(isset($items[0])){
+			$this->setAllData($items[0]);
 		}
+		return $items;
+	}
 
-		public function setAllData($item){
-			foreach($item as $k=>$v){
-				$this->{$k} = $v;
+	public function setAllData($item){
+		foreach($item as $k=>$v){
+			$this->{$k} = $v;
 
-			}
 		}
+	}
 
     public function getAllByUser($user){
-			$items = parent::getBy('user', $user);
-			$r = array();
-			foreach($items as $child) {
-				$r[] = $child;
-			}
-			return $r;
+		$sql = "Select * from " . TBL_USERS_MAILS . " where user=:user";
+		$items = $this->getSQL($sql, ['user' => $user]);
+		if(isset($items[0])){
+			$this->setAllData($items[0]);
+		}
+		return $items;
     }
 	
     public function getAllById($id){
-			$items = parent::getBy('id', $id);
-			$r = array();
-			foreach($items as $child) {
-				$r[] = $child;
-			}
-			return $r;
+		$items = parent::getBy('id', $id);
+		if(isset($items[0])){
+			$this->setAllData($items[0]);
+		}
+		return $items;
     }
 
     public function getAllBy($column, $value){
-			$items = parent::getBy($column, $value);
-			$r = array();
-			foreach($items as $child) {
-				$r[] = $child;
-			}
-			return $r;
+		$items = parent::getBy($column, $value);
+		if(isset($items[0])){
+			$this->setAllData($items[0]);
+		}
+		return $items;
     }
 
 }

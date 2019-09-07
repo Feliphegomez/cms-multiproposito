@@ -27,7 +27,7 @@ class EmailBussines extends EntidadBase{
 		$this->adapter = $adapter;
         $table = TBL_MAILS;
         parent::__construct($table, $adapter);
-		$this->buzones = array();
+		$this->buzones = [];
 		$this->messages = array();
 		$this->carpetas = array();
 		$this->total_messages = 0;

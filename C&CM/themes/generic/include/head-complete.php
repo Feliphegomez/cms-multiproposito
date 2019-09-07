@@ -1,370 +1,365 @@
 
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<!-- Meta, title, CSS, favicons, etc. -->
-		<meta http-equiv="Content-Language" content="es"/>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="icon" href="<?php echo $this->getDirTheme(); ?>/assets/images/favicon.ico" type="image/ico" />
-		<title><?php echo $this->getTitle(); ?></title>
-		<!-- Bootstrap -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-		<!-- Font Awesome -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-		<!-- NProgress -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/nprogress/nprogress.css" rel="stylesheet">
-		<!-- iCheck -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-		<!-- bootstrap-progressbar -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-		<!-- JQVMap -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
-		<!-- bootstrap-daterangepicker -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-		<!-- Custom Theme Style -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/build/css/custom.min.css" rel="stylesheet">
-		<!-- bootstrap-datetimepicker -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
-		<!-- Ion.RangeSlider -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/normalize-css/normalize.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet">
-		<!-- Bootstrap Colorpicker -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/cropper/dist/cropper.min.css" rel="stylesheet">
-		<!-- Datatables -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- Meta, title, CSS, favicons, etc. -->
+<meta http-equiv="Content-Language" content="es"/>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="<?php echo $this->getDirTheme(); ?>/assets/images/favicon.ico" type="image/ico" />
+<title><?php echo $this->getTitle(); ?></title>
+<!-- Bootstrap -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+<!-- NProgress -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/nprogress/nprogress.css" rel="stylesheet">
+<!-- iCheck -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+<!-- bootstrap-progressbar -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+<!-- JQVMap -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+<!-- bootstrap-daterangepicker -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<!-- Custom Theme Style -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/build/css/custom.min.css" rel="stylesheet">
+<!-- bootstrap-datetimepicker -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<!-- Ion.RangeSlider -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/normalize-css/normalize.css" rel="stylesheet">
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet">
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+<!-- Bootstrap Colorpicker -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css" rel="stylesheet">
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/cropper/dist/cropper.min.css" rel="stylesheet">
+<!-- Datatables -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
-		<!-- bootstrap-wysiwyg -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
-		<!-- Dropzone.js -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
-		<!-- jQuery -->
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery/dist/jquery.min.js"></script>
-		<!-- Bootstrap -->
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-		<!-- validator -->
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/validator/validator.js"></script>
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery-validation/jquery.validate.js"></script>
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootbox/bootbox.min.js"></script>
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootbox/bootbox.locales.min.js"></script>
-		<!-- Notify.js -->
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/notify.js/notify.min.js"></script>
-		<!-- FullCalendar 3 -->
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.min.css" rel="stylesheet">
-		<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.print.css" rel="stylesheet" media="print">
-		<!-- //
-		-->
-		<!-- FullCalendar 4.3.1 -->
-		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/main.css' rel='stylesheet' />
-		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/daygrid/main.css' rel='stylesheet' />
-		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/timegrid/main.css' rel='stylesheet' />
-		<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/list/main.css' rel='stylesheet' />
-		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/main.js'></script>
-		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/locales-all.js'></script>
-		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/interaction/main.js'></script>
-		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/daygrid/main.js'></script>
-		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/timegrid/main.js'></script>
-		<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/list/main.js'></script>
+<!-- bootstrap-wysiwyg -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/google-code-prettify/bin/prettify.min.css" rel="stylesheet">
+<!-- Dropzone.js -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+<!-- jQuery -->
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- validator -->
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/validator/validator.js"></script>
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/jquery-validation/jquery.validate.js"></script>
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootbox/bootbox.min.js"></script>
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/bootbox/bootbox.locales.min.js"></script>
+<!-- Notify.js -->
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/notify.js/notify.min.js"></script>
+<!-- FullCalendar 3 -->
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.min.css" rel="stylesheet">
+<link href="<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/3.1.0/dist/fullcalendar.print.css" rel="stylesheet" media="print">
+<!-- //
+-->
+<!-- FullCalendar 4.3.1 -->
+<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/main.css' rel='stylesheet' />
+<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/daygrid/main.css' rel='stylesheet' />
+<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/timegrid/main.css' rel='stylesheet' />
+<link href='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/list/main.css' rel='stylesheet' />
+<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/main.js'></script>
+<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/core/locales-all.js'></script>
+<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/interaction/main.js'></script>
+<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/daygrid/main.js'></script>
+<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/timegrid/main.js'></script>
+<script src='<?php echo $this->getDirTheme(); ?>/assets/vendors/fullcalendar/4.3.1/packages/list/main.js'></script>
 
-		<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/daypilot/pro/javascript/scripts/daypilot-all.min.js"></script>
+<script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/daypilot/pro/javascript/scripts/daypilot-all.min.js"></script>
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.0.2/vue-router.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
 
-		<!-- https://github.com/nevins-b/javascript-bcrypt -->
-		<!-- <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/javascript-bcrypt/bCrypt.js"></script> -->
-		<script>
-			Date.prototype.toMysqlFormat = function() {
-				function twoDigits(d) {
-					if(0 <= d && d < 10) return "0" + d.toString();
-					if(-10 < d && d < 0) return "-0" + (-1*d).toString();
-					return d.toString();
-				}
-				if(new Date("2015-01-01T00:00:00").toString() === new Date("2015-01-01T00:00:00").toUTCString()){
-					return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
-				}else{
-					return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
-				}
-			};
+<!-- https://github.com/nevins-b/javascript-bcrypt -->
+<!-- <script src="<?php echo $this->getDirTheme(); ?>/assets/vendors/javascript-bcrypt/bCrypt.js"></script> -->
+<script>
+	Date.prototype.toMysqlFormat = function() {
+		function twoDigits(d) {
+			if(0 <= d && d < 10) return "0" + d.toString();
+			if(-10 < d && d < 0) return "-0" + (-1*d).toString();
+			return d.toString();
+		}
+		if(new Date("2015-01-01T00:00:00").toString() === new Date("2015-01-01T00:00:00").toUTCString()){
+			return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+		}else{
+			return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
+		}
+	};
 
-			Date.prototype.toConversationsFormat = function() {
-				const now = new Date();
-				const epochTime = this;
-				const arrayMesesText = [
-					'Enero',
-					'Febrero',
-					'Marzo',
-					'Abril',
-					'Mayo',
-					'Junio',
-					'Julio',
-					'Agosto',
-					'Septiembre',
-					'Octubre',
-					'Noviembre',
-					'Diciembre'
-				];
-				isToday = (now.getDate() === this.getDate() && now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? true : false;
-				isYesterday = (now.getDate() === (this.getDate()+1) && now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? true : false;
-				totalDays = (now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? (now.getDate() - this.getDate()) : 999;
+	Date.prototype.toConversationsFormat = function() {
+		const now = new Date();
+		const epochTime = this;
+		const arrayMesesText = [
+			'Enero',
+			'Febrero',
+			'Marzo',
+			'Abril',
+			'Mayo',
+			'Junio',
+			'Julio',
+			'Agosto',
+			'Septiembre',
+			'Octubre',
+			'Noviembre',
+			'Diciembre'
+		];
+		isToday = (now.getDate() === this.getDate() && now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? true : false;
+		isYesterday = (now.getDate() === (this.getDate()+1) && now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? true : false;
+		totalDays = (now.getMonth() === this.getMonth() && now.getFullYear() === this.getFullYear()) ? (now.getDate() - this.getDate()) : 999;
 
+		texto_start = 'Hace ';
+		tiempo = '';
+		if (isToday === true){
+			horas = now.getHours() - this.getHours();
+			if (horas >= 1){
 				texto_start = 'Hace ';
-				tiempo = '';
-				if (isToday === true){
-					horas = now.getHours() - this.getHours();
-					if (horas >= 1){
-						texto_start = 'Hace ';
-						texto_end = ' hora(s)';
-						tiempo = horas;
-					} else if (horas < 1){
-						minutos = now.getMinutes() - this.getMinutes();
-						texto_start = 'Hace ';
-						texto_end = ' minuto(s)';
-						tiempo = minutos;
-					}
-				} else if (isYesterday === true){
-					texto_start = 'Ayer ';
-					texto_end = ' ';
-					tiempo = null;
-				} else if (totalDays <= 30){
-					texto_start = 'Hace ';
-					texto_end = ' días(s)';
-					tiempo = totalDays;
-				} else {
-					mesText = arrayMesesText[this.getMonth()]
-					texto_start = this.getDate() + ' de ' + mesText + ' ';
-					texto_end = this.format('H:s');
-					tiempo = null;
-					//return this.format('d M H:s');
-				}
-				if(tiempo == null){
-					return texto_start + texto_end;
-				}else{
-					if(tiempo>0){
-						return texto_start + tiempo + texto_end;
-					}else{
-						return 'Dentro de ' + Number((tiempo)-tiempo*2) + texto_end;
-					}
-				}
+				texto_end = ' hora(s)';
+				tiempo = horas;
+			} else if (horas < 1){
+				minutos = now.getMinutes() - this.getMinutes();
+				texto_start = 'Hace ';
+				texto_end = ' minuto(s)';
+				tiempo = minutos;
+			}
+		} else if (isYesterday === true){
+			texto_start = 'Ayer ';
+			texto_end = ' ';
+			tiempo = null;
+		} else if (totalDays <= 30){
+			texto_start = 'Hace ';
+			texto_end = ' días(s)';
+			tiempo = totalDays;
+		} else {
+			mesText = arrayMesesText[this.getMonth()]
+			texto_start = this.getDate() + ' de ' + mesText + ' ';
+			texto_end = this.format('H:s');
+			tiempo = null;
+			//return this.format('d M H:s');
+		}
+		if(tiempo == null){
+			return texto_start + texto_end;
+		}else{
+			if(tiempo>0){
+				return texto_start + tiempo + texto_end;
+			}else{
+				return 'Dentro de ' + Number((tiempo)-tiempo*2) + texto_end;
+			}
+		}
 
-			};
-		</script>
-		<script>
-			function zfill(number, width) {
-				var numberOutput = Math.abs(number);
-				var length = number.toString().length;
-				var zero = "0";
-				if (width <= length) {
-					if (number < 0) { return ("-" + numberOutput.toString()); }
-					else { return numberOutput.toString(); }
-				} else {
-					if (number < 0) { return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); }
-					else { return ((zero.repeat(width - length)) + numberOutput.toString()); }
-				}
-			};
-			function formatMoney(n, c, d, t){
-				var c = isNaN(c = Math.abs(c)) ? 2 : c,
-					d = d == undefined ? "." : d,
-					t = t == undefined ? "," : t,
-					s = n < 0 ? "-" : "",
-					i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
-					j = (j = i.length) > 3 ? j % 3 : 0;
-				return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-			};
+	};
 
-			var api = axios.create({
-				baseURL: '/api.php',
-				withCredentials: true,
-				headers: {
-					'X-CORE': 'api'
-				}
-			});
+	function zfill(number, width) {
+		var numberOutput = Math.abs(number);
+		var length = number.toString().length;
+		var zero = "0";
+		if (width <= length) {
+			if (number < 0) { return ("-" + numberOutput.toString()); }
+			else { return numberOutput.toString(); }
+		} else {
+			if (number < 0) { return ("-" + (zero.repeat(width - length)) + numberOutput.toString()); }
+			else { return ((zero.repeat(width - length)) + numberOutput.toString()); }
+		}
+	};
 
-			api.interceptors.response.use(function (response) {
-				if (response.headers['x-xsrf-token']) {
-					document.cookie = 'XSRF-TOKEN=' + response.headers['x-xsrf-token'] + '; path=/';
-				}
-				return response;
-			});
+	function formatMoney(n, c, d, t){
+		var c = isNaN(c = Math.abs(c)) ? 2 : c,
+			d = d == undefined ? "." : d,
+			t = t == undefined ? "," : t,
+			s = n < 0 ? "-" : "",
+			i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+			j = (j = i.length) > 3 ? j % 3 : 0;
+		return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+	};
 
-			var util = {
-			  methods: {
-				resolve: function (path, obj) {
-				  return path.reduce(function(prev, curr) {
-					return prev ? prev[curr] : undefined
-				  }, obj || this);
-				},
-				getDisplayColumn: function (columns) {
-				  var index = -1;
-				  var names = ['name', 'title', 'description', 'username'];
-				  for (var i in names) {
-					index = columns.indexOf(names[i]);
-					if (index >= 0) {
-					  return names[i];
-					}
-				  }
-				  return columns[0];
-				},
-				getPrimaryKey: function (properties) {
-				  for (var key in properties) {
-					if (properties[key]['x-primary-key']) {
-					  return key;
-					}
-				  }
-				  return false;
-				},
-				getReferenced: function (properties) {
-				  var referenced = [];
-				  for (var key in properties) {
-					if (properties[key]['x-referenced']) {
-					  for (var i = 0; i < properties[key]['x-referenced'].length; i++) {
-						referenced.push(properties[key]['x-referenced'][i].split('.'));
-					  }
-					}
-				  }
-				  return referenced;
-				},
-				getReferences: function (properties) {
-				  var references = {};
-				  for (var key in properties) {
-					if (properties[key]['x-references']) {
-					  references[key] = properties[key]['x-references'];
-					} else {
-					  references[key] = false;
-					}
-				  }
-				  return references;
-				},
-				getProperties: function (action, subject, definition) {
-				  if (action == 'list') {
-					path = ['components', 'schemas', action + '-' + subject, 'properties', 'records', 'items', 'properties'];
-				  } else {
-					path = ['components', 'schemas', action + '-' + subject, 'properties'];
-				  }
-				  return this.resolve(path, definition);
-				}
+	var api = axios.create({
+		baseURL: '/api.php',
+		withCredentials: true,
+		headers: {
+			'X-CORE': 'api'
+		}
+	});
+
+	api.interceptors.response.use(function (response) {
+		if (response.headers['x-xsrf-token']) {
+			document.cookie = 'XSRF-TOKEN=' + response.headers['x-xsrf-token'] + '; path=/';
+		}
+		return response;
+	});
+
+	var util = {
+	  methods: {
+		resolve: function (path, obj) {
+		  return path.reduce(function(prev, curr) {
+			return prev ? prev[curr] : undefined
+		  }, obj || this);
+		},
+		getDisplayColumn: function (columns) {
+		  var index = -1;
+		  var names = ['name', 'title', 'description', 'username'];
+		  for (var i in names) {
+			index = columns.indexOf(names[i]);
+			if (index >= 0) {
+			  return names[i];
+			}
+		  }
+		  return columns[0];
+		},
+		getPrimaryKey: function (properties) {
+		  for (var key in properties) {
+			if (properties[key]['x-primary-key']) {
+			  return key;
+			}
+		  }
+		  return false;
+		},
+		getReferenced: function (properties) {
+		  var referenced = [];
+		  for (var key in properties) {
+			if (properties[key]['x-referenced']) {
+			  for (var i = 0; i < properties[key]['x-referenced'].length; i++) {
+				referenced.push(properties[key]['x-referenced'][i].split('.'));
 			  }
-			};
+			}
+		  }
+		  return referenced;
+		},
+		getReferences: function (properties) {
+		  var references = {};
+		  for (var key in properties) {
+			if (properties[key]['x-references']) {
+			  references[key] = properties[key]['x-references'];
+			} else {
+			  references[key] = false;
+			}
+		  }
+		  return references;
+		},
+		getProperties: function (action, subject, definition) {
+		  if (action == 'list') {
+			path = ['components', 'schemas', action + '-' + subject, 'properties', 'records', 'items', 'properties'];
+		  } else {
+			path = ['components', 'schemas', action + '-' + subject, 'properties'];
+		  }
+		  return this.resolve(path, definition);
+		}
+	  }
+	};
 
-			var orm = {
-			  methods: {
-				readRecord: function () {
-				  this.id = this.$route.params.id;
-				  this.subject = this.$route.params.subject;
-				  this.record = null;
-				  var self = this;
-				  api.get('/records/' + this.subject + '/' + this.id).then(function (response) {
-					self.record = response.data;
-				  }).catch(function (error) {
-					console.log(error);console.log(error.response);
-				  });
-				},
-				readRecords: function () {
-				  this.subject = this.$route.params.subject;
-				  this.records = null;
-				  var url = '/records/' + this.subject;
-				  var params = [];
-				  for (var i=0;i<this.join.length;i++) {
-					params.push('join='+this.join[i]);
-				  }
-				  if (this.field) {
-					params.push('filter='+this.field+',eq,'+this.id);
-				  }
-				  if (params.length>0) {
-					url += '?'+params.join('&');
-				  }
-				  var self = this;
-				  api.get(url).then(function (response) {
-					self.records = response.data.records;
-				  }).catch(function (error) {
-					console.log(error);console.log(error.response);
-				  });
-				},
-				readOptions: function() {
-				  this.options = {};
-				  var self = this;
-				  for (var key in this.references) {
-					var subject = this.references[key];
-					if (subject !== false) {
-					  var properties = this.getProperties('list', subject, this.definition);
-					  var displayColumn = this.getDisplayColumn(Object.keys(properties));
-					  var primaryKey = this.getPrimaryKey(properties);
-					  api.get('/records/' + subject + '?include=' + primaryKey + ',' + displayColumn).then(function (subject, primaryKey, displayColumn, response) {
-						self.options[subject] = response.data.records.map(function (record) {
-						  return {key: record[primaryKey], value: record[displayColumn]};
-						});
-						self.$forceUpdate();
-					  }.bind(null, subject, primaryKey, displayColumn)).catch(function (error) {
-						console.log(error);console.log(error.response);
-					  });
-					}
-				  }
-				},
-				updateRecord: function () {
-				  api.put('/records/' + this.subject + '/' + this.id, this.record).then(function (response) {
-					console.log(response.data);
-				  }).catch(function (error) {
-					console.log(error);console.log(error.response);
-				  });
-				  router.push({name: 'List', params: {subject: this.subject}});
-				},
-				initRecord: function () {
-				  this.record = {};
-				  for (var key in this.properties) {
-					if (!this.properties[key]['x-primary-key']) {
-					  if (this.properties[key].default) {
-						this.record[key] = this.properties[key].default;
-					  } else {
-						this.record[key] = '';
-					  }
-					}
-				  }
-				},
-				createRecord: function() {
-				  var self = this;
-				  api.post('/records/' + this.subject, this.record).then(function (response) {
-					self.record.id = response.data;
-				  }).catch(function (error) {
-					console.log(error);console.log(error.response);
-				  });
-				  router.push({name: 'List', params: {subject: this.subject}});
-				},
-				deleteRecord: function () {
-				  api.delete('/records/' + this.subject + '/' + this.id).then(function (response) {
-					console.log(response.data);
-				  }).catch(function (error) {
-					console.log(error);console.log(error.response);
-				  });
-				  router.push({name: 'List', params: {subject: this.subject}});
-				}
+	var orm = {
+	  methods: {
+		readRecord: function () {
+		  this.id = this.$route.params.id;
+		  this.subject = this.$route.params.subject;
+		  this.record = null;
+		  var self = this;
+		  api.get('/records/' + this.subject + '/' + this.id).then(function (response) {
+			self.record = response.data;
+		  }).catch(function (error) {
+			console.log(error);console.log(error.response);
+		  });
+		},
+		readRecords: function () {
+		  this.subject = this.$route.params.subject;
+		  this.records = null;
+		  var url = '/records/' + this.subject;
+		  var params = [];
+		  for (var i=0;i<this.join.length;i++) {
+			params.push('join='+this.join[i]);
+		  }
+		  if (this.field) {
+			params.push('filter='+this.field+',eq,'+this.id);
+		  }
+		  if (params.length>0) {
+			url += '?'+params.join('&');
+		  }
+		  var self = this;
+		  api.get(url).then(function (response) {
+			self.records = response.data.records;
+		  }).catch(function (error) {
+			console.log(error);console.log(error.response);
+		  });
+		},
+		readOptions: function() {
+		  this.options = {};
+		  var self = this;
+		  for (var key in this.references) {
+			var subject = this.references[key];
+			if (subject !== false) {
+			  var properties = this.getProperties('list', subject, this.definition);
+			  var displayColumn = this.getDisplayColumn(Object.keys(properties));
+			  var primaryKey = this.getPrimaryKey(properties);
+			  api.get('/records/' + subject + '?include=' + primaryKey + ',' + displayColumn).then(function (subject, primaryKey, displayColumn, response) {
+				self.options[subject] = response.data.records.map(function (record) {
+				  return {key: record[primaryKey], value: record[displayColumn]};
+				});
+				self.$forceUpdate();
+			  }.bind(null, subject, primaryKey, displayColumn)).catch(function (error) {
+				console.log(error);console.log(error.response);
+			  });
+			}
+		  }
+		},
+		updateRecord: function () {
+		  api.put('/records/' + this.subject + '/' + this.id, this.record).then(function (response) {
+			console.log(response.data);
+		  }).catch(function (error) {
+			console.log(error);console.log(error.response);
+		  });
+		  router.push({name: 'List', params: {subject: this.subject}});
+		},
+		initRecord: function () {
+		  this.record = {};
+		  for (var key in this.properties) {
+			if (!this.properties[key]['x-primary-key']) {
+			  if (this.properties[key].default) {
+				this.record[key] = this.properties[key].default;
+			  } else {
+				this.record[key] = '';
 			  }
-			};
-		</script>
+			}
+		  }
+		},
+		createRecord: function() {
+		  var self = this;
+		  api.post('/records/' + this.subject, this.record).then(function (response) {
+			self.record.id = response.data;
+		  }).catch(function (error) {
+			console.log(error);console.log(error.response);
+		  });
+		  router.push({name: 'List', params: {subject: this.subject}});
+		},
+		deleteRecord: function () {
+		  api.delete('/records/' + this.subject + '/' + this.id).then(function (response) {
+			console.log(response.data);
+		  }).catch(function (error) {
+			console.log(error);console.log(error.response);
+		  });
+		  router.push({name: 'List', params: {subject: this.subject}});
+		}
+	  }
+	};
+</script>
 <style>
-	/*////////// SCROLLBAR ////////*/
 	::-webkit-scrollbar {
-	  width: 5px;
-	}
-	::-webkit-scrollbar:hover {
-	  width: 10px;
+	  width: 7.5px;
 	}
 	::-webkit-scrollbar-track {
 		background: #000;
 	}
 	::-webkit-scrollbar-thumb {
-		background: #D33;
+		background: #26B99A;
 	}
 	::-webkit-scrollbar-thumb:hover {
-		background: #E44;
+		background: #169F85;
 	}
 </style>
-
 
 <template id="Forms-Create-Diynamic">
 	<div>
@@ -384,6 +379,7 @@
 							<template class="item form-group" v-if="item.show === true">
 								<template v-if="item.tag === 'span'">
 									<div class="col-sm-12">
+									<br />
 										<span class="section" v-if="item.type === 'section'">{{ item.title }}</span>
 										<div class="clearfix"></div>
 									</div>
@@ -404,19 +400,38 @@
 												:title="item.title"
 												v-model="record[item.name]"
 											/>
-											<select v-if="item.tag === 'select'" class="form-control col-xs-12"
-												:id="'id-' + item.name"
-												:name="item.name"
-												:required="item.required"
-												:readonly="item.readonly"
-												:disabled="item.disabled"
-												:type="item.type"
-												:title="item.title"
-												v-model="record[item.name]"
-											>
-												<option :value="option.value" v-if="item.options != undefined && item.options != null" v-for="(option, index) in item.options">{{ option.text }}</option>
-											</select>
-											<textarea v-if="item.tag === 'textarea'" class="form-control col-xs-12"
+											<template v-else-if="item.tag === 'select'">
+												<select class="form-control col-xs-12"
+													:id="'id-' + item.name"
+													:name="item.name"
+													:required="item.required"
+													:readonly="item.readonly"
+													:disabled="item.disabled"
+													:type="item.type"
+													:title="item.title"
+													v-model="record[item.name]"
+												>
+													<option :value="option.value" v-if="item.options != undefined && item.options != null" v-for="(option, index) in item.options">{{ option.text }}</option>
+												</select>
+											</template>
+											<div v-else-if="item.tag === 'radio'" class="col-xs-12">
+												  
+												<div class="radio"
+													v-if="item.options != undefined && item.options != null" 
+													v-for="(option, index) in item.options">
+												  <label><input
+													type="radio" 
+													:value="option.value" 
+													:id="'id-' + item.name"
+													:name="item.name"
+													v-model="record[item.name]"
+													:required="item.required"
+													:readonly="item.readonly"
+													:disabled="item.disabled"
+													:title="item.title">{{ option.text }}</label>
+												</div>
+											</div>
+											<textarea v-else-if="item.tag === 'textarea'" class="form-control col-xs-12"
 												:id="'id-' + item.name"
 												:name="item.name"
 												:required="item.required"
@@ -426,8 +441,7 @@
 												v-model="record[item.name]"
 												rows="5"
 											>{{ record[item.name] }}</textarea>
-
-											<template v-if="item.dynamic == true" class="row">
+											<template v-else-if="item.dynamic == true" class="row">
 												<div class="row" v-for="(subItem, j) in item.dynamicOptions.inputs">
 													<template v-if="subItem.show === true">
 														<label class="control-label col-sm-4" v-bind:for="'id-' + subItem.name">
@@ -474,6 +488,7 @@
 												</div>
 											</template>
 											<template v-else>
+											Ups..
 											</template>
 										</div>
 									</div>
@@ -557,7 +572,7 @@
 				<div class="col-md-6 col-md-offset-3">
 					<div class="big-button">
 						<button type="reset" class="btn btn-default">Limpiar</button>
-						<button type="submit" class="btn btn-success" onClick="javascript: $('#messageBox').html('');">Guardar</button>
+						<button type="submit" class="btn btn-success" onClick="javascript: $('#messageBox').html('');"> Enviar</button>
 					</div>
 				</div>
 			</div>
@@ -566,7 +581,7 @@
 			<div class="clearfix"></div>
 			<br />
 			<div id="messageBox"></div>
-			<p class="hide"> {{ record }}</p>
+			<p class="hides"> {{ record }}</p>
 		</div>
 	</div>
 </template>
@@ -728,14 +743,6 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 						position: 'top',
 					});
 					return false;
-					/*
-					var errorHTML = '<div class="alert alert-danger alert-dismissible fade in" role="alert">';
-						errorHTML += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>';
-						errorHTML += 'El campo <strong>' + element[0].title + ' esta vacio o llenado de forma erronea.</strong>.';
-					errorHTML += '</div>';
-					$("#messageBox").append(errorHTML);
-
-					*/
 				},
 				submitHandler: function(form){
 					bootbox.confirm({
@@ -823,31 +830,6 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 						radID = (z.data);
 						rrr.id = radID;
 						self.callEvent(rrr);
-						/*
-						api.get('/records/' + self.table + '/' + radID)
-						.then(function (a) {
-							console.log('Existe a');
-							if(a.data){
-								console.log('Existe a.data', a.data);
-								if(a.data.created !== undefined){
-									radSeparate = a.data.created.split(" ");
-									if(radSeparate[0] != undefined){
-										console.log('Existe radSeparate');
-										radFecha = radSeparate[0].split("-");
-										if(radFecha.length === 3){
-											console.log('Existe Fecha');
-											rrr.recordId = radFecha[0] + radFecha[1] + radFecha[2] + self.zfill(radID, 5);
-											rrr.recordDateText = radFecha[0] + radFecha[1] + radFecha[2];
-											rrr.data = a.data;
-										}
-									}
-								}else{
-									console.log('no existe a.data.created', a.data);
-								}
-								self.callEvent(rrr);
-							}
-						});
-						*/
 					}
 				}else{
 					console.log("Console in resposeCall - rrr => ", rrr);
@@ -886,7 +868,13 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 										} else if(vRecord.name != undefined && vRecord.code == undefined){
 											self.options[value.options].push({ text: vRecord.name, value: vRecord.id });
 										} else if(vRecord.names != undefined && vRecord.name == undefined){
-											self.options[value.options].push({ text: vRecord.names, value: vRecord.id });
+											if(vRecord.surname != undefined && vRecord.identification_number == undefined){
+												self.options[value.options].push({ text: '0 - ' + vRecord.names + ' ' + vRecord.surname, value: vRecord.id });
+											} else if(vRecord.surname != undefined && vRecord.identification_number != undefined){
+												self.options[value.options].push({ text: vRecord.identification_number + ' - ' + vRecord.names + ' ' + vRecord.surname, value: vRecord.id });
+											} else {
+												self.options[value.options].push({ text: vRecord.names, value: vRecord.id });
+											}
 										} else if(vRecord.title != undefined && vRecord.subtitle == undefined && vRecord.name == undefined){
 											self.options[value.options].push({ text: vRecord.title, value: vRecord.id });
 										} else if(vRecord.title != undefined && vRecord.subtitle != undefined && vRecord.name == undefined){
@@ -968,6 +956,11 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 							optionsInput.tag = 'input';
 							optionsInput.type = 'checkbox';
 						break;
+						case 'password':
+							returnData.record[key] = (optionsInput.value != null) ? optionsInput.value : '';
+							optionsInput.tag = 'input';
+							optionsInput.type = 'password';
+						break;
 						case 'text':
 							returnData.record[key] = (optionsInput.value != null) ? optionsInput.value : '';
 							optionsInput.tag = 'input';
@@ -1021,9 +1014,15 @@ var FormsCreateDynamic = Vue.component('forms-create-dynamic', {
 							optionsInput.type = 'number';
 						break;
 						case 'select':
-							// returnData.record[key] = 0;
 							returnData.record[key] = (optionsInput.value != null) ? optionsInput.value : 0;
 							optionsInput.tag = 'select';
+							if((value.options != undefined)){
+								if(self.options[value.options] != undefined){ optionsInput.options = self.options[value.options]; }
+							}
+						break;
+						case 'radio':
+							returnData.record[key] = (optionsInput.value != null) ? optionsInput.value : 0;
+							optionsInput.tag = 'radio';
 							if((value.options != undefined)){
 								if(self.options[value.options] != undefined){ optionsInput.options = self.options[value.options]; }
 							}

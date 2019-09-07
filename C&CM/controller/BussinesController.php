@@ -20,7 +20,6 @@ class BussinesController extends ControladorBase{
     public function index(){
     }
 
-
     public function get_part($data, $encoding) {
         switch($encoding) {
             case ENC7BIT: return $data; // 7BIT
@@ -57,8 +56,7 @@ class BussinesController extends ControladorBase{
 			imap_close($inbox->mbox);
 		}
 	}
-		  
-
+	
     public function getBody(){
 		$options = $this->get;
 		if(isset($options['mail']) && isset($options['message_id'])) {

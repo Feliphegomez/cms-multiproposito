@@ -588,7 +588,9 @@ var ComposeInbox = new Vue({
 								if (hoy.getDate() == fStart.getDate()
 								&& hoy.getMonth() == fStart.getMonth()
 								&& hoy.getFullYear() == fStart.getFullYear()) {
-									self.count++;
+									if(item.event.complete == null){
+										self.count++;
+									}
 								}
 
 								self.records.push(item.event);
@@ -598,42 +600,6 @@ var ComposeInbox = new Vue({
 					}catch(e){
 						console.log(e.response);
 					};
-				},
-				validateConversations(response){
-					var self = this;
-					self.records = [];
-					self.count = 0;
-					try{
-						if (response.data != undefined){
-
-							if (response.data.records.length > 0){
-								response.data.records.forEach(item => {
-									if(item.conversations_replys.length > 0){
-										item.conversations_replys.forEach(function(a){
-											a.reply = JSON.parse(a.reply);
-										});
-										item.updated = new Date(item.updated).toConversationsFormat();
-										if (item.status === 3){ self.count++; }
-										self.records.push(item);
-									}
-								});
-							} else {
-								self.searchBox.errorText = "No hay mensajes";
-							}
-						}
-					}catch(e){
-						console.log(e.response);
-					};
-
-				},
-				getAvatar(user){
-					var self = this;
-					isAvatar = (user.avatar == undefined || user.avatar == null || user.avatar < 0) ? false : true;
-					if(isAvatar == true){
-						return "/index.php?controller=Sistema&action=picture&id=" + user.avatar;
-					}else{
-						return "/crm-content/uploads/avatar001.jpg";
-					}
 				},
 			},
 		}).$mount('#navbartop-notifications-calendar');

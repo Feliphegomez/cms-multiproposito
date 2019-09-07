@@ -133,6 +133,7 @@ class EntidadBase{
 		} catch (PDOException $e) {
 			print "Error!: " . $e->getMessage() . "<br/>";
 			die();
+			return [];
 		}
 	}
 	

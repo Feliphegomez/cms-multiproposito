@@ -21,10 +21,9 @@
 		<br />
 		<!-- sidebar menu -->
 		<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-			<?php 
-				$menu = $this->loadMenu('slug', 'sidebar', true);
-				echo MenuToUL($menu);
-			?>
+			<?= MenuToUL($this->loadMenu('slug', 'sidebar_accounts', true)); ?>
+			<?= MenuToUL($this->loadMenu('slug', 'sidebar_users', true)); ?>
+			<?= MenuToUL($this->loadMenu('slug', 'sidebar_sac', true)); ?>
 					
 			<!-- /menu demo-->
 			<!-- 
@@ -137,18 +136,20 @@
 		
 		<!-- /menu footer buttons -->
 			<div class="sidebar-footer hidden-small">
-				<a data-toggle="tooltip" data-placement="top" title="Settings">
-					<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-				</a>
-				<a data-toggle="tooltip" data-placement="top" title="FullScreen">
-					<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-				</a>
-				<a data-toggle="tooltip" data-placement="top" title="Lock">
-					<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-				</a>
-				<a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-					<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-				</a>
+				<!-- //
+					<a data-toggle="tooltip" data-placement="top" title="Settings">
+						<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+					</a>
+					<a data-toggle="tooltip" data-placement="top" title="FullScreen">
+						<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+					</a>
+					<a data-toggle="tooltip" data-placement="top" title="Lock">
+						<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+					</a>
+					<a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+						<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+					</a>
+				-->
 			</div>
 		<!-- /menu footer buttons -->
 	</div>

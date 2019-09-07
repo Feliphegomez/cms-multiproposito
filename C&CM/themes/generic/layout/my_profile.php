@@ -38,11 +38,11 @@
 					</ul>
 					<a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
 					<br />
-					
+
 				</div>
-				
+
 				<div class="col-md-8 col-sm-8 col-xs-12">
-					<!-- // 
+					<!-- //
 					  <div class="profile_title">
 						<div class="col-md-6">
 						  <h2>User Activity Report</h2>
@@ -69,21 +69,52 @@
 								<!-- start recent activity -->
 								<ul class="messages">
 									<li v-for="(activity, index1) in record.requests_activity">
-										<img src="images/img.jpg" class="avatar" alt="Avatar">
+										<img :src="getAvatar(record.avatar)" class="avatar" alt="Avatar">
 										<div class="message_date">
-											<h3 class="date text-info">24</h3>
-											<p class="month">May</p>
+											<h3 class="date text-info">
+												{{ activity.created.split(" ")[0].split("-")[2] }}
+											</h3>
+											<p class="month">
+												{{ returnMouthText(activity.created.split(" ")[0].split("-")[1]) }}
+											</p>
 										</div>
 										<div class="message_wrapper">
-											<h4 class="heading">Desmond Davison</h4>
+											<h4 class="heading">{{ record.names }} {{ record.surname }}</h4>
 											<blockquote class="message">
-												{{ activity }}
-												Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+												<template v-if="activity.info.text != undefined">
+													{{ activity.info.text }}
+												</template>
+
+
+											</blockquote>
 											<br />
+											<template v-if="activity.type == 'attachment'">
+												<p class="url" v-for="attachment in activity.info.attachment">
+													<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
+													<!-- //
+													<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ attachment.size }} B ]</a>
+													<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ (attachment.size/1024) }} Kb ]</a>
+													<a :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} [ {{ ((attachment.size/1024)/1024) }} Mb ]</a>
+													-->
+													<a target="_blank" :href="attachment.path_short"><i class="fa fa-paperclip"></i> {{ attachment.name }} </a>
+												</p>
+											</template>
+											<template v-else-if="activity.type == 'events'">
+												<ul>
+													<li  v-for="event in activity.info.events">
+														<span class="fs1 text-info fa fa-calendar-o" aria-hidden="true"></span>
+															{{ event.title }}
+															<br>Inicio: {{ event.start }}
+															<br>Fin: {{ event.end }}
+													</li>
+												</ul>
+											</template>
+											<br />
+											<!-- //
 											<p class="url">
 												<span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
 												<a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-											</p>
+											</p>-->
 										</div>
 									</li>
 								</ul>
@@ -189,6 +220,10 @@ var ProfilesMy = Vue.extend({
 		self.load();
 	},
 	methods: {
+		returnMouthText(mouth){
+			array = [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ];
+			return array[mouth-1];
+		},
 		load(){
 			var self = this;
 			api.get('/records/users/' + self.record.id, {
@@ -208,6 +243,9 @@ var ProfilesMy = Vue.extend({
 		validateResult(r){
 			var self = this;
 			if (r.data != undefined){
+				r.data.requests_activity.forEach(function(activity){
+					activity.info = JSON.parse(activity.info);
+				});
 				self.record = r.data;
 			} else {
 				 console.log('Error: consulta validateResult');
